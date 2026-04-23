@@ -45,6 +45,7 @@
     "./theme-toggle": "./src/components/preferences/index.ts",
     "./tooltip": "./src/components/tooltip/index.ts",
     "./sidebar-shell": "./src/components/app-shell/index.ts",
+    "./copyable-text": "./src/components/copyable-text/index.ts",
     "./date-time-picker": "./src/components/date-time-picker/index.ts",
     "./data-table": "./src/components/data-table/index.ts",
     "./metric-cards": "./src/components/metric-cards/index.ts"

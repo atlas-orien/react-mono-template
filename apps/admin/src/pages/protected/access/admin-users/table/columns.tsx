@@ -1,3 +1,4 @@
+import { CopyableText } from "@workspace/app-components"
 import { Badge } from "@workspace/ui-components/stable/badge"
 import type { DataTableColumn } from "@workspace/app-components"
 import { mapApiStatusToLabel } from "./status"
@@ -9,7 +10,12 @@ export const adminUserColumns: DataTableColumn<AdminUserRow>[] = [
     header: "ID",
     sortable: true,
     renderCell: (row) => (
-      <span className="font-mono text-sm">{row.display_id}</span>
+      <CopyableText
+        value={row.display_id}
+        textClassName="font-mono text-sm"
+      >
+        {row.display_id}
+      </CopyableText>
     ),
   },
   {

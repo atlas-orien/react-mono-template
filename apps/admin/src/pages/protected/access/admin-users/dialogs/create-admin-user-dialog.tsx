@@ -1,12 +1,7 @@
 import { useMemo, useState } from "react"
 import type { DataTableInsertActionConfig } from "@workspace/app-components"
 import { Input, Select } from "@workspace/ui-components"
-import {
-  createAdminUserApi,
-  getAuthUserProfileApi,
-  loginApi,
-  registerApi,
-} from "@/api"
+import { createAdminUserApi, registerApi } from "@/api"
 
 type CreateAdminUserMode = "existing-account" | "new-account"
 
@@ -21,12 +16,10 @@ export function useCreateAdminUserInsertAction(
   const [createMode, setCreateMode] =
     useState<CreateAdminUserMode>("existing-account")
   const [existingIdentifier, setExistingIdentifier] = useState("")
-  const [existingPassword, setExistingPassword] = useState("")
   const [newUsername, setNewUsername] = useState("")
   const [newPassword, setNewPassword] = useState("")
   const [newDisplayName, setNewDisplayName] = useState("")
   const [newEmail, setNewEmail] = useState("")
-  const [draftDisplayName, setDraftDisplayName] = useState("")
   const [draftRemark, setDraftRemark] = useState("")
 
   return useMemo(
@@ -34,7 +27,7 @@ export function useCreateAdminUserInsertAction(
       label: "新增后台账号",
       title: "创建后台账号",
       description:
-        "支持两种方式：使用已有 auth 账号转为后台账号，或先注册新账号，再立即创建后台账号。",
+        "支持两种方式：直接将已有 auth 账号加入后台，或先注册新账号，再立即创建后台账号。",
       renderContent: () => (
         <div className="grid gap-4 py-2">
           <div className="grid gap-2">
@@ -58,26 +51,7 @@ export function useCreateAdminUserInsertAction(
                 <Input
                   value={existingIdentifier}
                   onValueChange={setExistingIdentifier}
-                  placeholder="输入用户名或邮箱"
-                />
-              </div>
-              <div className="grid gap-2">
-                <span className="text-sm font-medium">密码</span>
-                <Input
-                  value={existingPassword}
-                  onValueChange={setExistingPassword}
-                  placeholder="输入账号密码"
-                  type="password"
-                />
-              </div>
-              <div className="grid gap-2">
-                <span className="text-sm font-medium">
-                  显示名称（留空则使用 auth 资料）
-                </span>
-                <Input
-                  value={draftDisplayName}
-                  onValueChange={setDraftDisplayName}
-                  placeholder="输入显示名称"
+                  placeholder="输入用户名、邮箱或展示 ID"
                 />
               </div>
             </>
@@ -135,37 +109,14 @@ export function useCreateAdminUserInsertAction(
 
         if (createMode === "existing-account") {
           const identifier = existingIdentifier.trim()
-          const password = existingPassword.trim()
-          const manualDisplayName = draftDisplayName.trim()
 
           if (!identifier) {
             throw new Error("identifier is required")
           }
-          if (!password) {
-            throw new Error("password is required")
-          }
-
-          const loginResponse = await loginApi({
-            identifier,
-            password,
-          })
-          const authUser = await getAuthUserProfileApi(loginResponse.accessToken)
-          const userId = authUser.id.trim()
-          const resolvedDisplayName =
-            manualDisplayName || authUser.display_name?.trim() || authUser.username
-
-          if (!userId) {
-            throw new Error("id is required")
-          }
-          if (!resolvedDisplayName) {
-            throw new Error("display_name is required")
-          }
 
           await createAdminUserApi({
-            user_id: userId,
-            display_name: resolvedDisplayName,
+            identifier,
             remark: trimmedRemark || null,
-            status: "enabled",
           })
         } else {
           const username = newUsername.trim()
@@ -190,43 +141,26 @@ export function useCreateAdminUserInsertAction(
             email: email || undefined,
           })
 
-          const loginResponse = await loginApi({
-            identifier: username,
-            password,
-          })
-          const authUser = await getAuthUserProfileApi(loginResponse.accessToken)
-          const userId = authUser.id.trim()
-
-          if (!userId) {
-            throw new Error("id is required")
-          }
-
           await createAdminUserApi({
-            user_id: userId,
-            display_name: displayName,
+            identifier: username,
             remark: trimmedRemark || null,
-            status: "enabled",
           })
         }
 
         setCreateMode("existing-account")
         setExistingIdentifier("")
-        setExistingPassword("")
         setNewUsername("")
         setNewPassword("")
         setNewDisplayName("")
         setNewEmail("")
-        setDraftDisplayName("")
         setDraftRemark("")
         await invalidateAdminUsers()
       },
     }),
     [
       createMode,
-      draftDisplayName,
       draftRemark,
       existingIdentifier,
-      existingPassword,
       invalidateAdminUsers,
       newDisplayName,
       newEmail,

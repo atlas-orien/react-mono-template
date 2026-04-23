@@ -115,7 +115,7 @@ export function AvatarDropdown({
               <span className="block truncate text-sm font-semibold text-foreground">
                 {displayName}
               </span>
-              <span className="block truncate text-xs text-muted-foreground">
+              <span className="block min-w-0 text-xs text-muted-foreground">
                 {displayId}
               </span>
             </span>
@@ -170,7 +170,7 @@ export function AvatarDropdown({
             <div className="truncate text-[13px] font-semibold text-foreground">
               {displayName}
             </div>
-            <div className="truncate text-[11px] text-muted-foreground">
+            <div className="min-w-0 text-[11px] text-muted-foreground">
               {displayId}
             </div>
           </div>

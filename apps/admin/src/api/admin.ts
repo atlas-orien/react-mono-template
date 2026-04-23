@@ -12,10 +12,8 @@ export interface AdminUserResponse {
 }
 
 export interface CreateAdminUserRequest {
-  user_id: string
-  display_name: string
+  identifier: string
   remark?: string | null
-  status: AdminUserStatus
 }
 
 export interface RoleResponse {

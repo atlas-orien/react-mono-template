@@ -46,8 +46,10 @@ export { DateTimePicker } from "./components/date-time-picker"
 export { DateRangePicker } from "./components/date-time-picker"
 export { MultipleDatePicker } from "./components/date-time-picker"
 export { TimePicker } from "./components/date-time-picker"
+export { CopyableText } from "./components/copyable-text"
 export { DataTable } from "./components/data-table"
 export { MetricCards } from "./components/metric-cards"
+export type { CopyableTextProps } from "./components/copyable-text"
 export type {
   DataTableBulkDeleteConfig,
   DataTableBulkUpdateConfig,

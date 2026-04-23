@@ -2,6 +2,7 @@ import { useEffect, type ReactNode } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router"
 import {
+  CopyableText,
   LanguageSwitch,
   SidebarShell,
   ThemeToggle,
@@ -64,8 +65,14 @@ export function AdminAppShell({ children }: AdminAppShellProps) {
         avatarSrc: user?.avatar,
         avatarFallback: (user?.name ?? "A").charAt(0).toUpperCase(),
         displayName: user?.name ?? "Admin",
-        displayId:
-          user?.display_id || user?.email || "workspace-admin@example.com",
+        displayId: (
+          <CopyableText
+            value={user?.display_id || user?.email || "workspace-admin@example.com"}
+            textClassName="block truncate"
+          >
+            {user?.display_id || user?.email || "workspace-admin@example.com"}
+          </CopyableText>
+        ),
         logout: {
           label: "Log out",
           onSelect: handleLogout,
