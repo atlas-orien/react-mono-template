@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "exports": {
-    "./react-app": "./react-app.js",
-    "./react-package": "./react-package.js"
+    "./react-app": "./src/react-app.js",
+    "./react-package": "./src/react-package.js"
   },
   "dependencies": {
     "@eslint/js": "catalog:",
