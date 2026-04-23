@@ -193,7 +193,7 @@ export interface DataTableRowSelectionConfig<T> {
 
 export interface DataTableRowActionItem<T> {
   key: string
-  label: ReactNode
+  label: ReactNode | ((row: T, rowIndex: number) => ReactNode)
   variant?: "default" | "destructive"
   disabled?: boolean | ((row: T, rowIndex: number) => boolean)
   onClick?: (row: T, rowIndex: number) => void

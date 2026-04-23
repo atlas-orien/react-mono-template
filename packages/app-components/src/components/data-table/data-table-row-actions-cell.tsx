@@ -143,7 +143,7 @@ export function DataTableRowActionsCell<T>({
                   )}
                   onSelect={() => item.onClick?.(row, rowIndex)}
                 >
-                  {item.label}
+                  {resolveRowActionContent(item.label, row, rowIndex)}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>

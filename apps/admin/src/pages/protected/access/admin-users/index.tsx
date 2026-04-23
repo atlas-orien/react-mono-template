@@ -1,12 +1,12 @@
 import { DataTable, MetricCards } from "@workspace/app-components"
 import { useAdminUsersData } from "./admin-users-data"
 import { useCreateAdminUserInsertAction } from "./dialogs/create-admin-user-dialog"
-import { buildAdminUsersTable } from "./table"
+import { useAdminUsersTable } from "./table"
 import type { AdminUserRow, AdminUserTableQuery } from "./types"
 
 export default function AdminUsersPage() {
   const { metricCards, fetchData, invalidateAdminUsers } = useAdminUsersData()
-  const table = buildAdminUsersTable(fetchData)
+  const table = useAdminUsersTable(fetchData)
   const insertAction = useCreateAdminUserInsertAction(invalidateAdminUsers)
 
   return (

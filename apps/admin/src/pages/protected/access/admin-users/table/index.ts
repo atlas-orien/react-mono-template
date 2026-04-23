@@ -11,10 +11,10 @@ import {
   adminUserInitialQuery,
   adminUserPageSizeOptions,
 } from "../constants"
-import { adminUserRowActions } from "./row-actions"
+import { useAdminUserRowActions } from "./row-actions"
 import type { AdminUserRow, AdminUserTableQuery } from "../types"
 
-export function buildAdminUsersTable(
+export function useAdminUsersTable(
   fetchData: (params: {
     page: number
     pageSize: number
@@ -23,6 +23,8 @@ export function buildAdminUsersTable(
     sort: DataTableSortState | null
   }) => Promise<DataTableFetchResult<AdminUserRow>>
 ) {
+  const rowActions = useAdminUserRowActions()
+
   return {
     columns: adminUserColumns,
     fetchData,
@@ -32,7 +34,7 @@ export function buildAdminUsersTable(
     builtInQueryFields: adminUserBuiltInQueryFields,
     queryFields: adminUserQueryFields,
     pageSizeOptions: adminUserPageSizeOptions,
-    rowActions: adminUserRowActions,
+    rowActions,
     selection: false,
     bulkDelete: false,
     bulkUpdate: false,
