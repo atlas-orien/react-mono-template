@@ -1,7 +1,12 @@
 export type SupportedLanguage = "en" | "zhCN"
 
 export const supportedLanguages = ["en", "zhCN"] as const
-export const localeNamespaces = ["messages", "components", "errors"] as const
+export const localeNamespaces = [
+  "common",
+  "messages",
+  "components",
+  "errors",
+] as const
 export const defaultLocaleNamespace = "messages" as const
 
 export function normalizeLanguage(

@@ -27,4 +27,25 @@ i18n
     },
   })
 
+export type AppLocaleMessagesResource = Record<string, unknown>
+
+export function registerLocaleMessages(
+  resources: Partial<Record<(typeof supportedLanguages)[number], AppLocaleMessagesResource>>
+) {
+  for (const language of supportedLanguages) {
+    const messages = resources[language]
+    if (!messages) {
+      continue
+    }
+
+    i18n.addResourceBundle(
+      language,
+      defaultLocaleNamespace,
+      messages,
+      true,
+      true
+    )
+  }
+}
+
 export default i18n

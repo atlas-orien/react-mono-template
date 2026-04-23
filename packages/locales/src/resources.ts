@@ -1,20 +1,20 @@
+import enCommon from "../lang/en/common"
 import enComponents from "../lang/en/components"
 import enErrors from "../lang/en/errors"
-import enMessages from "../lang/en/messages"
+import zhCNCommon from "../lang/zhCN/common"
 import zhCNComponents from "../lang/zhCN/components"
 import zhCNErrors from "../lang/zhCN/errors"
-import zhCNMessages from "../lang/zhCN/messages"
 
-export type LocaleNamespace = "messages" | "components" | "errors"
+export type LocaleNamespace = "common" | "messages" | "components" | "errors"
 
 export type LocaleResources = {
   en: {
-    messages: typeof enMessages
+    common: typeof enCommon
     components: typeof enComponents
     errors: typeof enErrors
   }
   zhCN: {
-    messages: typeof zhCNMessages
+    common: typeof zhCNCommon
     components: typeof zhCNComponents
     errors: typeof zhCNErrors
   }
@@ -22,12 +22,12 @@ export type LocaleResources = {
 
 export const localeResources: LocaleResources = {
   en: {
-    messages: enMessages,
+    common: enCommon,
     components: enComponents,
     errors: enErrors,
   },
   zhCN: {
-    messages: zhCNMessages,
+    common: zhCNCommon,
     components: zhCNComponents,
     errors: zhCNErrors,
   },

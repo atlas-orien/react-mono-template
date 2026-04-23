@@ -8,6 +8,7 @@ import "@workspace/locales/i18n"
 import { queryClient } from "@workspace/services/query/client"
 import App from "./App.tsx"
 import { initTheme } from "@workspace/ui-theme"
+import { registerAdminLocaleMessages } from "../lang"
 
 async function bootstrap() {
   const rootElement = document.getElementById("root")
@@ -18,6 +19,7 @@ async function bootstrap() {
     await startMocking()
   }
 
+  registerAdminLocaleMessages()
   initTheme()
 
   createRoot(rootElement).render(

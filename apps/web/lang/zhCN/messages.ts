@@ -1,21 +1,4 @@
 const messages = {
-  common: {
-    validation: {
-      required: "此项必填",
-      emailInvalid: "请输入有效邮箱地址",
-    },
-  },
-  datatable: {
-    insert: {
-      label: "新增",
-      title: "新增客户",
-      description: "填写客户基础信息后保存。",
-    },
-    actions: {
-      deleteTitle: "删除 {{name}}？",
-      deleteDescription: "此操作会将客户 {{id}} 从当前列表中移除。",
-    },
-  },
   login: {
     brand: "AI 标准化开发框架",
     hero: {

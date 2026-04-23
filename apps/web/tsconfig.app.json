@@ -16,5 +16,5 @@
       "@workspace/locales/*": ["../../packages/locales/src/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "lang"]
 }

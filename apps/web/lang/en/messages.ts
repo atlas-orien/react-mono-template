@@ -1,22 +1,4 @@
 const messages = {
-  common: {
-    validation: {
-      required: "This field is required",
-      emailInvalid: "Please enter a valid email address",
-    },
-  },
-  datatable: {
-    insert: {
-      label: "Insert",
-      title: "Create customer",
-      description: "Fill in the customer basics before saving.",
-    },
-    actions: {
-      deleteTitle: "Delete {{name}}?",
-      deleteDescription:
-        "This action will remove customer {{id}} from the current list.",
-    },
-  },
   login: {
     brand: "AI STANDARDIZED FRAMEWORK",
     hero: {

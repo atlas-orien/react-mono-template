@@ -3,8 +3,8 @@ import type { TFunction } from "i18next"
 
 export function createLoginSchema(t: TFunction) {
   return z.object({
-    identifier: z.string().trim().min(1, t("common.validation.required")),
-    password: z.string().trim().min(1, t("common.validation.required")),
+    identifier: z.string().trim().min(1, t("validation.required", { ns: "common" })),
+    password: z.string().trim().min(1, t("validation.required", { ns: "common" })),
   })
 }
 
@@ -13,7 +13,7 @@ export function createRegisterSchema(t: TFunction) {
 
   return z
     .object({
-      username: z.string().trim().min(1, t("common.validation.required")),
+      username: z.string().trim().min(1, t("validation.required", { ns: "common" })),
       displayName: z.string(),
       email: z
         .string()
@@ -21,14 +21,14 @@ export function createRegisterSchema(t: TFunction) {
         .refine(
           (value) => value === "" || emailValidator.safeParse(value).success,
           {
-            message: t("common.validation.emailInvalid"),
+            message: t("validation.emailInvalid", { ns: "common" }),
           }
         ),
-      password: z.string().trim().min(1, t("common.validation.required")),
+      password: z.string().trim().min(1, t("validation.required", { ns: "common" })),
       confirmPassword: z
         .string()
         .trim()
-        .min(1, t("common.validation.required")),
+        .min(1, t("validation.required", { ns: "common" })),
     })
     .refine((value) => value.password === value.confirmPassword, {
       path: ["confirmPassword"],

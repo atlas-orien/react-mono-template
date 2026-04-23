@@ -53,7 +53,7 @@ describe("LoginPage", () => {
     await user.click(screen.getByRole("button", { name: "login.form.submit" }))
 
     expect(
-      await screen.findAllByText("common.validation.required")
+      await screen.findAllByText("validation.required")
     ).toHaveLength(2)
   })
 
