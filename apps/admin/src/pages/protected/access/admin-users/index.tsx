@@ -29,6 +29,9 @@ export default function AdminUsersPage() {
           queryFields={table.queryFields}
           pageSizeOptions={table.pageSizeOptions}
           rowActions={table.rowActions}
+          compactColumns={table.compactColumns}
+          compactRows={table.compactRows}
+          fillWidth={table.fillWidth}
         />
       </div>
     </div>

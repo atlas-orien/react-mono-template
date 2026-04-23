@@ -53,6 +53,7 @@ function getStickyOffsetStyle(
 
 export interface DataTableSurfaceProps {
   children: ReactNode
+  fillWidth?: boolean
 }
 
 export interface DataTableSurfaceHeaderProps {
@@ -98,9 +99,15 @@ export interface DataTableSurfaceCaptionProps {
   children: ReactNode
 }
 
-export function DataTableSurface({ children }: DataTableSurfaceProps) {
+export function DataTableSurface({
+  children,
+  fillWidth = true,
+}: DataTableSurfaceProps) {
   return (
-    <CoreTable className="w-max min-w-full" containerClassName="overflow-visible">
+    <CoreTable
+      className={fillWidth ? "w-max min-w-full" : "w-max"}
+      containerClassName="overflow-visible"
+    >
       {children}
     </CoreTable>
   )

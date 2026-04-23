@@ -8,6 +8,7 @@ export const adminUserColumns: DataTableColumn<AdminUserRow>[] = [
   {
     key: "display_id",
     header: "ID",
+    width: 180,
     sortable: true,
     renderCell: (row) => (
       <CopyableText
@@ -21,12 +22,14 @@ export const adminUserColumns: DataTableColumn<AdminUserRow>[] = [
   {
     key: "display_name",
     header: "显示名称",
+    width: 160,
     sortable: true,
     renderCell: (row) => <span className="font-medium">{row.display_name}</span>,
   },
   {
     key: "remark",
     header: "备注",
+    width: 220,
     sortable: true,
     renderCell: (row) =>
       row.remark?.trim() ? (
@@ -38,6 +41,7 @@ export const adminUserColumns: DataTableColumn<AdminUserRow>[] = [
   {
     key: "status",
     header: "状态",
+    width: 100,
     sortable: true,
     renderCell: (row) => (
       <Badge variant={row.status === "enabled" ? "default" : "outline"}>
@@ -48,6 +52,7 @@ export const adminUserColumns: DataTableColumn<AdminUserRow>[] = [
   {
     key: "roles",
     header: "角色",
+    width: 180,
     renderCell: (row) =>
       row.roles.length > 0 ? (
         <div className="flex flex-wrap gap-2">
@@ -64,6 +69,7 @@ export const adminUserColumns: DataTableColumn<AdminUserRow>[] = [
   {
     key: "roleCount",
     header: "角色数",
+    width: 88,
     sortable: true,
     renderCell: (row) => row.roles.length,
   },

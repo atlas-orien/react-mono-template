@@ -263,6 +263,7 @@ export interface DataTableProps<T, TQuery extends object = object> {
   stripedRows?: boolean
   compactColumns?: boolean
   compactRows?: boolean
+  fillWidth?: boolean
   height?: number | string
   refreshLabel?: string
   resetLabel?: string

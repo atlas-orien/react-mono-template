@@ -33,8 +33,11 @@ export function buildAdminUsersTable(
     queryFields: adminUserQueryFields,
     pageSizeOptions: adminUserPageSizeOptions,
     rowActions: adminUserRowActions,
-    selection: {},
+    selection: false,
     bulkDelete: false,
     bulkUpdate: false,
+    compactColumns: true,
+    compactRows: true,
+    fillWidth: false,
   } as const
 }

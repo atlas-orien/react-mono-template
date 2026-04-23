@@ -112,6 +112,7 @@ export function DataTable<T, TQuery extends object = object>({
   stripedRows = true,
   compactColumns = false,
   compactRows = false,
+  fillWidth = true,
   height,
   refreshLabel,
   resetLabel,
@@ -377,6 +378,24 @@ export function DataTable<T, TQuery extends object = object>({
     fixedRightColumns,
     measuredColumnWidths,
     resolvedColumns,
+  ])
+
+  const tableContentWidth = useMemo(() => {
+    const baseWidth = resolvedColumns.reduce((totalWidth, column, columnIndex) => {
+      const columnWidth =
+        measuredColumnWidths[columnIndex] ||
+        resolveColumnPixelWidth(column as DataTableColumn<object>) ||
+        DEFAULT_STICKY_COLUMN_WIDTH
+
+      return totalWidth + columnWidth
+    }, 0)
+
+    return baseWidth + (rowSelectionEnabled ? selectionColumnWidth : 0)
+  }, [
+    measuredColumnWidths,
+    resolvedColumns,
+    rowSelectionEnabled,
+    selectionColumnWidth,
   ])
 
   useEffect(() => {
@@ -724,34 +743,41 @@ export function DataTable<T, TQuery extends object = object>({
         style={{ height: resolveTableHeight(height) }}
       >
         <div className="shrink-0 px-3 pt-2" data-slot="data-table-header">
-          <DataTableHeader
-            hasAnyQueryFields={hasAnyQueryFields}
-            hasUserQueryFields={hasUserQueryFields}
-            leadingBuiltInSearchField={
-              leadingBuiltInSearchField as DataTableBuiltInQueryField<TQuery> | null
+          <div
+            className="max-w-full"
+            style={
+              fillWidth ? undefined : { width: `${tableContentWidth}px` }
             }
-            trailingBuiltInQueryFields={trailingBuiltInQueryFields}
-            queryFields={queryFields}
-            loading={loading}
-            insert={insert}
-            bulkDelete={bulkDelete}
-            bulkUpdate={bulkUpdate}
-            toolbarActions={toolbarActions}
-            rowSelectionEnabled={rowSelectionEnabled}
-            deleting={deleting}
-            selectedRowKeysCount={selectedRowKeys.length}
-            resolvedResetLabel={resolvedResetLabel}
-            resolvedRefreshLabel={resolvedRefreshLabel}
-            resolvedInsertLabel={resolvedInsertLabel}
-            resolvedBulkUpdateLabel={resolvedBulkUpdateLabel}
-            resolvedBulkDeleteLabel={resolvedBulkDeleteLabel}
-            renderQueryFieldControl={renderQueryFieldControl}
-            onResetQuery={handleResetQuery}
-            onRetry={handleRetry}
-            onOpenInsert={() => setInsertDialogOpen(true)}
-            onOpenBulkUpdate={handleOpenBulkUpdate}
-            onOpenBulkDelete={() => setBulkDeleteDialogOpen(true)}
-          />
+          >
+            <DataTableHeader
+              hasAnyQueryFields={hasAnyQueryFields}
+              hasUserQueryFields={hasUserQueryFields}
+              leadingBuiltInSearchField={
+                leadingBuiltInSearchField as DataTableBuiltInQueryField<TQuery> | null
+              }
+              trailingBuiltInQueryFields={trailingBuiltInQueryFields}
+              queryFields={queryFields}
+              loading={loading}
+              insert={insert}
+              bulkDelete={bulkDelete}
+              bulkUpdate={bulkUpdate}
+              toolbarActions={toolbarActions}
+              rowSelectionEnabled={rowSelectionEnabled}
+              deleting={deleting}
+              selectedRowKeysCount={selectedRowKeys.length}
+              resolvedResetLabel={resolvedResetLabel}
+              resolvedRefreshLabel={resolvedRefreshLabel}
+              resolvedInsertLabel={resolvedInsertLabel}
+              resolvedBulkUpdateLabel={resolvedBulkUpdateLabel}
+              resolvedBulkDeleteLabel={resolvedBulkDeleteLabel}
+              renderQueryFieldControl={renderQueryFieldControl}
+              onResetQuery={handleResetQuery}
+              onRetry={handleRetry}
+              onOpenInsert={() => setInsertDialogOpen(true)}
+              onOpenBulkUpdate={handleOpenBulkUpdate}
+              onOpenBulkDelete={() => setBulkDeleteDialogOpen(true)}
+            />
+          </div>
         </div>
 
         <div
@@ -759,7 +785,7 @@ export function DataTable<T, TQuery extends object = object>({
           data-slot="data-table-body"
         >
           <div className="h-full overflow-auto">
-            <DataTableSurface>
+          <DataTableSurface fillWidth={fillWidth}>
               {caption ? <DataTableSurfaceCaption>{caption}</DataTableSurfaceCaption> : null}
               <DataTableSurfaceHeader>
                 <DataTableSurfaceRow>
@@ -819,6 +845,9 @@ export function DataTable<T, TQuery extends object = object>({
                         stickyOffset={isStickyLeft ? leftOffset : rightOffset}
                         priority={isStickyLeft || isStickyRight ? "sticky" : "base"}
                         minWidth={resolveColumnMinWidth(
+                          column as DataTableColumn<object>
+                        )}
+                        width={resolveColumnMinWidth(
                           column as DataTableColumn<object>
                         )}
                         compactColumns={compactColumns}
@@ -971,6 +1000,9 @@ export function DataTable<T, TQuery extends object = object>({
                             minWidth={resolveColumnMinWidth(
                               column as DataTableColumn<object>
                             )}
+                            width={resolveColumnMinWidth(
+                              column as DataTableColumn<object>
+                            )}
                             compactColumns={compactColumns}
                             compactRows={compactRows}
                           >
@@ -991,31 +1023,38 @@ export function DataTable<T, TQuery extends object = object>({
           className="mt-2 overflow-x-auto px-3 py-2"
           data-slot="data-table-tail"
         >
-          <div className="flex min-w-max flex-nowrap items-center justify-between">
-            <div className="flex shrink-0 items-center gap-2 text-sm">
-              <span>
-                <strong>{resolvedTotalLabel}:</strong> {total}
-              </span>
-              <AdvancedSelect
-                value={String(pageSize)}
-                onValueChange={(value: string) => {
-                  setPage(1)
-                  setPageSize(Number(value))
-                }}
-                list={safePageSizeOptions.map((value) => ({
-                  label: String(value),
-                  value: String(value),
-                }))}
-                disabled={loading}
-              />
-            </div>
+          <div
+            className="max-w-full"
+            style={
+              fillWidth ? undefined : { width: `${tableContentWidth}px` }
+            }
+          >
+            <div className="flex min-w-max flex-nowrap items-center justify-between">
+              <div className="flex shrink-0 items-center gap-2 text-sm">
+                <span>
+                  <strong>{resolvedTotalLabel}:</strong> {total}
+                </span>
+                <AdvancedSelect
+                  value={String(pageSize)}
+                  onValueChange={(value: string) => {
+                    setPage(1)
+                    setPageSize(Number(value))
+                  }}
+                  list={safePageSizeOptions.map((value) => ({
+                    label: String(value),
+                    value: String(value),
+                  }))}
+                  disabled={loading}
+                />
+              </div>
 
-            <div className="shrink-0">
-              <Pagination
-                page={Math.min(page, totalPages)}
-                totalPages={totalPages}
-                onPageChange={setPage}
-              />
+              <div className="shrink-0">
+                <Pagination
+                  page={Math.min(page, totalPages)}
+                  totalPages={totalPages}
+                  onPageChange={setPage}
+                />
+              </div>
             </div>
           </div>
         </div>
