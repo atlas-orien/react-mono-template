@@ -2,12 +2,12 @@ import {
   useEffect,
   useRef,
   useState,
+  type KeyboardEvent,
   type MouseEvent,
   type PointerEvent,
   type ReactNode,
 } from "react"
 import { Check, Copy } from "lucide-react"
-import { IconButton } from "@workspace/ui-components"
 import { cn } from "@workspace/ui-core/lib/utils.js"
 
 export interface CopyableTextProps {
@@ -62,10 +62,26 @@ export function CopyableText({
     event:
       | MouseEvent<HTMLSpanElement>
       | PointerEvent<HTMLSpanElement>
-      | MouseEvent<HTMLButtonElement>
+      | KeyboardEvent<HTMLSpanElement>
   ) => {
     event.preventDefault()
     event.stopPropagation()
+  }
+
+  const isDisabled = disabled || value.trim().length === 0
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLSpanElement>) => {
+    if (isDisabled) {
+      stopTrigger(event)
+      return
+    }
+
+    if (event.key !== "Enter" && event.key !== " ") {
+      return
+    }
+
+    stopTrigger(event)
+    void handleCopy()
   }
 
   return (
@@ -82,21 +98,28 @@ export function CopyableText({
         {children ?? value}
       </span>
       <span
-        className="inline-flex shrink-0"
+        role="button"
+        tabIndex={isDisabled ? -1 : 0}
+        aria-label={copied ? copiedLabel : copyLabel}
+        aria-disabled={isDisabled}
+        className={cn(
+          "inline-flex size-8 shrink-0 items-center justify-center rounded-md text-muted-foreground transition",
+          !isDisabled && "cursor-pointer hover:bg-accent hover:text-accent-foreground",
+          isDisabled && "cursor-not-allowed opacity-50"
+        )}
         onPointerDown={stopTrigger}
         onMouseDown={stopTrigger}
-        onClick={stopTrigger}
+        onClick={(event) => {
+          stopTrigger(event)
+          if (isDisabled) {
+            return
+          }
+          void handleCopy()
+        }}
+        onKeyDown={handleKeyDown}
       >
-        <IconButton
-          label={copied ? copiedLabel : copyLabel}
-          onClick={(event) => {
-            stopTrigger(event)
-            void handleCopy()
-          }}
-          disabled={disabled || value.trim().length === 0}
-        >
-          {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
-        </IconButton>
+        <span className="sr-only">{copied ? copiedLabel : copyLabel}</span>
+        {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
       </span>
     </span>
   )
