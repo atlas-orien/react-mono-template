@@ -194,7 +194,7 @@ export const menuTree: MenuNode[] = [
       },
       {
         id: 120,
-        name: "角色",
+        name: "权限角色",
         path: "/access/roles",
         permissionCode: "admin:role:list",
         level: 2,
@@ -260,4 +260,3 @@ export const rolePermissionPresetMap: Record<string, string[]> = {
     "perm-admin-user-role-list",
   ],
 }
-
