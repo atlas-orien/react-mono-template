@@ -16,6 +16,11 @@ export interface CreateAdminUserRequest {
   remark?: string | null
 }
 
+export interface UpdateAdminUserRequest {
+  remark?: string | null
+  status: AdminUserStatus
+}
+
 export interface RoleResponse {
   id: number
   name: string
@@ -107,6 +112,24 @@ export const listAdminUsersApi = async (): Promise<AdminUserResponse[]> => {
   return request<undefined, AdminUserResponse[]>({
     method: "GET",
     url: "/api/admin/admin-users",
+  })
+}
+
+export const updateAdminUserApi = async (
+  userId: string,
+  body: UpdateAdminUserRequest
+): Promise<AdminUserResponse> => {
+  return request<UpdateAdminUserRequest, AdminUserResponse>({
+    method: "PATCH",
+    url: `/api/admin/admin-users/${encodeURIComponent(userId)}`,
+    body,
+  })
+}
+
+export const deleteAdminUserApi = async (userId: string): Promise<void> => {
+  return request<undefined, void>({
+    method: "DELETE",
+    url: `/api/admin/admin-users/${encodeURIComponent(userId)}`,
   })
 }
 

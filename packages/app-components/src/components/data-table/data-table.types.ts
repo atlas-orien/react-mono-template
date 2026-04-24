@@ -196,7 +196,7 @@ export interface DataTableRowActionItem<T> {
   label: ReactNode | ((row: T, rowIndex: number) => ReactNode)
   variant?: "default" | "destructive"
   disabled?: boolean | ((row: T, rowIndex: number) => boolean)
-  onClick?: (row: T, rowIndex: number) => void
+  onClick?: (row: T, rowIndex: number) => Promise<void> | void
 }
 
 export interface DataTableEditActionConfig<T> {

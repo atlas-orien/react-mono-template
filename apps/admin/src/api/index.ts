@@ -22,6 +22,7 @@ export {
   createMenuApi,
   createPermissionApi,
   createRoleApi,
+  deleteAdminUserApi,
   grantRolePermissionApi,
   getCurrentUserMenusApi,
   getCurrentUserPermissionsApi,
@@ -30,6 +31,7 @@ export {
   listPermissionsApi,
   listRolesApi,
   listUserRolesApi,
+  updateAdminUserApi,
   type AdminUserResponse,
   type AdminUserStatus,
   type AssignUserRoleRequest,
@@ -45,6 +47,7 @@ export {
   type PermissionResponse,
   type RolePermissionResponse,
   type RoleResponse,
+  type UpdateAdminUserRequest,
   type UserRoleResponse,
 } from "./admin"
 

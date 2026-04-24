@@ -21,6 +21,7 @@ import { getDataTableCopy, normalizeLanguage } from "@workspace/locales"
 import { useTranslation } from "react-i18next"
 import {
   Fragment,
+  useCallback,
   useEffect,
   useLayoutEffect,
   useMemo,
@@ -235,6 +236,10 @@ export function DataTable<T, TQuery extends object = object>({
     [bulkUpdateFields]
   )
 
+  const handleRetry = useCallback(() => {
+    setReloadToken((current: number) => current + 1)
+  }, [])
+
   const resolvedColumns = useMemo(() => {
     if (rowActions === false) {
       return [...columns]
@@ -263,6 +268,7 @@ export function DataTable<T, TQuery extends object = object>({
           resolvedConfirmDeleteLabel={resolvedConfirmDeleteLabel}
           resolvedDeleteDialogTitle={resolvedDeleteDialogTitle}
           resolvedDeleteDialogDescription={resolvedDeleteDialogDescription}
+          onActionComplete={handleRetry}
         />
       ),
     }
@@ -279,6 +285,7 @@ export function DataTable<T, TQuery extends object = object>({
     resolvedEditLabel,
     resolvedMoreLabel,
     resolvedSaveLabel,
+    handleRetry,
     rowActions,
   ])
 
@@ -432,10 +439,6 @@ export function DataTable<T, TQuery extends object = object>({
 
     return () => controller.abort()
   }, [draftQuery, fetchData, onError, page, pageSize, reloadToken, sort])
-
-  const handleRetry = () => {
-    setReloadToken((current: number) => current + 1)
-  }
 
   const updateSelectedRowKeys = (nextKeys: Key[]) => {
     if (selectionConfig === false || !selectionConfig.selectedRowKeys) {

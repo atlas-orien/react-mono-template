@@ -76,7 +76,7 @@ export function useAdminUsersData() {
 
   const invalidateAdminUsers = useCallback(
     () =>
-      queryClient.invalidateQueries({
+      queryClient.refetchQueries({
         queryKey: adminUsersQueryKey,
       }),
     [queryClient]

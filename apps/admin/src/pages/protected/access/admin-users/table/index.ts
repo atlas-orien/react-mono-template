@@ -21,9 +21,10 @@ export function useAdminUsersTable(
     query: AdminUserTableQuery
     signal: AbortSignal
     sort: DataTableSortState | null
-  }) => Promise<DataTableFetchResult<AdminUserRow>>
+  }) => Promise<DataTableFetchResult<AdminUserRow>>,
+  invalidateAdminUsers: () => Promise<unknown>
 ) {
-  const rowActions = useAdminUserRowActions()
+  const rowActions = useAdminUserRowActions(invalidateAdminUsers)
 
   return {
     columns: adminUserColumns,

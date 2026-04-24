@@ -6,7 +6,7 @@ import type { AdminUserRow, AdminUserTableQuery } from "./types"
 
 export default function AdminUsersPage() {
   const { metricCards, fetchData, invalidateAdminUsers } = useAdminUsersData()
-  const table = useAdminUsersTable(fetchData)
+  const table = useAdminUsersTable(fetchData, invalidateAdminUsers)
   const insertAction = useCreateAdminUserInsertAction(invalidateAdminUsers)
 
   return (

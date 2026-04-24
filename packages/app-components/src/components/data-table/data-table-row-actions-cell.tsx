@@ -39,6 +39,7 @@ export function DataTableRowActionsCell<T>({
   resolvedConfirmDeleteLabel,
   resolvedDeleteDialogTitle,
   resolvedDeleteDialogDescription,
+  onActionComplete,
 }: {
   row: T
   rowIndex: number
@@ -52,6 +53,7 @@ export function DataTableRowActionsCell<T>({
   resolvedConfirmDeleteLabel: ReactNode
   resolvedDeleteDialogTitle: ReactNode
   resolvedDeleteDialogDescription: ReactNode
+  onActionComplete: () => void
 }) {
   const [editDialogOpen, setEditDialogOpen] = useState(false)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
@@ -72,6 +74,7 @@ export function DataTableRowActionsCell<T>({
     try {
       await editAction.onConfirm(row, rowIndex)
       setEditDialogOpen(false)
+      onActionComplete()
     } finally {
       setSubmittingEdit(false)
     }
@@ -88,9 +91,15 @@ export function DataTableRowActionsCell<T>({
     try {
       await deleteAction.onConfirm(row, rowIndex)
       setDeleteDialogOpen(false)
+      onActionComplete()
     } finally {
       setSubmittingDelete(false)
     }
+  }
+
+  const handleMoreItemSelect = async (item: DataTableRowActionItem<T>) => {
+    await item.onClick?.(row, rowIndex)
+    onActionComplete()
   }
 
   return (
@@ -141,7 +150,9 @@ export function DataTableRowActionsCell<T>({
                     row,
                     rowIndex
                   )}
-                  onSelect={() => item.onClick?.(row, rowIndex)}
+                  onSelect={() => {
+                    void handleMoreItemSelect(item)
+                  }}
                 >
                   {resolveRowActionContent(item.label, row, rowIndex)}
                 </DropdownMenuItem>
