@@ -150,6 +150,13 @@ export const listRolesApi = async (): Promise<RoleResponse[]> => {
   })
 }
 
+export const deleteRoleApi = async (roleId: number): Promise<void> => {
+  return request<undefined, void>({
+    method: "DELETE",
+    url: `/api/admin/roles/${encodeURIComponent(String(roleId))}`,
+  })
+}
+
 export const createPermissionApi = async (
   body: CreatePermissionRequest
 ): Promise<PermissionResponse> => {

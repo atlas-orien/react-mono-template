@@ -11,6 +11,7 @@ import {
   roleBuiltInQueryFields,
   roleQueryFields,
 } from "./query-fields"
+import { useRoleRowActions } from "./row-actions"
 import type { RoleRow, RoleTableQuery } from "../types"
 
 export function useRolesTable(
@@ -20,8 +21,11 @@ export function useRolesTable(
     query: RoleTableQuery
     signal: AbortSignal
     sort: DataTableSortState | null
-  }) => Promise<DataTableFetchResult<RoleRow>>
+  }) => Promise<DataTableFetchResult<RoleRow>>,
+  invalidateRoles: () => Promise<unknown>
 ) {
+  const rowActions = useRoleRowActions(invalidateRoles)
+
   return {
     columns: roleColumns,
     fetchData,
@@ -31,6 +35,7 @@ export function useRolesTable(
     builtInQueryFields: roleBuiltInQueryFields,
     queryFields: roleQueryFields,
     pageSizeOptions: rolePageSizeOptions,
+    rowActions,
     selection: false,
     bulkDelete: false,
     bulkUpdate: false,

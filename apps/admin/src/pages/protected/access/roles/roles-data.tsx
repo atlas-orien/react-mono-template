@@ -71,8 +71,17 @@ export function useRolesData() {
     [loadRoleRows, queryClient]
   )
 
+  const invalidateRoles = useCallback(
+    () =>
+      queryClient.invalidateQueries({
+        queryKey: rolesQueryKey,
+      }),
+    [queryClient]
+  )
+
   return {
     metricCards,
     fetchData,
+    invalidateRoles,
   }
 }

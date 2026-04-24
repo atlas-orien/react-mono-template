@@ -23,6 +23,7 @@ export {
   createPermissionApi,
   createRoleApi,
   deleteAdminUserApi,
+  deleteRoleApi,
   grantRolePermissionApi,
   getCurrentUserMenusApi,
   getCurrentUserPermissionsApi,
