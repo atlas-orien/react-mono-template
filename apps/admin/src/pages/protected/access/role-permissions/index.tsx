@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react"
-import { ShieldCheck, SquareMousePointer, Waypoints } from "lucide-react"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { ShieldCheck, SquareMousePointer } from "lucide-react"
 import { TreeView, type TreeNode } from "@workspace/ui-components"
 import { Badge } from "@workspace/ui-components/stable/badge"
 import { Button } from "@workspace/ui-components/stable/button"
@@ -25,59 +26,133 @@ import {
   TableHeader,
   TableRow,
 } from "@workspace/ui-components/stable/table"
+import { toast } from "@workspace/ui-components"
 import {
-  flattenPermissionTree,
-  permissionTree,
-  rolePermissionPresetMap,
-  roles,
-  type PermissionNode,
-} from "../_shared/rbac-shared"
+  listRolePermissionsApi,
+  listRolesApi,
+  updateRolePermissionsApi,
+  type PermissionKind,
+  type RolePermissionTreeNode,
+} from "@/api"
 
-type ResourceSummaryType = "group" | "action" | "menu" | "api"
+type PermissionSummaryType = Extract<PermissionKind, "group" | "action">
 
-const kindLabelMap: Record<ResourceSummaryType, string> = {
+const kindLabelMap: Record<PermissionSummaryType, string> = {
   group: "分组",
   action: "操作",
-  menu: "菜单",
-  api: "API",
 }
 
-function toTreeNode(node: PermissionNode): TreeNode {
+const rolesQueryKey = ["admin", "role-permissions", "roles"] as const
+const emptyPermissionTree: RolePermissionTreeNode[] = []
+
+function rolePermissionQueryKey(roleId: string) {
+  return ["admin", "role-permissions", roleId] as const
+}
+
+function toTreeNode(node: RolePermissionTreeNode): TreeNode {
   return {
-    id: node.id,
+    id: String(node.id),
     label: node.name,
-    searchText: `${node.name} ${node.code} ${node.description} ${node.path ?? ""}`,
-    children: node.children?.map((child) => toTreeNode(child)),
+    searchText: node.name,
+    children: node.children.map((child) => toTreeNode(child)),
   }
 }
 
-export default function RolePermissionsPage() {
-  const [activeRoleId, setActiveRoleId] = useState(roles[0]?.id ?? "")
-  const [searchValue, setSearchValue] = useState("")
-  const [selectedPermissionIds, setSelectedPermissionIds] = useState<string[]>(
-    rolePermissionPresetMap[roles[0]?.id ?? ""] ?? [],
-  )
+function flattenPermissionTree(
+  nodes: readonly RolePermissionTreeNode[]
+): RolePermissionTreeNode[] {
+  return nodes.flatMap((node) => [
+    node,
+    ...flattenPermissionTree(node.children),
+  ])
+}
 
-  const flatPermissions = useMemo(() => flattenPermissionTree(permissionTree), [])
+function collectCheckedPermissionIds(
+  nodes: readonly RolePermissionTreeNode[]
+): string[] {
+  return flattenPermissionTree(nodes)
+    .filter((node) => node.checked)
+    .map((node) => String(node.id))
+}
+
+export default function RolePermissionsPage() {
+  const queryClient = useQueryClient()
+  const [activeRoleId, setActiveRoleId] = useState("")
+  const [searchValue, setSearchValue] = useState("")
+  const [selectedPermissionIdsByRole, setSelectedPermissionIdsByRole] = useState<
+    Record<string, string[]>
+  >({})
+
+  const rolesQuery = useQuery({
+    queryKey: rolesQueryKey,
+    queryFn: listRolesApi,
+  })
+
+  const roles = rolesQuery.data ?? []
+  const resolvedActiveRoleId = activeRoleId || (roles[0] ? String(roles[0].id) : "")
+
+  const rolePermissionsQuery = useQuery({
+    queryKey: rolePermissionQueryKey(resolvedActiveRoleId),
+    queryFn: () => listRolePermissionsApi(Number(resolvedActiveRoleId)),
+    enabled: resolvedActiveRoleId.length > 0,
+  })
+
+  const updateRolePermissionsMutation = useMutation({
+    mutationFn: async () => {
+      const permissionIds = selectedPermissionIds.map((id) => Number(id))
+
+      return updateRolePermissionsApi(Number(resolvedActiveRoleId), {
+        permission_ids: permissionIds,
+      })
+    },
+    onSuccess: (tree) => {
+      queryClient.setQueryData(rolePermissionQueryKey(resolvedActiveRoleId), tree)
+      setSelectedPermissionIdsByRole((current) => ({
+        ...current,
+        [resolvedActiveRoleId]: collectCheckedPermissionIds(tree),
+      }))
+      toast.success("角色授权已保存")
+    },
+  })
+
+  const activeRole = roles.find((role) => String(role.id) === resolvedActiveRoleId)
+  const permissionTree = rolePermissionsQuery.data ?? emptyPermissionTree
+  const serverSelectedPermissionIds = useMemo(
+    () => collectCheckedPermissionIds(permissionTree),
+    [permissionTree]
+  )
+  const selectedPermissionIds =
+    Object.prototype.hasOwnProperty.call(
+      selectedPermissionIdsByRole,
+      resolvedActiveRoleId
+    )
+      ? selectedPermissionIdsByRole[resolvedActiveRoleId]
+      : serverSelectedPermissionIds
+  const flatPermissions = useMemo(
+    () => flattenPermissionTree(permissionTree),
+    [permissionTree]
+  )
   const selectedResources = useMemo(
     () =>
       selectedPermissionIds
-        .map((id) => flatPermissions.find((permission) => permission.id === id))
-        .filter((permission): permission is PermissionNode => Boolean(permission)),
-    [flatPermissions, selectedPermissionIds],
+        .map((id) => flatPermissions.find((permission) => String(permission.id) === id))
+        .filter(
+          (permission): permission is RolePermissionTreeNode => Boolean(permission)
+        ),
+    [flatPermissions, selectedPermissionIds]
   )
-
   const resourceTree = useMemo<TreeNode[]>(
     () => permissionTree.map((node) => toTreeNode(node)),
-    [],
+    [permissionTree]
   )
-
+  const defaultExpandedIds = useMemo(
+    () => permissionTree.map((node) => String(node.id)),
+    [permissionTree]
+  )
   const summary = useMemo(() => {
-    const counts: Record<ResourceSummaryType, number> = {
+    const counts: Record<PermissionSummaryType, number> = {
       group: 0,
       action: 0,
-      menu: 0,
-      api: 0,
     }
 
     for (const resource of selectedResources) {
@@ -86,6 +161,13 @@ export default function RolePermissionsPage() {
 
     return counts
   }, [selectedResources])
+
+  const resetSelection = () => {
+    setSelectedPermissionIdsByRole((current) => ({
+      ...current,
+      [resolvedActiveRoleId]: serverSelectedPermissionIds,
+    }))
+  }
 
   return (
     <div className="w-full min-w-0 space-y-4">
@@ -101,145 +183,170 @@ export default function RolePermissionsPage() {
         </div>
       </div>
 
-      <Tabs
-        value={activeRoleId}
-        onValueChange={(roleId) => {
-          setActiveRoleId(roleId)
-          setSelectedPermissionIds(rolePermissionPresetMap[roleId] ?? [])
-          setSearchValue("")
-        }}
-      >
-        <div className="flex min-w-0 flex-col gap-3 rounded-[var(--ui-radius-lg)] border border-(--app-border) bg-(--app-panel) p-2 lg:flex-row lg:items-center lg:justify-between">
-          <TabsList>
-            {roles.map((role) => (
-              <TabsTrigger key={role.id} value={role.id}>
-                {role.name}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-          <div className="hidden shrink-0 items-center gap-2 text-sm text-(--app-muted-text) md:flex">
-            <ShieldCheck className="size-4" />
-            已选择 {selectedPermissionIds.length} 项
+      {roles.length > 0 ? (
+        <Tabs
+          value={resolvedActiveRoleId}
+          onValueChange={(roleId) => {
+            setActiveRoleId(roleId)
+            setSearchValue("")
+          }}
+        >
+          <div className="flex min-w-0 flex-col gap-3 rounded-[var(--ui-radius-lg)] border border-(--app-border) bg-(--app-panel) p-2 lg:flex-row lg:items-center lg:justify-between">
+            <TabsList>
+              {roles.map((role) => (
+                <TabsTrigger key={role.id} value={String(role.id)}>
+                  {role.name}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            <div className="hidden shrink-0 items-center gap-2 text-sm text-(--app-muted-text) md:flex">
+              <ShieldCheck className="size-4" />
+              已选择 {selectedPermissionIds.length} 项
+            </div>
           </div>
-        </div>
 
-        {roles.map((role) => (
-          <TabsContent key={role.id} value={role.id}>
-            <div className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <div className="grid min-w-0 gap-3 xl:grid-cols-[minmax(0,1fr)_auto] xl:items-end">
-                    <div className="min-w-0">
-                      <CardTitle>{role.name}</CardTitle>
-                      <CardDescription>
-                        编码：{role.code}。统一用权限树维护菜单分组、操作码和接口能力。
-                      </CardDescription>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      <Button variant="outline">恢复预设</Button>
-                      <Button variant="primary">保存角色授权</Button>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
-                      <Input
-                        value={searchValue}
-                        onValueChange={setSearchValue}
-                        placeholder="搜索权限名称、编码或接口路径"
-                      />
-                      <div className="flex items-center gap-2 text-sm text-(--app-muted-text) md:hidden">
-                        <ShieldCheck className="size-4" />
-                        已选择 {selectedPermissionIds.length} 项
+          {roles.map((role) => (
+            <TabsContent key={role.id} value={String(role.id)}>
+              <div className="space-y-4">
+                <Card>
+                  <CardHeader>
+                    <div className="grid min-w-0 gap-3 xl:grid-cols-[minmax(0,1fr)_auto] xl:items-end">
+                      <div className="min-w-0">
+                        <CardTitle>{role.name}</CardTitle>
+                        <CardDescription>
+                          编码：{role.code}。服务端返回完整权限树，并标记当前角色已授权节点。
+                        </CardDescription>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        <Button
+                          variant="outline"
+                          onClick={resetSelection}
+                          disabled={rolePermissionsQuery.isFetching}
+                        >
+                          重置勾选
+                        </Button>
+                        <Button
+                          variant="primary"
+                          onClick={() => updateRolePermissionsMutation.mutate()}
+                          disabled={
+                            !activeRole ||
+                            rolePermissionsQuery.isFetching ||
+                            updateRolePermissionsMutation.isPending
+                          }
+                        >
+                          保存角色授权
+                        </Button>
                       </div>
                     </div>
-
-                    <div className="grid gap-3 md:grid-cols-3">
-                      {[
-                        {
-                          icon: <ShieldCheck className="size-4" />,
-                          label: "分组",
-                          value: summary.group,
-                        },
-                        {
-                          icon: <SquareMousePointer className="size-4" />,
-                          label: "操作",
-                          value: summary.action,
-                        },
-                        {
-                          icon: <Waypoints className="size-4" />,
-                          label: "API",
-                          value: summary.api,
-                        },
-                      ].map((item) => (
-                        <div
-                          key={item.label}
-                          className="flex min-h-18 items-center justify-between rounded-[var(--ui-radius-md)] border border-(--app-border) px-4 py-3"
-                        >
-                          <div className="flex min-w-0 items-center gap-3">
-                            <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-(--app-active-bg)">
-                              {item.icon}
-                            </span>
-                            <span className="font-medium">{item.label}</span>
-                          </div>
-                          <span className="text-xl font-semibold">{item.value}</span>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+                        <Input
+                          value={searchValue}
+                          onValueChange={setSearchValue}
+                          placeholder="搜索权限名称"
+                        />
+                        <div className="flex items-center gap-2 text-sm text-(--app-muted-text) md:hidden">
+                          <ShieldCheck className="size-4" />
+                          已选择 {selectedPermissionIds.length} 项
                         </div>
-                      ))}
-                    </div>
+                      </div>
 
-                    <div className="rounded-[var(--ui-radius-md)] border border-(--app-border) p-3">
-                      <TreeView
-                        data={resourceTree}
-                        value={selectedPermissionIds}
-                        onValueChange={setSelectedPermissionIds}
-                        defaultExpandedIds={["perm-admin-user", "perm-admin-access"]}
-                        searchValue={searchValue}
-                        maxHeight={520}
-                        emptyLabel="没有匹配到权限项。"
-                      />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>本次勾选明细</CardTitle>
-                  <CardDescription>
-                    当前角色已选择的权限资源，方便保存前快速核对。
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Table ariaLabel="selected permissions">
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>名称</TableHead>
-                        <TableHead>类型</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {selectedResources.map((resource) => (
-                        <TableRow key={resource.id}>
-                          <TableCell>
-                            <div>
-                              <p className="font-medium">{resource.name}</p>
-                              <p className="text-xs text-(--app-muted-text)">
-                                {resource.code}
-                              </p>
+                      <div className="grid gap-3 md:grid-cols-2">
+                        {[
+                          {
+                            icon: <ShieldCheck className="size-4" />,
+                            label: "分组",
+                            value: summary.group,
+                          },
+                          {
+                            icon: <SquareMousePointer className="size-4" />,
+                            label: "操作",
+                            value: summary.action,
+                          },
+                        ].map((item) => (
+                          <div
+                            key={item.label}
+                            className="flex min-h-18 items-center justify-between rounded-[var(--ui-radius-md)] border border-(--app-border) px-4 py-3"
+                          >
+                            <div className="flex min-w-0 items-center gap-3">
+                              <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-(--app-active-bg)">
+                                {item.icon}
+                              </span>
+                              <span className="font-medium">{item.label}</span>
                             </div>
-                          </TableCell>
-                          <TableCell>{kindLabelMap[resource.kind]}</TableCell>
+                            <span className="text-xl font-semibold">{item.value}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="rounded-[var(--ui-radius-md)] border border-(--app-border) p-3">
+                        <TreeView
+                          data={resourceTree}
+                          value={selectedPermissionIds}
+                          onValueChange={(value) => {
+                            setSelectedPermissionIdsByRole((current) => ({
+                              ...current,
+                              [resolvedActiveRoleId]: value,
+                            }))
+                          }}
+                          defaultExpandedIds={defaultExpandedIds}
+                          searchValue={searchValue}
+                          maxHeight={520}
+                          emptyLabel={
+                            rolePermissionsQuery.isLoading
+                              ? "权限树加载中。"
+                              : "没有匹配到权限项。"
+                          }
+                        />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>本次勾选明细</CardTitle>
+                    <CardDescription>
+                      当前角色已选择的权限资源，方便保存前快速核对。
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Table ariaLabel="selected permissions">
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>名称</TableHead>
+                          <TableHead>类型</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-        ))}
-      </Tabs>
+                      </TableHeader>
+                      <TableBody>
+                        {selectedResources.map((resource) => (
+                          <TableRow key={resource.id}>
+                            <TableCell>
+                              <span className="font-medium">{resource.name}</span>
+                            </TableCell>
+                            <TableCell>{kindLabelMap[resource.kind]}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+          ))}
+        </Tabs>
+      ) : (
+        <Card>
+          <CardHeader>
+            <CardTitle>暂无可授权角色</CardTitle>
+            <CardDescription>
+              创建权限角色后，可以在这里配置该角色的权限覆盖集。
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      )}
     </div>
   )
 }

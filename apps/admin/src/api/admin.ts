@@ -34,23 +34,6 @@ export interface CreateRoleRequest {
 
 export type PermissionKind = "group" | "action"
 
-export interface PermissionResponse {
-  id: number
-  code: string
-  name: string
-  parent_code: string | null
-  sort: number
-  kind: PermissionKind
-}
-
-export interface CreatePermissionRequest {
-  code: string
-  name: string
-  parent_code?: string | null
-  sort: number
-  kind: PermissionKind
-}
-
 export interface MenuResponse {
   id: number
   name: string
@@ -74,14 +57,16 @@ export interface UserRoleResponse {
   role_id: number
 }
 
-export interface GrantRolePermissionRequest {
-  role_id: number
-  permission_code: string
+export interface UpdateRolePermissionsRequest {
+  permission_ids: number[]
 }
 
-export interface RolePermissionResponse {
-  role_id: number
-  permission_code: string
+export interface RolePermissionTreeNode {
+  id: number
+  name: string
+  kind: PermissionKind
+  checked: boolean
+  children: RolePermissionTreeNode[]
 }
 
 export interface CurrentUserPermissionsResponse {
@@ -157,23 +142,6 @@ export const deleteRoleApi = async (roleId: number): Promise<void> => {
   })
 }
 
-export const createPermissionApi = async (
-  body: CreatePermissionRequest
-): Promise<PermissionResponse> => {
-  return request<CreatePermissionRequest, PermissionResponse>({
-    method: "POST",
-    url: "/api/admin/permissions",
-    body,
-  })
-}
-
-export const listPermissionsApi = async (): Promise<PermissionResponse[]> => {
-  return request<undefined, PermissionResponse[]>({
-    method: "GET",
-    url: "/api/admin/permissions",
-  })
-}
-
 export const createMenuApi = async (
   body: CreateMenuRequest
 ): Promise<MenuResponse> => {
@@ -210,12 +178,22 @@ export const listUserRolesApi = async (
   })
 }
 
-export const grantRolePermissionApi = async (
-  body: GrantRolePermissionRequest
-): Promise<RolePermissionResponse> => {
-  return request<GrantRolePermissionRequest, RolePermissionResponse>({
-    method: "POST",
-    url: "/api/admin/role-permissions",
+export const listRolePermissionsApi = async (
+  roleId: number
+): Promise<RolePermissionTreeNode[]> => {
+  return request<undefined, RolePermissionTreeNode[]>({
+    method: "GET",
+    url: `/api/admin/roles/${encodeURIComponent(String(roleId))}/permissions`,
+  })
+}
+
+export const updateRolePermissionsApi = async (
+  roleId: number,
+  body: UpdateRolePermissionsRequest
+): Promise<RolePermissionTreeNode[]> => {
+  return request<UpdateRolePermissionsRequest, RolePermissionTreeNode[]>({
+    method: "PUT",
+    url: `/api/admin/roles/${encodeURIComponent(String(roleId))}/permissions`,
     body,
   })
 }
