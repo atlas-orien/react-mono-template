@@ -22,7 +22,7 @@ export function RolePermissionTabs({
 }) {
   return (
     <Tabs value={activeRoleId} onValueChange={onRoleChange}>
-      <div className="flex min-w-0 flex-col gap-3 rounded-[var(--ui-radius-lg)] border border-(--app-border) bg-(--app-panel) p-2 lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex min-w-0 flex-col gap-3 rounded-(--ui-radius-lg) border border-(--app-border) bg-(--app-panel) p-2 lg:flex-row lg:items-center lg:justify-between">
         <TabsList>
           {roles.map((role) => (
             <TabsTrigger key={role.id} value={String(role.id)}>

@@ -27,7 +27,7 @@ export default function MembersPage() {
           {members.map((member) => (
             <div
               key={member.name}
-              className="flex items-center gap-3 rounded-[var(--ui-radius-lg)] border border-(--app-border) px-4 py-3"
+              className="flex items-center gap-3 rounded-(--ui-radius-lg) border border-(--app-border) px-4 py-3"
             >
               <Avatar alt={member.name} fallback={member.name.charAt(0)} />
               <div>

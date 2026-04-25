@@ -50,7 +50,7 @@ export default function DashboardPage() {
                 <div>
                   <p className="text-sm text-(--app-muted-text)">{card.label}</p>
                   <p className="mt-2 text-3xl font-semibold">{card.value}</p>
-                  <p className="mt-2 text-sm text-[var(--success)]">{card.delta}</p>
+                  <p className="mt-2 text-sm text-(--success)">{card.delta}</p>
                 </div>
                 <span className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-xl bg-(--app-active-bg) text-sm font-semibold text-(--app-muted-text)">
                   {card.marker}

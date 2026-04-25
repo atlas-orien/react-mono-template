@@ -86,7 +86,7 @@ export function RolePermissionEditor({
 
           <PermissionSummary summary={summary} />
 
-          <div className="rounded-[var(--ui-radius-md)] border border-(--app-border) p-3">
+          <div className="rounded-(--ui-radius-md) border border-(--app-border) p-3">
             <TreeView
               data={resourceTree}
               value={selectedPermissionIds}

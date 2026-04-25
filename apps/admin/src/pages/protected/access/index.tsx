@@ -117,7 +117,7 @@ export default function AccessPage() {
             ]).map((item) => (
               <div
                 key={item.label}
-                className="rounded-[var(--ui-radius-lg)] border border-(--app-border) bg-(--app-panel) px-4 py-4"
+                className="rounded-(--ui-radius-lg) border border-(--app-border) bg-(--app-panel) p-4"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
@@ -156,7 +156,7 @@ export default function AccessPage() {
                       setActiveRoleId(role.id)
                       setSelectedPermissionIds(role.presetIds)
                     }}
-                    className={`w-full rounded-[var(--ui-radius-lg)] border px-4 py-3 text-left transition ${
+                    className={`w-full rounded-(--ui-radius-lg) border px-4 py-3 text-left transition ${
                       active
                         ? "border-(--app-accent) bg-(--app-active-bg)"
                         : "border-(--app-border) bg-(--app-panel)"
@@ -213,7 +213,7 @@ export default function AccessPage() {
                 </div>
               </div>
 
-              <div className="rounded-[var(--ui-radius-lg)] border border-(--app-border) p-3">
+              <div className="rounded-(--ui-radius-lg) border border-(--app-border) p-3">
                 <TreeView
                   data={resourceTree}
                   value={selectedPermissionIds}
@@ -261,7 +261,7 @@ export default function AccessPage() {
                 ]).map((item) => (
                   <div
                     key={item.label}
-                    className="flex items-center justify-between rounded-[var(--ui-radius-lg)] border border-(--app-border) px-3 py-3"
+                    className="flex items-center justify-between rounded-(--ui-radius-lg) border border-(--app-border) p-3"
                   >
                     <div className="flex items-center gap-2 text-sm">
                       {item.icon}

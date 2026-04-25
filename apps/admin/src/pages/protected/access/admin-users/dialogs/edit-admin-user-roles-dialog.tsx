@@ -78,7 +78,7 @@ export function EditAdminUserRolesDialog({
           ) : null}
 
           {rolesQuery.isFetching ? (
-            <div className="max-h-80 overflow-auto rounded-[var(--ui-radius-md)] border border-(--app-border)">
+            <div className="max-h-80 overflow-auto rounded-(--ui-radius-md) border border-(--app-border)">
               <div className="px-3 py-4 text-sm text-muted-foreground">
                 角色加载中。
               </div>
@@ -94,7 +94,7 @@ export function EditAdminUserRolesDialog({
               userId={userId}
             />
           ) : (
-            <div className="max-h-80 overflow-auto rounded-[var(--ui-radius-md)] border border-(--app-border)">
+            <div className="max-h-80 overflow-auto rounded-(--ui-radius-md) border border-(--app-border)">
               <div className="px-3 py-4 text-sm text-muted-foreground">
                 暂无可配置角色。
               </div>
@@ -173,14 +173,14 @@ function EditAdminUserRolesForm({
 
   return (
     <>
-      <div className="max-h-80 overflow-auto rounded-[var(--ui-radius-md)] border border-(--app-border)">
+      <div className="max-h-80 overflow-auto rounded-(--ui-radius-md) border border-(--app-border)">
         {roleOptions.map((role) => {
           const checked = selectedRoleIds.includes(role.id)
 
           return (
             <label
               key={role.id}
-              className="flex cursor-pointer items-start gap-3 border-b border-(--app-border) px-3 py-3 last:border-b-0"
+              className="flex cursor-pointer items-start gap-3 border-b border-(--app-border) p-3 last:border-b-0"
             >
               <Checkbox
                 checked={checked}

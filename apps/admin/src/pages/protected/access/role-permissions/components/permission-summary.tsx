@@ -22,7 +22,7 @@ export function PermissionSummary({
       ].map((item) => (
         <div
           key={item.label}
-          className="flex min-h-18 items-center justify-between rounded-[var(--ui-radius-md)] border border-(--app-border) px-4 py-3"
+          className="flex min-h-18 items-center justify-between rounded-(--ui-radius-md) border border-(--app-border) px-4 py-3"
         >
           <div className="flex min-w-0 items-center gap-3">
             <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-(--app-active-bg)">

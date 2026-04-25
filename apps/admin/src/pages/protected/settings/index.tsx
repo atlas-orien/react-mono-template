@@ -25,7 +25,7 @@ export default function SettingsPage() {
           ].map(([label, checked]) => (
             <label
               key={String(label)}
-              className="flex items-center justify-between gap-4 rounded-[var(--ui-radius-lg)] border border-(--app-border) px-4 py-3"
+              className="flex items-center justify-between gap-4 rounded-(--ui-radius-lg) border border-(--app-border) px-4 py-3"
             >
               <span className="text-sm font-medium">{label}</span>
               <Switch checked={Boolean(checked)} />
