@@ -207,13 +207,6 @@ export const menuTree: MenuNode[] = [
         level: 2,
       },
       {
-        id: 150,
-        name: "用户角色",
-        path: "/access/user-roles",
-        permissionCode: "admin:user_role:list",
-        level: 2,
-      },
-      {
         id: 160,
         name: "菜单配置",
         path: "/access/menus",
@@ -224,8 +217,13 @@ export const menuTree: MenuNode[] = [
   },
 ]
 
-export function flattenPermissionTree(nodes: PermissionNode[]): PermissionNode[] {
-  return nodes.flatMap((node) => [node, ...flattenPermissionTree(node.children ?? [])])
+export function flattenPermissionTree(
+  nodes: PermissionNode[]
+): PermissionNode[] {
+  return nodes.flatMap((node) => [
+    node,
+    ...flattenPermissionTree(node.children ?? []),
+  ])
 }
 
 export function collectPermissionIds(nodes: PermissionNode[]): string[] {

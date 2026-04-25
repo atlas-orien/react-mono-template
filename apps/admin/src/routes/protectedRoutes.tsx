@@ -4,7 +4,6 @@ import { Navigate } from "react-router"
 import { PageLoading, RouteErrorBoundary } from "@workspace/app-components"
 import AppLayout from "@/layouts/AppLayout"
 import {
-  AccessBlueprintPage,
   AdminUsersPage,
   DataTablePage,
   DashboardPage,
@@ -14,7 +13,6 @@ import {
   RolePermissionsPage,
   RolesPage,
   SettingsPage,
-  UserRolesPage,
 } from "@/routes/lazy/protectedPages"
 
 function withSuspense(node: ReactNode) {
@@ -55,10 +53,6 @@ export const protectedRoutes: RouteObject = {
       element: withSuspense(<RolePermissionsPage />),
     },
     {
-      path: "access/user-roles",
-      element: withSuspense(<UserRolesPage />),
-    },
-    {
       path: "access/menus",
       element: withSuspense(<MenusPage />),
     },
@@ -69,10 +63,6 @@ export const protectedRoutes: RouteObject = {
     {
       path: "datatable",
       element: withSuspense(<DataTablePage />),
-    },
-    {
-      path: "access/blueprint",
-      element: withSuspense(<AccessBlueprintPage />),
     },
   ],
 }

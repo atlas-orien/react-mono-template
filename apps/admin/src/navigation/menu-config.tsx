@@ -1,9 +1,5 @@
 import type { ReactNode } from "react"
-import {
-  LayoutDashboard,
-  Settings,
-  ShieldCheck,
-} from "lucide-react"
+import { LayoutDashboard, Settings, ShieldCheck } from "lucide-react"
 
 export interface NavigationSubItemConfig {
   id: string
@@ -57,14 +53,8 @@ export const navigationSections: NavigationSectionConfig[] = [
             permissionCode: "admin:role_permission:grant",
             label: "角色授权",
             href: "/access/role-permissions",
-            matcher: (pathname) => pathname.startsWith("/access/role-permissions"),
-          },
-          {
-            id: "user-roles",
-            permissionCode: "admin:user_role:list",
-            label: "用户角色",
-            href: "/access/user-roles",
-            matcher: (pathname) => pathname.startsWith("/access/user-roles"),
+            matcher: (pathname) =>
+              pathname.startsWith("/access/role-permissions"),
           },
           {
             id: "menu-access",
