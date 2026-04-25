@@ -49,7 +49,8 @@ export function RolePermissionEditor({
           <div className="min-w-0">
             <CardTitle>{activeRole.name}</CardTitle>
             <CardDescription>
-              编码：{activeRole.code}。服务端返回完整权限树，并标记当前角色已授权节点。
+              编码：{activeRole.code}
+              。服务端返回完整权限树，并标记当前角色已授权节点。
             </CardDescription>
           </div>
           <div className="flex flex-wrap gap-2">

@@ -30,6 +30,25 @@ Use the corresponding `package.json` script instead.
 - Never use `tsc` in a way that can emit `.js` into `src/`.
 - If diagnosing build behavior, inspect the relevant `package.json` script first, then use that script to reproduce.
 
+## Tailwind Class Safety
+
+- Tailwind canonical class checks are part of the package `lint` scripts via `eslint-plugin-better-tailwindcss`.
+- After editing React/TSX UI, className strings, `cn(...)`, `cva(...)`, or Tailwind utility classes, run the nearest relevant lint script so canonical class warnings are visible in the terminal.
+- For admin UI work, use:
+
+```bash
+rtk pnpm -C apps/admin run lint
+```
+
+- For broader workspace verification, use:
+
+```bash
+rtk pnpm lint
+```
+
+- Fix reported canonical class issues such as `rounded-[var(--ui-radius-lg)]` -> `rounded-(--ui-radius-lg)` before considering the task complete.
+- Do not rely on VS Code Tailwind IntelliSense alone; command-line lint must be clean when the task touches Tailwind classes.
+
 ## Examples
 
 ```bash
