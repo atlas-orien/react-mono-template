@@ -7,10 +7,7 @@ import {
   adminUserBuiltInQueryFields,
   adminUserQueryFields,
 } from "./query-fields"
-import {
-  adminUserInitialQuery,
-  adminUserPageSizeOptions,
-} from "../constants"
+import { adminUserInitialQuery, adminUserPageSizeOptions } from "../constants"
 import { useAdminUserRowActions } from "./row-actions"
 import type { AdminUserRow, AdminUserTableQuery } from "../types"
 
@@ -22,9 +19,10 @@ export function useAdminUsersTable(
     signal: AbortSignal
     sort: DataTableSortState | null
   }) => Promise<DataTableFetchResult<AdminUserRow>>,
-  invalidateAdminUsers: () => Promise<unknown>
+  invalidateAdminUsers: () => Promise<unknown>,
+  onEditRoles: (row: AdminUserRow) => void
 ) {
-  const rowActions = useAdminUserRowActions(invalidateAdminUsers)
+  const rowActions = useAdminUserRowActions(invalidateAdminUsers, onEditRoles)
 
   return {
     columns: adminUserColumns,

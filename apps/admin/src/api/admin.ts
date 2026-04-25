@@ -47,18 +47,19 @@ export interface CreateMenuRequest {
   permission_code?: string | null
 }
 
-export interface AssignUserRoleRequest {
-  user_id: string
-  role_id: number
-}
-
-export interface UserRoleResponse {
-  user_id: string
-  role_id: number
+export interface UserRoleOptionResponse {
+  id: number
+  name: string
+  code: string
+  checked: boolean
 }
 
 export interface UpdateRolePermissionsRequest {
   permission_ids: number[]
+}
+
+export interface UpdateUserRolesRequest {
+  role_ids: number[]
 }
 
 export interface RolePermissionTreeNode {
@@ -159,22 +160,23 @@ export const listMenusApi = async (): Promise<MenuResponse[]> => {
   })
 }
 
-export const assignUserRoleApi = async (
-  body: AssignUserRoleRequest
-): Promise<UserRoleResponse> => {
-  return request<AssignUserRoleRequest, UserRoleResponse>({
-    method: "POST",
-    url: "/api/admin/user-roles",
-    body,
+export const listUserRolesApi = async (
+  userId: string
+): Promise<UserRoleOptionResponse[]> => {
+  return request<undefined, UserRoleOptionResponse[]>({
+    method: "GET",
+    url: `/api/admin/users/${encodeURIComponent(userId)}/roles`,
   })
 }
 
-export const listUserRolesApi = async (
-  userId: string
-): Promise<RoleResponse[]> => {
-  return request<undefined, RoleResponse[]>({
-    method: "GET",
-    url: `/api/admin/users/${userId}/roles`,
+export const updateUserRolesApi = async (
+  userId: string,
+  body: UpdateUserRolesRequest
+): Promise<UserRoleOptionResponse[]> => {
+  return request<UpdateUserRolesRequest, UserRoleOptionResponse[]>({
+    method: "PUT",
+    url: `/api/admin/users/${encodeURIComponent(userId)}/roles`,
+    body,
   })
 }
 
@@ -206,7 +208,9 @@ export const getCurrentUserPermissionsApi =
     })
   }
 
-export const getCurrentUserMenusApi = async (): Promise<CurrentUserMenuNode[]> => {
+export const getCurrentUserMenusApi = async (): Promise<
+  CurrentUserMenuNode[]
+> => {
   return request<undefined, CurrentUserMenuNode[]>({
     method: "GET",
     url: "/api/admin/me/menus",

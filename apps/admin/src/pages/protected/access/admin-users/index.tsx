@@ -1,12 +1,23 @@
+import { useCallback, useState } from "react"
 import { DataTable, MetricCards } from "@workspace/app-components"
 import { useAdminUsersData } from "./admin-users-data"
 import { useCreateAdminUserInsertAction } from "./dialogs/create-admin-user-dialog"
+import { EditAdminUserRolesDialog } from "./dialogs/edit-admin-user-roles-dialog"
 import { useAdminUsersTable } from "./table"
 import type { AdminUserRow, AdminUserTableQuery } from "./types"
 
 export default function AdminUsersPage() {
+  const [roleDialogRow, setRoleDialogRow] = useState<AdminUserRow | null>(null)
+  const [tableRefreshKey, setTableRefreshKey] = useState(0)
   const { metricCards, fetchData, invalidateAdminUsers } = useAdminUsersData()
-  const table = useAdminUsersTable(fetchData, invalidateAdminUsers)
+  const handleEditRoles = useCallback((row: AdminUserRow) => {
+    setRoleDialogRow(row)
+  }, [])
+  const table = useAdminUsersTable(
+    fetchData,
+    invalidateAdminUsers,
+    handleEditRoles
+  )
   const insertAction = useCreateAdminUserInsertAction(invalidateAdminUsers)
 
   return (
@@ -15,6 +26,7 @@ export default function AdminUsersPage() {
 
       <div className="flex h-[calc(100vh-22rem)] min-h-160 min-w-0 flex-1 overflow-hidden">
         <DataTable<AdminUserRow, AdminUserTableQuery>
+          key={tableRefreshKey}
           columns={table.columns}
           fetchData={table.fetchData}
           getRowId={table.getRowId}
@@ -34,6 +46,17 @@ export default function AdminUsersPage() {
           fillWidth={table.fillWidth}
         />
       </div>
+
+      <EditAdminUserRolesDialog
+        onSaved={() => setTableRefreshKey((current) => current + 1)}
+        open={Boolean(roleDialogRow)}
+        row={roleDialogRow}
+        onOpenChange={(open) => {
+          if (!open) {
+            setRoleDialogRow(null)
+          }
+        }}
+      />
     </div>
   )
 }

@@ -17,7 +17,6 @@ export {
   type UserInfo,
 } from "@workspace/services/api/auth"
 export {
-  assignUserRoleApi,
   createAdminUserApi,
   createMenuApi,
   createRoleApi,
@@ -32,9 +31,9 @@ export {
   listUserRolesApi,
   updateAdminUserApi,
   updateRolePermissionsApi,
+  updateUserRolesApi,
   type AdminUserResponse,
   type AdminUserStatus,
-  type AssignUserRoleRequest,
   type CreateAdminUserRequest,
   type CreateMenuRequest,
   type CreateRoleRequest,
@@ -46,7 +45,8 @@ export {
   type RoleResponse,
   type UpdateAdminUserRequest,
   type UpdateRolePermissionsRequest,
-  type UserRoleResponse,
+  type UpdateUserRolesRequest,
+  type UserRoleOptionResponse,
 } from "./admin"
 
 export {

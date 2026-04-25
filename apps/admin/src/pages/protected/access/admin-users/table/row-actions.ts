@@ -9,7 +9,8 @@ import {
 import type { AdminUserRow } from "../types"
 
 export function useAdminUserRowActions(
-  invalidateAdminUsers: () => Promise<unknown>
+  invalidateAdminUsers: () => Promise<unknown>,
+  onEditRoles: (row: AdminUserRow) => void
 ): DataTableRowActionsConfig<AdminUserRow> {
   const editDialogHandlesRef = useRef(
     new Map<string, EditAdminUserDialogContentHandle | null>()
@@ -38,8 +39,7 @@ export function useAdminUserRowActions(
           createElement(EditAdminUserDialogContent, {
             row,
             ref: (handle) => setEditDialogHandle(row.user_id, handle),
-          }
-        ),
+          }),
         onConfirm: async (row) => {
           const remark =
             editDialogHandlesRef.current.get(row.user_id)?.getRemark() ??
@@ -78,17 +78,17 @@ export function useAdminUserRowActions(
               status: nextStatus,
             })
             await invalidateAdminUsers()
-            toast.success(nextStatus === "enabled" ? "后台账号已启用" : "后台账号已停用")
+            toast.success(
+              nextStatus === "enabled" ? "后台账号已启用" : "后台账号已停用"
+            )
           },
         },
         {
           key: "assign-role",
           label: "编辑角色",
-          onClick: (row) => {
-            console.info("edit roles", row.user_id)
-          },
+          onClick: onEditRoles,
         },
       ],
     }
-  }, [invalidateAdminUsers])
+  }, [invalidateAdminUsers, onEditRoles])
 }
