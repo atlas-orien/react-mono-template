@@ -4,7 +4,6 @@ export const AdminUsersPage = lazy(
   () => import("@/pages/protected/access/admin-users")
 )
 export const DashboardPage = lazy(() => import("@/pages/protected/dashboard"))
-export const MenusPage = lazy(() => import("@/pages/protected/access/menus"))
 export const OrdersPage = lazy(() => import("@/pages/protected/orders"))
 export const RolePermissionsPage = lazy(
   () => import("@/pages/protected/access/role-permissions")

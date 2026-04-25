@@ -56,13 +56,6 @@ export const navigationSections: NavigationSectionConfig[] = [
             matcher: (pathname) =>
               pathname.startsWith("/access/role-permissions"),
           },
-          {
-            id: "menu-access",
-            permissionCode: "admin:access",
-            label: "菜单配置",
-            href: "/access/menus",
-            matcher: (pathname) => pathname.startsWith("/access/menus"),
-          },
         ],
       },
       {

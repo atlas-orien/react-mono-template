@@ -206,13 +206,6 @@ export const menuTree: MenuNode[] = [
         permissionCode: "admin:role_permission:grant",
         level: 2,
       },
-      {
-        id: 160,
-        name: "菜单配置",
-        path: "/access/menus",
-        permissionCode: "admin:access",
-        level: 2,
-      },
     ],
   },
 ]
