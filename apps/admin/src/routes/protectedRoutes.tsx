@@ -11,7 +11,6 @@ import {
   MenusPage,
   MembersPage,
   OrdersPage,
-  PermissionsPage,
   RolePermissionsPage,
   RolesPage,
   SettingsPage,
@@ -50,10 +49,6 @@ export const protectedRoutes: RouteObject = {
     {
       path: "access/roles",
       element: withSuspense(<RolesPage />),
-    },
-    {
-      path: "access/permissions",
-      element: withSuspense(<PermissionsPage />),
     },
     {
       path: "access/role-permissions",

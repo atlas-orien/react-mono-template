@@ -12,6 +12,12 @@ import {
 } from "@workspace/ui-components/stable/card"
 import { Input } from "@workspace/ui-components/stable/input"
 import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@workspace/ui-components/stable/tabs"
+import {
   Table,
   TableBody,
   TableCell,
@@ -52,8 +58,6 @@ export default function RolePermissionsPage() {
     rolePermissionPresetMap[roles[0]?.id ?? ""] ?? [],
   )
 
-  const activeRole = roles.find((role) => role.id === activeRoleId) ?? roles[0]
-
   const flatPermissions = useMemo(() => flattenPermissionTree(permissionTree), [])
   const selectedResources = useMemo(
     () =>
@@ -84,186 +88,158 @@ export default function RolePermissionsPage() {
   }, [selectedResources])
 
   return (
-    <div className="space-y-4">
-      <Card>
-        <CardHeader>
+    <div className="w-full min-w-0 space-y-4">
+      <div className="flex min-w-0 flex-col gap-2 border-b border-(--app-border) pb-4">
+        <div className="w-fit">
           <Badge variant="outline">Role Permissions</Badge>
-          <CardTitle>角色授权</CardTitle>
-          <CardDescription>
-            页面只处理 `role_permissions` 关系，把“角色定义”和“权限资源定义”拆到独立页面。
-          </CardDescription>
-        </CardHeader>
-      </Card>
-
-      <div className="grid gap-4 xl:grid-cols-[280px_minmax(0,1fr)_360px]">
-        <Card>
-          <CardHeader>
-            <CardTitle>角色列表</CardTitle>
-            <CardDescription>选择一个角色后，在右侧配置权限覆盖集。</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {roles.map((role) => {
-                const active = role.id === activeRoleId
-
-                return (
-                  <button
-                    key={role.id}
-                    type="button"
-                    onClick={() => {
-                      setActiveRoleId(role.id)
-                      setSelectedPermissionIds(
-                        rolePermissionPresetMap[role.id] ?? [],
-                      )
-                    }}
-                    className={`w-full rounded-[var(--ui-radius-lg)] border px-4 py-3 text-left transition ${
-                      active
-                        ? "border-(--app-accent) bg-(--app-active-bg)"
-                        : "border-(--app-border) bg-(--app-panel)"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <p className="font-medium">{role.name}</p>
-                        <p className="mt-1 text-sm text-(--app-muted-text)">
-                          {role.description}
-                        </p>
-                      </div>
-                      <Badge variant={active ? "default" : "outline"}>
-                        {role.userCount} 人
-                      </Badge>
-                    </div>
-                    <div className="mt-3 flex items-center justify-between text-xs text-(--app-muted-text)">
-                      <span>编码：{role.code}</span>
-                      <span>范围：{role.scope}</span>
-                    </div>
-                  </button>
-                )
-              })}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-              <div>
-                <CardTitle>{activeRole?.name}</CardTitle>
-                <CardDescription>
-                  统一用权限树维护菜单分组、操作码和接口能力。
-                </CardDescription>
-              </div>
-              <div className="flex gap-2">
-                <Button variant="outline">恢复预设</Button>
-                <Button variant="primary">保存角色授权</Button>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto]">
-                <Input
-                  value={searchValue}
-                  onValueChange={setSearchValue}
-                  placeholder="搜索权限名称、编码或接口路径"
-                />
-                <div className="flex items-center gap-2 text-sm text-(--app-muted-text)">
-                  <ShieldCheck className="size-4" />
-                  已选择 {selectedPermissionIds.length} 项
-                </div>
-              </div>
-
-              <div className="rounded-[var(--ui-radius-lg)] border border-(--app-border) p-3">
-                <TreeView
-                  data={resourceTree}
-                  value={selectedPermissionIds}
-                  onValueChange={setSelectedPermissionIds}
-                  defaultExpandedIds={["perm-admin-user", "perm-admin-access"]}
-                  searchValue={searchValue}
-                  maxHeight={540}
-                  emptyLabel="没有匹配到权限项。"
-                />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>授权摘要</CardTitle>
-              <CardDescription>
-                用于快速确认当前角色拿到了哪些类型的能力。
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {[
-                  {
-                    icon: <ShieldCheck className="size-4" />,
-                    label: "分组",
-                    value: summary.group,
-                  },
-                  {
-                    icon: <SquareMousePointer className="size-4" />,
-                    label: "操作",
-                    value: summary.action,
-                  },
-                  {
-                    icon: <Waypoints className="size-4" />,
-                    label: "API",
-                    value: summary.api,
-                  },
-                ].map((item) => (
-                  <div
-                    key={item.label}
-                    className="flex items-center justify-between rounded-[var(--ui-radius-lg)] border border-(--app-border) px-4 py-3"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="inline-flex size-9 items-center justify-center rounded-full bg-(--app-active-bg)">
-                        {item.icon}
-                      </span>
-                      <span className="font-medium">{item.label}</span>
-                    </div>
-                    <span className="text-lg font-semibold">{item.value}</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>本次勾选明细</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Table ariaLabel="selected permissions">
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>名称</TableHead>
-                    <TableHead>类型</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {selectedResources.map((resource) => (
-                    <TableRow key={resource.id}>
-                      <TableCell>
-                        <div>
-                          <p className="font-medium">{resource.name}</p>
-                          <p className="text-xs text-(--app-muted-text)">
-                            {resource.code}
-                          </p>
-                        </div>
-                      </TableCell>
-                      <TableCell>{kindLabelMap[resource.kind]}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+        </div>
+        <div className="min-w-0">
+          <h1 className="text-2xl font-semibold">角色授权</h1>
+          <p className="mt-1 max-w-4xl text-sm text-(--app-muted-text)">
+            按角色配置权限覆盖集，权限资源由服务端维护，页面只处理角色与权限之间的授权关系。
+          </p>
         </div>
       </div>
+
+      <Tabs
+        value={activeRoleId}
+        onValueChange={(roleId) => {
+          setActiveRoleId(roleId)
+          setSelectedPermissionIds(rolePermissionPresetMap[roleId] ?? [])
+          setSearchValue("")
+        }}
+      >
+        <div className="flex min-w-0 flex-col gap-3 rounded-[var(--ui-radius-lg)] border border-(--app-border) bg-(--app-panel) p-2 lg:flex-row lg:items-center lg:justify-between">
+          <TabsList>
+            {roles.map((role) => (
+              <TabsTrigger key={role.id} value={role.id}>
+                {role.name}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          <div className="hidden shrink-0 items-center gap-2 text-sm text-(--app-muted-text) md:flex">
+            <ShieldCheck className="size-4" />
+            已选择 {selectedPermissionIds.length} 项
+          </div>
+        </div>
+
+        {roles.map((role) => (
+          <TabsContent key={role.id} value={role.id}>
+            <div className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <div className="grid min-w-0 gap-3 xl:grid-cols-[minmax(0,1fr)_auto] xl:items-end">
+                    <div className="min-w-0">
+                      <CardTitle>{role.name}</CardTitle>
+                      <CardDescription>
+                        编码：{role.code}。统一用权限树维护菜单分组、操作码和接口能力。
+                      </CardDescription>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      <Button variant="outline">恢复预设</Button>
+                      <Button variant="primary">保存角色授权</Button>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+                      <Input
+                        value={searchValue}
+                        onValueChange={setSearchValue}
+                        placeholder="搜索权限名称、编码或接口路径"
+                      />
+                      <div className="flex items-center gap-2 text-sm text-(--app-muted-text) md:hidden">
+                        <ShieldCheck className="size-4" />
+                        已选择 {selectedPermissionIds.length} 项
+                      </div>
+                    </div>
+
+                    <div className="grid gap-3 md:grid-cols-3">
+                      {[
+                        {
+                          icon: <ShieldCheck className="size-4" />,
+                          label: "分组",
+                          value: summary.group,
+                        },
+                        {
+                          icon: <SquareMousePointer className="size-4" />,
+                          label: "操作",
+                          value: summary.action,
+                        },
+                        {
+                          icon: <Waypoints className="size-4" />,
+                          label: "API",
+                          value: summary.api,
+                        },
+                      ].map((item) => (
+                        <div
+                          key={item.label}
+                          className="flex min-h-18 items-center justify-between rounded-[var(--ui-radius-md)] border border-(--app-border) px-4 py-3"
+                        >
+                          <div className="flex min-w-0 items-center gap-3">
+                            <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-(--app-active-bg)">
+                              {item.icon}
+                            </span>
+                            <span className="font-medium">{item.label}</span>
+                          </div>
+                          <span className="text-xl font-semibold">{item.value}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="rounded-[var(--ui-radius-md)] border border-(--app-border) p-3">
+                      <TreeView
+                        data={resourceTree}
+                        value={selectedPermissionIds}
+                        onValueChange={setSelectedPermissionIds}
+                        defaultExpandedIds={["perm-admin-user", "perm-admin-access"]}
+                        searchValue={searchValue}
+                        maxHeight={520}
+                        emptyLabel="没有匹配到权限项。"
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>本次勾选明细</CardTitle>
+                  <CardDescription>
+                    当前角色已选择的权限资源，方便保存前快速核对。
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Table ariaLabel="selected permissions">
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>名称</TableHead>
+                        <TableHead>类型</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {selectedResources.map((resource) => (
+                        <TableRow key={resource.id}>
+                          <TableCell>
+                            <div>
+                              <p className="font-medium">{resource.name}</p>
+                              <p className="text-xs text-(--app-muted-text)">
+                                {resource.code}
+                              </p>
+                            </div>
+                          </TableCell>
+                          <TableCell>{kindLabelMap[resource.kind]}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+        ))}
+      </Tabs>
     </div>
   )
 }
