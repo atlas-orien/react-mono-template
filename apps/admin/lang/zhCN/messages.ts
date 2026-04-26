@@ -51,6 +51,9 @@ const messages = {
           },
         },
       },
+      workspaceTabs: {
+        label: "历史页面",
+      },
       account: {
         logout: "退出登录",
         actions: {

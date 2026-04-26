@@ -55,6 +55,9 @@ const messages = {
           },
         },
       },
+      workspaceTabs: {
+        label: "History",
+      },
       account: {
         logout: "Log out",
         actions: {

@@ -8,6 +8,7 @@ import {
   NotificationDropdown,
   SidebarShell,
   ThemeToggle,
+  WorkspaceTabs,
 } from "@workspace/app-components"
 import { TopBar } from "@workspace/app-components/top-bar"
 import { logout } from "@/store/authSlice"
@@ -16,6 +17,7 @@ import type { RootState } from "@/store"
 import { useAdminNavigation } from "@/navigation"
 import { accountActions } from "./account-actions"
 import { getAdminNotifications } from "./admin-notifications"
+import { useWorkspaceTabs } from "./use-workspace-tabs"
 
 export interface AdminAppShellProps {
   children: ReactNode
@@ -29,6 +31,11 @@ export function AdminAppShell({ children }: AdminAppShellProps) {
   const { currentItem, defaultPath, hasVisibleMenus, isLoading, sections } =
     useAdminNavigation()
   const notifications = getAdminNotifications(t)
+  const workspaceTabs = useWorkspaceTabs({
+    currentPath: currentItem?.path ?? null,
+    currentLabel: currentItem?.label ?? null,
+    defaultPath,
+  })
 
   const handleLogout = () => {
     localStorage.removeItem("token")
@@ -53,27 +60,36 @@ export function AdminAppShell({ children }: AdminAppShellProps) {
       brandDescription={t("admin.shell.brand.description", "Enterprise")}
       sections={sections}
       header={
-        <TopBar
-          title={currentItem?.label ?? t("admin.shell.brand.title", "Admin")}
-          trailing={[
-            <NotificationDropdown
-              key="notifications"
-              label={t("admin.shell.notifications.label", "Notifications")}
-              panelTitle={t("admin.shell.notifications.title", "Notifications")}
-              markAllLabel={t(
-                "admin.shell.notifications.actions.markAllRead",
-                "Mark all as read"
-              )}
-              emptyLabel={t(
-                "admin.shell.notifications.empty",
-                "You're all caught up."
-              )}
-              items={notifications}
-            />,
-            <LanguageSwitch key="lang" />,
-            <ThemeToggle key="theme" />,
-          ]}
-        />
+        <>
+          <TopBar
+            title={currentItem?.label ?? t("admin.shell.brand.title", "Admin")}
+            trailing={[
+              <NotificationDropdown
+                key="notifications"
+                label={t("admin.shell.notifications.label", "Notifications")}
+                panelTitle={t(
+                  "admin.shell.notifications.title",
+                  "Notifications"
+                )}
+                markAllLabel={t(
+                  "admin.shell.notifications.actions.markAllRead",
+                  "Mark all as read"
+                )}
+                emptyLabel={t(
+                  "admin.shell.notifications.empty",
+                  "You're all caught up."
+                )}
+                items={notifications}
+              />,
+              <LanguageSwitch key="lang" />,
+              <ThemeToggle key="theme" />,
+            ]}
+          />
+          <WorkspaceTabs
+            label={t("admin.shell.workspaceTabs.label", "History")}
+            items={workspaceTabs.items}
+          />
+        </>
       }
       footerAccount={{
         avatarAlt: user?.name ?? "Admin",

@@ -20,3 +20,5 @@ export type {
 } from "./sidebar-shell"
 export { TopBar } from "./top-bar"
 export type { TopBarProps } from "./top-bar"
+export { WorkspaceTabs } from "./workspace-tabs"
+export type { WorkspaceTabItem, WorkspaceTabsProps } from "./workspace-tabs"

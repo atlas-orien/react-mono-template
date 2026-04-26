@@ -4,6 +4,7 @@ export {
   NotificationDropdown,
   SidebarShell,
   TopBar,
+  WorkspaceTabs,
 } from "./components/app-shell"
 export type {
   AvatarDropdownAction,
@@ -17,6 +18,8 @@ export type {
   SidebarShellSection,
   SidebarShellSubEntry,
   TopBarProps,
+  WorkspaceTabItem,
+  WorkspaceTabsProps,
 } from "./components/app-shell"
 export {
   AppNotice,
