@@ -27,6 +27,9 @@
     "./query/create-resource-query": "./src/query/create-resource-query.ts",
     "./query/keys": "./src/query/keys.ts",
     "./query/types": "./src/query/types.ts",
+    "./realtime/admin-notification-socket": "./src/realtime/admin-notification-socket.ts",
+    "./realtime/ws-client": "./src/realtime/ws-client.ts",
+    "./realtime/ws-types": "./src/realtime/ws-types.ts",
     "./url": "./src/url.ts"
   }
 }

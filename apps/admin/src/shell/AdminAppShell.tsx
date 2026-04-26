@@ -17,6 +17,7 @@ import type { RootState } from "@/store"
 import { useAdminNavigation } from "@/navigation"
 import { accountActions } from "./account-actions"
 import { getAdminNotifications } from "./admin-notifications"
+import { useAdminNotificationSocket } from "./use-admin-notification-socket"
 import { useWorkspaceTabs } from "./use-workspace-tabs"
 
 export interface AdminAppShellProps {
@@ -28,6 +29,7 @@ export function AdminAppShell({ children }: AdminAppShellProps) {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const user = useSelector((state: RootState) => state.auth.user)
+  const token = useSelector((state: RootState) => state.auth.token)
   const {
     currentItem,
     defaultPath,
@@ -41,6 +43,9 @@ export function AdminAppShell({ children }: AdminAppShellProps) {
     currentPath: currentItem?.path ?? null,
     defaultPath,
     labelsByPath,
+  })
+  useAdminNotificationSocket({
+    token: token ?? localStorage.getItem("token"),
   })
 
   const handleLogout = () => {
