@@ -151,10 +151,12 @@ export function SidebarShell({
           </Sidebar>
 
           <SidebarInset>
-            <div className="flex h-svh min-h-0 min-w-0 flex-col overflow-x-hidden overflow-y-auto">
+            <div className="flex h-svh min-h-0 min-w-0 flex-col overflow-hidden">
               {header}
-              <div className="flex min-w-0 flex-1 p-3">
-                {children}
+              <div className="flex min-h-0 min-w-0 flex-1 overflow-hidden p-3">
+                <div className="flex min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto pr-1">
+                  {children}
+                </div>
               </div>
             </div>
           </SidebarInset>

@@ -14,12 +14,11 @@ export default function RolesPage() {
     <div className="w-full min-w-0 space-y-4">
       <RoleCreationNote />
 
-      <div className="flex h-[calc(100vh-15rem)] min-h-160 min-w-0 flex-1 overflow-hidden">
+      <div className="min-w-0 overflow-hidden">
         <DataTable<RoleRow, RoleTableQuery>
           columns={table.columns}
           fetchData={table.fetchData}
           getRowId={table.getRowId}
-          height="100%"
           initialPageSize={table.initialPageSize}
           initialQuery={table.initialQuery}
           insert={insertAction}
