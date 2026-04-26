@@ -36,14 +36,14 @@ export const navigationSections: NavigationSectionConfig[] = [
         subItems: [
           {
             id: "admin-users",
-            permissionCode: "admin:user",
+            permissionCode: "user:list",
             label: "后台账号",
             href: "/accounts/admin-users",
             matcher: (pathname) => pathname.startsWith("/accounts/admin-users"),
           },
           {
             id: "app-users",
-            permissionCode: "admin:app_user:list",
+            permissionCode: "app_user:list",
             label: "App 用户",
             href: "/accounts/app-users",
             matcher: (pathname) => pathname.startsWith("/accounts/app-users"),
@@ -57,14 +57,14 @@ export const navigationSections: NavigationSectionConfig[] = [
         subItems: [
           {
             id: "roles",
-            permissionCode: "admin:role:list",
+            permissionCode: "role:list",
             label: "权限角色",
             href: "/access/roles",
             matcher: (pathname) => pathname.startsWith("/access/roles"),
           },
           {
             id: "role-permissions",
-            permissionCode: "admin:role_permission:list",
+            permissionCode: "role_permission:list",
             label: "角色授权",
             href: "/access/role-permissions",
             matcher: (pathname) =>
@@ -72,14 +72,14 @@ export const navigationSections: NavigationSectionConfig[] = [
           },
           {
             id: "app-roles",
-            permissionCode: "admin:app_role:list",
+            permissionCode: "app_role:list",
             label: "App 角色",
             href: "/access/app-roles",
             matcher: (pathname) => pathname.startsWith("/access/app-roles"),
           },
           {
             id: "app-role-permissions",
-            permissionCode: "admin:app_role_permission:list",
+            permissionCode: "app_role_permission:list",
             label: "App 角色授权",
             href: "/access/app-role-permissions",
             matcher: (pathname) =>
@@ -94,14 +94,14 @@ export const navigationSections: NavigationSectionConfig[] = [
         subItems: [
           {
             id: "orders",
-            permissionCode: "admin:access",
+            permissionCode: "access",
             label: "订单管理",
             href: "/orders",
             matcher: (pathname) => pathname.startsWith("/orders"),
           },
           {
             id: "members",
-            permissionCode: "admin:access",
+            permissionCode: "access",
             label: "会员管理",
             href: "/members",
             matcher: (pathname) => pathname.startsWith("/members"),
@@ -115,21 +115,21 @@ export const navigationSections: NavigationSectionConfig[] = [
         subItems: [
           {
             id: "dashboard",
-            permissionCode: "admin:access",
+            permissionCode: "access",
             label: "控制台",
             href: "/",
             matcher: (pathname) => pathname === "/",
           },
           {
             id: "settings",
-            permissionCode: "admin:access",
+            permissionCode: "access",
             label: "系统设置",
             href: "/settings",
             matcher: (pathname) => pathname.startsWith("/settings"),
           },
           {
             id: "datatable-demo",
-            permissionCode: "admin:access",
+            permissionCode: "access",
             label: "DataTable 示例",
             href: "/datatable",
             matcher: (pathname) => pathname.startsWith("/datatable"),
