@@ -7,10 +7,6 @@ import {
   rolePageSizeOptions,
 } from "../constants"
 import { roleColumns } from "./columns"
-import {
-  roleBuiltInQueryFields,
-  roleQueryFields,
-} from "./query-fields"
 import { useRoleRowActions } from "./row-actions"
 import type { RoleRow, RoleTableQuery } from "../types"
 
@@ -32,8 +28,9 @@ export function useRolesTable(
     getRowId: (row: RoleRow) => row.id,
     initialPageSize: 10,
     initialQuery: roleInitialQuery,
-    builtInQueryFields: roleBuiltInQueryFields,
-    queryFields: roleQueryFields,
+    builtInQueryFields: [],
+    queryFields: [],
+    queryTools: false,
     pageSizeOptions: rolePageSizeOptions,
     rowActions,
     selection: false,

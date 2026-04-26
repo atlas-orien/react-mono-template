@@ -4,7 +4,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@workspace/ui-components/stable/card"
-import { RolePermissionsPageHeading } from "./components/page-heading"
 import { RolePermissionEditor } from "./components/role-permission-editor"
 import {
   RolePermissionTabs,
@@ -17,8 +16,6 @@ export default function AppRolePermissionsPage() {
 
   return (
     <div className="w-full min-w-0 space-y-4 px-4 pb-4">
-      <RolePermissionsPageHeading />
-
       {page.roles.length > 0 && page.activeRole ? (
         <RolePermissionTabs
           activeRoleId={page.resolvedRoleId}
