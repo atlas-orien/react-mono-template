@@ -37,7 +37,7 @@ export function LanguageSwitch({ className }: LanguageSwitchProps) {
       <DropdownMenuTrigger
         mode="primitive"
         className={cn(
-          "inline-flex size-9 items-center justify-center rounded-full border border-border/70 bg-background/80 text-[var(--info)] shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] transition-colors hover:bg-accent hover:text-[var(--info)] dark:shadow-none",
+          "inline-flex size-9 items-center justify-center rounded-full border border-transparent bg-transparent text-[var(--info)] shadow-none transition-colors hover:bg-[var(--surface-hover)] hover:text-[var(--info)]",
           className
         )}
         aria-label={label}
@@ -84,7 +84,7 @@ export function LanguageSwitch({ className }: LanguageSwitchProps) {
               {currentValue.value === option.value ? (
                 <Check
                   aria-hidden="true"
-                  className="absolute right-2 size-4 text-primary"
+                  className="absolute right-2 size-4 text-[var(--select-item-hover-foreground)]"
                 />
               ) : null}
             </DropdownMenuRadioItem>

@@ -21,7 +21,6 @@ import {
   SidebarMenuSubItem,
   SidebarProvider,
   SidebarRail,
-  SidebarSeparator,
   useSidebar,
 } from "@workspace/ui-components"
 import { TooltipProvider } from "../tooltip"
@@ -102,7 +101,7 @@ export function SidebarShell({
               </div>
             </SidebarHeader>
 
-            <SidebarSeparator />
+            <div aria-hidden="true" className="h-px bg-sidebar-border" />
 
             <SidebarContent>
               {sections.map((section) => (
@@ -121,7 +120,7 @@ export function SidebarShell({
 
             {footerAccount ? (
               <>
-                <SidebarSeparator />
+                <div aria-hidden="true" className="h-px bg-sidebar-border" />
                 <SidebarFooter>
                   <AvatarDropdown
                     triggerVariant="sidebar"

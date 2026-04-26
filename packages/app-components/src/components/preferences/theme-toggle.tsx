@@ -71,10 +71,6 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
   const label = t(
     mode === "system" ? "header.theme.system" : `header.theme.${effectiveTheme}`
   )
-  const buttonToneClassName =
-    effectiveTheme === "dark"
-      ? "border-amber-200/70 bg-amber-50/90 hover:bg-amber-100 dark:border-amber-400/20 dark:bg-amber-300/10 dark:hover:bg-amber-300/14"
-      : "border-sky-200/80 bg-sky-50/90 hover:bg-sky-100 dark:border-sky-400/20 dark:bg-sky-300/10 dark:hover:bg-sky-300/14"
   const icon =
     effectiveTheme === "dark" ? (
       <Sun
@@ -93,8 +89,7 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
       variant="ghost"
       size="icon"
       className={cn(
-        "rounded-full border text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] transition-colors dark:shadow-none",
-        buttonToneClassName,
+        "rounded-full border border-transparent bg-transparent text-foreground shadow-none transition-colors hover:bg-[var(--surface-hover)]",
         className
       )}
       aria-label={label}

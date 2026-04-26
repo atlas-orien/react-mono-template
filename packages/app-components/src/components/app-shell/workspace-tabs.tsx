@@ -28,7 +28,7 @@ export function WorkspaceTabs({
   }
 
   return (
-    <div className="bg-background/92 px-4 py-1 backdrop-blur supports-backdrop-filter:bg-background/80">
+    <div className="bg-[var(--surface)] px-4 py-1 text-[var(--surface-foreground)]">
       <div className="flex min-w-0 items-center gap-3">
         {clearLabel ? (
           <Tooltip>

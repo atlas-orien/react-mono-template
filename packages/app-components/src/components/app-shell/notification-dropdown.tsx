@@ -47,12 +47,12 @@ export function NotificationDropdown({
     <DropdownMenu>
       <DropdownMenuTrigger
         mode="primitive"
-        className="relative inline-flex size-9 items-center justify-center rounded-full border border-border/70 bg-background/80 text-muted-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] transition-colors hover:bg-accent hover:text-foreground dark:shadow-none"
+        className="relative inline-flex size-9 items-center justify-center rounded-full border border-transparent bg-transparent text-muted-foreground shadow-none transition-colors hover:bg-[var(--surface-hover)] hover:text-foreground"
         aria-label={label}
       >
         <Bell aria-hidden="true" className="size-5" strokeWidth={2.2} />
         {unreadCount > 0 ? (
-          <span className="absolute top-1.5 right-1.5 size-2.5 rounded-full bg-[var(--info)] ring-2 ring-background" />
+          <span className="absolute top-1.5 right-1.5 size-2.5 rounded-full bg-[var(--destructive)] ring-2 ring-background" />
         ) : null}
         <span className="sr-only">{label}</span>
       </DropdownMenuTrigger>
@@ -119,7 +119,7 @@ export function NotificationDropdown({
                 </button>
 
                 {item.unread ? (
-                  <span className="absolute top-4 right-4 size-2.5 rounded-full bg-[var(--info)]" />
+                  <span className="absolute top-4 right-4 size-2.5 rounded-full bg-[var(--destructive)]" />
                 ) : null}
 
                 {item.action ? (
