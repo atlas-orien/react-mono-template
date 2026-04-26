@@ -1,5 +1,4 @@
-import { ShieldCheck } from "lucide-react"
-import { TreeView, type TreeNode } from "@workspace/ui-components"
+import { SearchInput, TreeView, type TreeNode } from "@workspace/ui-components"
 import { Button } from "@workspace/ui-components/stable/button"
 import {
   Card,
@@ -8,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@workspace/ui-components/stable/card"
-import { Input } from "@workspace/ui-components/stable/input"
 import type { RoleResponse } from "@/api"
 import { PermissionSummary } from "./permission-summary"
 import type { PermissionSummaryType } from "../types"
@@ -73,19 +71,15 @@ export function RolePermissionEditor({
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
-            <Input
+          <div className="w-full max-w-80">
+            <SearchInput
               value={searchValue}
               onValueChange={onSearchChange}
               placeholder="搜索权限名称"
             />
-            <div className="flex items-center gap-2 text-sm text-(--app-muted-text) md:hidden">
-              <ShieldCheck className="size-4" />
-              已选择 {selectedCount} 项
-            </div>
           </div>
 
-          <PermissionSummary summary={summary} />
+          <PermissionSummary selectedCount={selectedCount} summary={summary} />
 
           <div className="rounded-(--ui-radius-md) border border-(--app-border) p-3">
             <TreeView

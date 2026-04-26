@@ -2,7 +2,7 @@ import { Badge } from "@workspace/ui-components/stable/badge"
 
 export function RolePermissionsPageHeading() {
   return (
-    <div className="flex min-w-0 flex-col gap-2 border-b border-(--app-border) pb-4">
+    <div className="flex min-w-0 flex-col gap-2">
       <div className="w-fit">
         <Badge variant="outline">Role Permissions</Badge>
       </div>

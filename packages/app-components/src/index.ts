@@ -83,6 +83,7 @@ export type {
   MetricCardsCardClassNames,
   MetricCardsCardProps,
   MetricCardsItem,
+  MetricCardsLayout,
   MetricCardsProps,
   MetricCardsVariant,
 } from "./components/metric-cards"

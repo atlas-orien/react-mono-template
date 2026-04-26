@@ -8,6 +8,8 @@ export type MetricCardsVariant =
   | "warning"
   | "danger"
 
+export type MetricCardsLayout = "grid" | "inline"
+
 export interface MetricCardsItem {
   key?: string
   label: ReactNode
@@ -21,6 +23,7 @@ export interface MetricCardsItem {
 export interface MetricCardsProps {
   items: readonly MetricCardsItem[]
   variant?: MetricCardsVariant
+  layout?: MetricCardsLayout
   card?: ComponentType<MetricCardsCardProps>
 }
 
@@ -36,6 +39,7 @@ export interface MetricCardsCardClassNames {
 export interface MetricCardsCardProps {
   item: MetricCardsItem
   index: number
+  layout: MetricCardsLayout
   variant: MetricCardsVariant
   classNames: MetricCardsCardClassNames
 }
@@ -94,8 +98,36 @@ const metricCardVariantClassNames: Record<
 
 function DefaultMetricCard({
   item,
+  layout,
   classNames,
 }: MetricCardsCardProps) {
+  if (layout === "inline") {
+    return (
+      <Card className={`min-w-34 ${classNames.card}`}>
+        <CardContent className="px-4 py-0">
+          <div className="flex min-h-10 items-center gap-2.5">
+            {item.icon ? (
+              <span className={`flex size-4 shrink-0 items-center justify-center ${classNames.icon}`}>
+                {item.icon}
+              </span>
+            ) : null}
+
+            <div className="min-w-0">
+              <p className={`truncate text-sm font-medium ${classNames.label}`}>
+                {item.label}
+              </p>
+              <p
+                className={`mt-0.5 truncate text-xl leading-none font-semibold ${classNames.value}`}
+              >
+                {item.value}
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
   return (
     <Card className={`h-full min-w-0 ${classNames.card}`}>
       <CardContent className="px-3 py-2 sm:px-3.5 sm:py-2.5">
@@ -133,11 +165,17 @@ function DefaultMetricCard({
 
 export function MetricCards({
   items,
+  layout = "grid",
   variant = "default",
   card: CardComponent = DefaultMetricCard,
 }: MetricCardsProps) {
+  const rootClassName =
+    layout === "inline"
+      ? "inline-flex w-fit max-w-full flex-wrap gap-2 sm:gap-3"
+      : "grid w-full min-w-0 grid-cols-4 gap-2 sm:gap-3 xl:gap-4"
+
   return (
-    <div className="grid w-full min-w-0 grid-cols-4 gap-2 sm:gap-3 xl:gap-4">
+    <div className={rootClassName}>
       {items.map((item, index) => {
         const resolvedVariant = item.variant ?? variant
         const classNames = metricCardVariantClassNames[resolvedVariant]
@@ -147,6 +185,7 @@ export function MetricCards({
             key={item.key ?? (typeof item.label === "string" ? item.label : index)}
             item={item}
             index={index}
+            layout={layout}
             variant={resolvedVariant}
             classNames={classNames}
           />

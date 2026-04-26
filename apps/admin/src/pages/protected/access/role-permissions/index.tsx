@@ -10,48 +10,40 @@ import {
   RolePermissionTabs,
   RolePermissionTabsContent,
 } from "./components/role-tabs"
-import { SelectedPermissionsTable } from "./components/selected-permissions-table"
 import { useRolePermissionsPage } from "./use-role-permissions-page"
 
 export default function RolePermissionsPage() {
   const page = useRolePermissionsPage()
 
   return (
-    <div className="w-full min-w-0 space-y-4">
+    <div className="w-full min-w-0 space-y-4 px-4 pb-4">
       <RolePermissionsPageHeading />
 
       {page.roles.length > 0 && page.activeRole ? (
         <RolePermissionTabs
           activeRoleId={page.resolvedRoleId}
           roles={page.roles}
-          selectedCount={page.selectedPermissionIds.length}
           onRoleChange={page.handleRoleChange}
         >
           {page.roles.map((role) => (
             <RolePermissionTabsContent key={role.id} value={String(role.id)}>
-              <div className="space-y-4">
-                <RolePermissionEditor
-                  activeRole={role}
-                  defaultExpandedIds={page.defaultExpandedIds}
-                  isSaving={page.isSaving}
-                  isTreeLoading={page.isTreeLoading}
-                  resourceTree={page.resourceTree}
-                  searchValue={page.searchValue}
-                  selectedCount={page.selectedPermissionIds.length}
-                  selectedPermissionIds={page.selectedPermissionIds}
-                  summary={page.summary}
-                  onReset={page.handleResetSelection}
-                  onSave={page.handleSave}
-                  onSearchChange={page.handleSearchChange}
-                  onSelectedPermissionIdsChange={
-                    page.handleSelectedPermissionIdsChange
-                  }
-                />
-
-                <SelectedPermissionsTable
-                  selectedResources={page.selectedResources}
-                />
-              </div>
+              <RolePermissionEditor
+                activeRole={role}
+                defaultExpandedIds={page.defaultExpandedIds}
+                isSaving={page.isSaving}
+                isTreeLoading={page.isTreeLoading}
+                resourceTree={page.resourceTree}
+                searchValue={page.searchValue}
+                selectedCount={page.selectedPermissionIds.length}
+                selectedPermissionIds={page.selectedPermissionIds}
+                summary={page.summary}
+                onReset={page.handleResetSelection}
+                onSave={page.handleSave}
+                onSearchChange={page.handleSearchChange}
+                onSelectedPermissionIdsChange={
+                  page.handleSelectedPermissionIdsChange
+                }
+              />
             </RolePermissionTabsContent>
           ))}
         </RolePermissionTabs>

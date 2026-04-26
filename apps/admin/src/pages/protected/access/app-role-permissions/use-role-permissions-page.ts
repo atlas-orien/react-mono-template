@@ -111,7 +111,6 @@ export function useAppRolePermissionsPage() {
     roles,
     searchValue,
     selectedPermissionIds,
-    selectedResources,
     summary,
   }
 }

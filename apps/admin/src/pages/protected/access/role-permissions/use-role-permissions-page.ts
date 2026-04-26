@@ -111,7 +111,6 @@ export function useRolePermissionsPage() {
     roles,
     searchValue,
     selectedPermissionIds,
-    selectedResources,
     summary,
   }
 }
