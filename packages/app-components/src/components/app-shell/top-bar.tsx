@@ -18,7 +18,7 @@ export function TopBar({
 }: TopBarProps) {
   return (
     <header className="sticky top-0 z-30 w-full min-w-0 shrink-0 bg-background/90 backdrop-blur supports-backdrop-filter:bg-background/75">
-      <div className="flex min-w-0 items-center justify-between gap-4 px-4 py-3">
+      <div className="flex min-w-0 items-center justify-between gap-4 px-4 py-1">
         <div className="flex min-w-0 items-center gap-3">
           {showSidebarTrigger ? (
             <SidebarTrigger ariaLabel="Toggle sidebar" />
@@ -32,7 +32,9 @@ export function TopBar({
                 </div>
               ) : null}
               {meta ? (
-                <div className="truncate text-sm text-(--app-muted-text)">{meta}</div>
+                <div className="truncate text-sm text-(--app-muted-text)">
+                  {meta}
+                </div>
               ) : null}
             </div>
           ) : null}

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react"
-import { Pin, X } from "lucide-react"
+import { RotateCcw, X } from "lucide-react"
+import { Tooltip, TooltipContent, TooltipTrigger } from "../tooltip"
 import { cn } from "@workspace/ui-core/lib/utils.js"
 
 export interface WorkspaceTabItem {
@@ -7,34 +8,50 @@ export interface WorkspaceTabItem {
   label: ReactNode
   href: string
   active?: boolean
-  pinned?: boolean
   onSelect?: () => void
   onClose?: () => void
 }
 
 export interface WorkspaceTabsProps {
-  label?: ReactNode
+  clearLabel?: ReactNode
   items: WorkspaceTabItem[]
+  onClear?: () => void
 }
 
-export function WorkspaceTabs({ label, items }: WorkspaceTabsProps) {
+export function WorkspaceTabs({
+  clearLabel,
+  items,
+  onClear,
+}: WorkspaceTabsProps) {
   if (items.length === 0) {
     return null
   }
 
   return (
-    <div className="border-t border-border/70 bg-background/92 px-4 py-2 backdrop-blur supports-backdrop-filter:bg-background/80">
+    <div className="bg-background/92 px-4 py-1 backdrop-blur supports-backdrop-filter:bg-background/80">
       <div className="flex min-w-0 items-center gap-3">
-        {label ? (
-          <div className="shrink-0 text-xs font-medium text-muted-foreground">
-            {label}
-          </div>
+        {clearLabel ? (
+          <Tooltip>
+            <TooltipTrigger>
+              <button
+                type="button"
+                onClick={onClear}
+                className="inline-flex size-8 shrink-0 items-center justify-center rounded-md text-muted-foreground transition hover:bg-accent hover:text-accent-foreground"
+              >
+                <RotateCcw aria-hidden="true" className="size-4.5" />
+                <span className="sr-only">{clearLabel}</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>{clearLabel}</TooltipContent>
+          </Tooltip>
         ) : null}
 
         <div className="flex min-w-0 flex-1 items-center overflow-x-auto">
           <ol className="flex min-w-0 items-center gap-1.5 text-sm text-muted-foreground">
             {items.map((item, index) => {
               const isLast = index === items.length - 1
+              const canClose =
+                items.length > 1 && typeof item.onClose === "function"
 
               return (
                 <li
@@ -50,13 +67,6 @@ export function WorkspaceTabs({ label, items }: WorkspaceTabsProps) {
                         item.active && "text-foreground"
                       )}
                     >
-                      {item.pinned ? (
-                        <Pin
-                          aria-hidden="true"
-                          className="size-3.5 shrink-0 text-muted-foreground"
-                          strokeWidth={2.2}
-                        />
-                      ) : null}
                       <span
                         className={cn(
                           "max-w-40 truncate",
@@ -67,7 +77,7 @@ export function WorkspaceTabs({ label, items }: WorkspaceTabsProps) {
                       </span>
                     </button>
 
-                    {!item.pinned ? (
+                    {canClose ? (
                       <button
                         type="button"
                         onClick={item.onClose}

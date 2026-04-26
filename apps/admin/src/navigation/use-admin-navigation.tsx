@@ -197,11 +197,30 @@ export function useAdminNavigation() {
     [location.pathname, navigate, t, visibleSections]
   )
 
+  const labelsByPath = useMemo<Record<string, string>>(() => {
+    const entries: Array<[string, string]> = []
+
+    for (const section of visibleSections) {
+      for (const item of section.items) {
+        if (item.path) {
+          entries.push([item.path, translateNavigationLabel(t, item)])
+        }
+
+        for (const subItem of item.subItems ?? []) {
+          entries.push([subItem.href, translateNavigationLabel(t, subItem)])
+        }
+      }
+    }
+
+    return Object.fromEntries(entries)
+  }, [t, visibleSections])
+
   return {
     currentItem,
     defaultPath: defaultItem?.path ?? null,
     hasVisibleMenus: visibleSections.length > 0,
     isLoading: false,
+    labelsByPath,
     sections,
   }
 }

@@ -52,7 +52,7 @@ const messages = {
         },
       },
       workspaceTabs: {
-        label: "历史页面",
+        clear: "清空历史页面",
       },
       account: {
         logout: "退出登录",

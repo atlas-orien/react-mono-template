@@ -28,13 +28,19 @@ export function AdminAppShell({ children }: AdminAppShellProps) {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const user = useSelector((state: RootState) => state.auth.user)
-  const { currentItem, defaultPath, hasVisibleMenus, isLoading, sections } =
-    useAdminNavigation()
+  const {
+    currentItem,
+    defaultPath,
+    hasVisibleMenus,
+    isLoading,
+    labelsByPath,
+    sections,
+  } = useAdminNavigation()
   const notifications = getAdminNotifications(t)
   const workspaceTabs = useWorkspaceTabs({
     currentPath: currentItem?.path ?? null,
-    currentLabel: currentItem?.label ?? null,
     defaultPath,
+    labelsByPath,
   })
 
   const handleLogout = () => {
@@ -86,8 +92,9 @@ export function AdminAppShell({ children }: AdminAppShellProps) {
             ]}
           />
           <WorkspaceTabs
-            label={t("admin.shell.workspaceTabs.label", "History")}
+            clearLabel={t("admin.shell.workspaceTabs.clear", "Clear history")}
             items={workspaceTabs.items}
+            onClear={workspaceTabs.clear}
           />
         </>
       }

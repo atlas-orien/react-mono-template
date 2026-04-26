@@ -5,14 +5,12 @@ const STORAGE_KEY = "admin.workspace-tabs"
 
 interface PersistedWorkspaceTab {
   path: string
-  label: string
-  pinned?: boolean
 }
 
 interface UseWorkspaceTabsOptions {
   currentPath: string | null
-  currentLabel: string | null
   defaultPath: string | null
+  labelsByPath: Record<string, string>
 }
 
 function readStoredTabs() {
@@ -33,11 +31,7 @@ function readStoredTabs() {
     }
 
     return parsed.filter(
-      (item) =>
-        typeof item?.path === "string" &&
-        item.path.length > 0 &&
-        typeof item?.label === "string" &&
-        item.label.length > 0
+      (item) => typeof item?.path === "string" && item.path.length > 0
     )
   } catch {
     return []
@@ -54,8 +48,8 @@ function writeStoredTabs(tabs: PersistedWorkspaceTab[]) {
 
 export function useWorkspaceTabs({
   currentPath,
-  currentLabel,
   defaultPath,
+  labelsByPath,
 }: UseWorkspaceTabsOptions) {
   const location = useLocation()
   const navigate = useNavigate()
@@ -64,15 +58,13 @@ export function useWorkspaceTabs({
   )
 
   useEffect(() => {
-    if (!currentPath || !currentLabel) {
+    if (!currentPath) {
       return
     }
 
     setTabs((previous) => {
       const nextTab: PersistedWorkspaceTab = {
         path: currentPath,
-        label: currentLabel,
-        pinned: currentPath === "/",
       }
 
       const nextTabs = previous.some((item) => item.path === currentPath)
@@ -80,8 +72,6 @@ export function useWorkspaceTabs({
             item.path === currentPath
               ? {
                   ...item,
-                  label: currentLabel,
-                  pinned: nextTab.pinned,
                 }
               : item
           )
@@ -90,49 +80,57 @@ export function useWorkspaceTabs({
       writeStoredTabs(nextTabs)
       return nextTabs
     })
-  }, [currentLabel, currentPath])
+  }, [currentPath])
 
   const items = useMemo(
     () =>
-      tabs.map((tab) => ({
-        key: tab.path,
-        href: tab.path,
-        label: tab.label,
-        pinned: tab.pinned,
-        active: location.pathname === tab.path,
-        onSelect: () => navigate(tab.path),
-        onClose: tab.pinned
-          ? undefined
-          : () => {
-              setTabs((previous) => {
-                const closingIndex = previous.findIndex(
-                  (item) => item.path === tab.path
-                )
-                const nextTabs = previous.filter(
-                  (item) => item.path !== tab.path
-                )
+      tabs
+        .filter((tab) => Boolean(labelsByPath[tab.path]))
+        .map((tab) => ({
+          key: tab.path,
+          href: tab.path,
+          label: labelsByPath[tab.path] ?? tab.path,
+          active: location.pathname === tab.path,
+          onSelect: () => navigate(tab.path),
+          onClose: () => {
+            setTabs((previous) => {
+              if (previous.length <= 1) {
+                return previous
+              }
 
-                writeStoredTabs(nextTabs)
+              const closingIndex = previous.findIndex(
+                (item) => item.path === tab.path
+              )
+              const nextTabs = previous.filter((item) => item.path !== tab.path)
 
-                if (location.pathname === tab.path) {
-                  const fallbackTab =
-                    nextTabs[closingIndex - 1] ??
-                    nextTabs[closingIndex] ??
-                    nextTabs[nextTabs.length - 1]
+              writeStoredTabs(nextTabs)
 
-                  navigate(fallbackTab?.path ?? defaultPath ?? "/", {
-                    replace: true,
-                  })
-                }
+              if (location.pathname === tab.path) {
+                const fallbackTab =
+                  nextTabs[closingIndex - 1] ??
+                  nextTabs[closingIndex] ??
+                  nextTabs[nextTabs.length - 1]
 
-                return nextTabs
-              })
-            },
-      })),
-    [defaultPath, location.pathname, navigate, tabs]
+                navigate(fallbackTab?.path ?? defaultPath ?? "/", {
+                  replace: true,
+                })
+              }
+
+              return nextTabs
+            })
+          },
+        })),
+    [defaultPath, labelsByPath, location.pathname, navigate, tabs]
   )
 
   return {
+    clear: () => {
+      const fallbackPath = currentPath ?? defaultPath
+      const nextTabs = fallbackPath ? [{ path: fallbackPath }] : []
+
+      writeStoredTabs(nextTabs)
+      setTabs(nextTabs)
+    },
     items,
   }
 }
