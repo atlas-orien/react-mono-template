@@ -17,7 +17,7 @@ export function TopBar({
   showSidebarTrigger = true,
 }: TopBarProps) {
   return (
-    <header className="z-20 w-full min-w-0 shrink-0 bg-transparent">
+    <header className="sticky top-0 z-30 w-full min-w-0 shrink-0 bg-background/90 backdrop-blur supports-backdrop-filter:bg-background/75">
       <div className="flex min-w-0 items-center justify-between gap-4 px-4 py-3">
         <div className="flex min-w-0 items-center gap-3">
           {showSidebarTrigger ? (

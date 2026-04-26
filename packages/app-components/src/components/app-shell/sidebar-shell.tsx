@@ -84,83 +84,83 @@ export function SidebarShell({
   children,
 }: SidebarShellProps) {
   return (
-    <TooltipProvider>
-      <SidebarProvider defaultOpen>
-        <Sidebar collapsible="icon">
-          <SidebarHeader>
-            <div className="flex items-center gap-2 group-data-[collapsible=icon]:gap-0">
-              <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-sidebar-primary text-sm font-semibold text-sidebar-primary-foreground">
-                {typeof brandTitle === "string" ? brandTitle.charAt(0).toUpperCase() : "W"}
+    <div className="h-svh overflow-hidden">
+      <TooltipProvider>
+        <SidebarProvider defaultOpen>
+          <Sidebar collapsible="icon">
+            <SidebarHeader>
+              <div className="flex items-center gap-2 group-data-[collapsible=icon]:gap-0">
+                <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-sidebar-primary text-sm font-semibold text-sidebar-primary-foreground">
+                  {typeof brandTitle === "string" ? brandTitle.charAt(0).toUpperCase() : "W"}
+                </div>
+                <div className="min-w-0 flex-1 group-data-[collapsible=icon]:hidden">
+                  <div>{brandTitle}</div>
+                  {(brandDescription ?? brandEyebrow) ? (
+                    <div>{brandDescription ?? brandEyebrow}</div>
+                  ) : null}
+                </div>
               </div>
-              <div className="min-w-0 flex-1 group-data-[collapsible=icon]:hidden">
-                <div>{brandTitle}</div>
-                {(brandDescription ?? brandEyebrow) ? (
-                  <div>{brandDescription ?? brandEyebrow}</div>
-                ) : null}
-              </div>
-            </div>
-          </SidebarHeader>
+            </SidebarHeader>
 
-          <SidebarSeparator />
+            <SidebarSeparator />
 
-          <SidebarContent>
-            {sections.map((section) => (
-              <SidebarGroup key={section.key ?? String(section.label)}>
-                <SidebarGroupLabel>{section.label}</SidebarGroupLabel>
-                <SidebarGroupContent>
-                  <SidebarMenu>
-                    {section.items.map((item) => (
-                      <SidebarNavRow key={item.key ?? item.href ?? String(item.label)} item={item} />
+            <SidebarContent>
+              {sections.map((section) => (
+                <SidebarGroup key={section.key ?? String(section.label)}>
+                  <SidebarGroupLabel>{section.label}</SidebarGroupLabel>
+                  <SidebarGroupContent>
+                    <SidebarMenu>
+                      {section.items.map((item) => (
+                        <SidebarNavRow key={item.key ?? item.href ?? String(item.label)} item={item} />
+                      ))}
+                    </SidebarMenu>
+                  </SidebarGroupContent>
+                </SidebarGroup>
+              ))}
+            </SidebarContent>
+
+            {footerAccount ? (
+              <>
+                <SidebarSeparator />
+                <SidebarFooter>
+                  <AvatarDropdown
+                    triggerVariant="sidebar"
+                    avatarAlt={footerAccount.avatarAlt}
+                    avatarSrc={footerAccount.avatarSrc}
+                    avatarFallback={footerAccount.avatarFallback}
+                    displayName={footerAccount.displayName}
+                    displayId={footerAccount.displayId}
+                    logout={footerAccount.logout}
+                  >
+                    {footerAccount.actions?.map((action, index) => (
+                      <AvatarDropdownItem
+                        key={index}
+                        icon={action.icon}
+                        label={action.label}
+                        onSelect={action.onSelect}
+                        href={action.href}
+                        disabled={action.disabled}
+                      />
                     ))}
-                  </SidebarMenu>
-                </SidebarGroupContent>
-              </SidebarGroup>
-            ))}
-          </SidebarContent>
+                  </AvatarDropdown>
+                </SidebarFooter>
+              </>
+            ) : null}
 
-          {footerAccount ? (
-            <>
-              <SidebarSeparator />
-              <SidebarFooter>
-                <AvatarDropdown
-                  triggerVariant="sidebar"
-                  avatarAlt={footerAccount.avatarAlt}
-                  avatarSrc={footerAccount.avatarSrc}
-                  avatarFallback={footerAccount.avatarFallback}
-                  displayName={footerAccount.displayName}
-                  displayId={footerAccount.displayId}
-                  logout={footerAccount.logout}
-                >
-                  {footerAccount.actions?.map((action, index) => (
-                    <AvatarDropdownItem
-                      key={index}
-                      icon={action.icon}
-                      label={action.label}
-                      onSelect={action.onSelect}
-                      href={action.href}
-                      disabled={action.disabled}
-                    />
-                  ))}
-                </AvatarDropdown>
-              </SidebarFooter>
-            </>
-          ) : null}
+            <SidebarRail />
+          </Sidebar>
 
-          <SidebarRail />
-        </Sidebar>
-
-        <SidebarInset>
-          <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-            {header}
-            <div className="flex min-h-0 min-w-0 flex-1 overflow-hidden p-3">
-              <div className="flex min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto pr-1">
+          <SidebarInset>
+            <div className="flex h-svh min-h-0 min-w-0 flex-col overflow-x-hidden overflow-y-auto">
+              {header}
+              <div className="flex min-w-0 flex-1 p-3">
                 {children}
               </div>
             </div>
-          </div>
-        </SidebarInset>
-      </SidebarProvider>
-    </TooltipProvider>
+          </SidebarInset>
+        </SidebarProvider>
+      </TooltipProvider>
+    </div>
   )
 }
 
