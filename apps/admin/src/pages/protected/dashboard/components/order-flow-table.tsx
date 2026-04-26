@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import {
   Card,
   CardContent,
@@ -16,29 +17,39 @@ import {
 import { orders } from "../dashboard-data"
 
 export function OrderFlowTable() {
+  const { t } = useTranslation()
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>最新订单流</CardTitle>
-        <CardDescription>高频业务动作的实时视图。</CardDescription>
+        <CardTitle>{t("admin.dashboard.orders.title")}</CardTitle>
+        <CardDescription>
+          {t("admin.dashboard.orders.description")}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>单号</TableHead>
-              <TableHead>来源</TableHead>
-              <TableHead>状态</TableHead>
-              <TableHead>金额</TableHead>
+              <TableHead>{t("admin.dashboard.orders.columns.id")}</TableHead>
+              <TableHead>
+                {t("admin.dashboard.orders.columns.source")}
+              </TableHead>
+              <TableHead>
+                {t("admin.dashboard.orders.columns.status")}
+              </TableHead>
+              <TableHead>
+                {t("admin.dashboard.orders.columns.amount")}
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {orders.map((order) => (
-              <TableRow key={order[0]}>
-                <TableCell>{order[0]}</TableCell>
-                <TableCell>{order[1]}</TableCell>
-                <TableCell>{order[2]}</TableCell>
-                <TableCell>{order[3]}</TableCell>
+              <TableRow key={order.id}>
+                <TableCell>{order.id}</TableCell>
+                <TableCell>{t(order.sourceKey)}</TableCell>
+                <TableCell>{t(order.statusKey)}</TableCell>
+                <TableCell>{order.amount}</TableCell>
               </TableRow>
             ))}
           </TableBody>

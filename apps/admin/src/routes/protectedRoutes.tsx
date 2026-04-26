@@ -10,11 +10,8 @@ import {
   AppUsersPage,
   DataTablePage,
   DashboardPage,
-  MembersPage,
-  OrdersPage,
   RolePermissionsPage,
   RolesPage,
-  SettingsPage,
 } from "@/routes/lazy/protectedPages"
 
 function withSuspense(node: ReactNode) {
@@ -29,14 +26,6 @@ export const protectedRoutes: RouteObject = {
     {
       index: true, // Default path `/`
       element: withSuspense(<DashboardPage />),
-    },
-    {
-      path: "orders",
-      element: withSuspense(<OrdersPage />),
-    },
-    {
-      path: "members",
-      element: withSuspense(<MembersPage />),
     },
     {
       path: "access",
@@ -69,10 +58,6 @@ export const protectedRoutes: RouteObject = {
     {
       path: "access/app-role-permissions",
       element: withSuspense(<AppRolePermissionsPage />),
-    },
-    {
-      path: "settings",
-      element: withSuspense(<SettingsPage />),
     },
     {
       path: "datatable",

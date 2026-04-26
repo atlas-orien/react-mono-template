@@ -1,3 +1,5 @@
+import { useMemo } from "react"
+import { useTranslation } from "react-i18next"
 import {
   Card,
   CardContent,
@@ -13,20 +15,49 @@ import {
 import { channelStats, revenueTrend, userSegments } from "../dashboard-data"
 
 export function DashboardCharts() {
+  const { t } = useTranslation()
+  const localizedRevenueTrend = useMemo(
+    () =>
+      revenueTrend.map((item) => ({
+        ...item,
+        day: t(item.dayKey),
+      })),
+    [t]
+  )
+  const localizedUserSegments = useMemo(
+    () =>
+      userSegments.map((item) => ({
+        key: item.key,
+        label: t(item.labelKey),
+        value: item.value,
+      })),
+    [t]
+  )
+
   return (
     <div className="grid gap-4 xl:grid-cols-[1.25fr_0.75fr]">
       <Card>
         <CardHeader>
-          <CardTitle>成交趋势</CardTitle>
-          <CardDescription>最近 7 天成交额与订单量走势。</CardDescription>
+          <CardTitle>
+            {t("admin.dashboard.charts.revenueTrend.title")}
+          </CardTitle>
+          <CardDescription>
+            {t("admin.dashboard.charts.revenueTrend.description")}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <TrendLineChart
-            data={revenueTrend}
+            data={localizedRevenueTrend}
             xKey="day"
             series={[
-              { key: "revenue", label: "成交额" },
-              { key: "orders", label: "订单量" },
+              {
+                key: "revenue",
+                label: t("admin.dashboard.charts.series.revenue"),
+              },
+              {
+                key: "orders",
+                label: t("admin.dashboard.charts.series.orders"),
+              },
             ]}
           />
         </CardContent>
@@ -34,11 +65,15 @@ export function DashboardCharts() {
 
       <Card>
         <CardHeader>
-          <CardTitle>用户结构</CardTitle>
-          <CardDescription>会员活跃状态占比。</CardDescription>
+          <CardTitle>
+            {t("admin.dashboard.charts.userSegments.title")}
+          </CardTitle>
+          <CardDescription>
+            {t("admin.dashboard.charts.userSegments.description")}
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <DonutChart data={userSegments} />
+          <DonutChart data={localizedUserSegments} />
         </CardContent>
       </Card>
     </div>
@@ -46,18 +81,30 @@ export function DashboardCharts() {
 }
 
 export function ChannelChart() {
+  const { t } = useTranslation()
+  const localizedChannelStats = useMemo(
+    () =>
+      channelStats.map((item) => ({
+        channel: t(item.channelKey),
+        value: item.value,
+      })),
+    [t]
+  )
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>渠道成交</CardTitle>
-        <CardDescription>本周各渠道成交贡献。</CardDescription>
+        <CardTitle>{t("admin.dashboard.charts.channels.title")}</CardTitle>
+        <CardDescription>
+          {t("admin.dashboard.charts.channels.description")}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <CategoryBarChart
-          data={channelStats}
+          data={localizedChannelStats}
           xKey="channel"
           valueKey="value"
-          label="成交占比"
+          label={t("admin.dashboard.charts.series.channelShare")}
         />
       </CardContent>
     </Card>

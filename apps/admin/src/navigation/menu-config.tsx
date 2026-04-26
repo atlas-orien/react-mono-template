@@ -10,6 +10,7 @@ export interface NavigationSubItemConfig {
   id: string
   permissionCode: string
   label: string
+  labelKey?: string
   href: string
   matcher?: (pathname: string) => boolean
 }
@@ -18,6 +19,7 @@ export interface NavigationItemConfig {
   id: string
   permissionCode?: string
   label: string
+  labelKey?: string
   path?: string
   icon?: ReactNode
   subItems?: NavigationSubItemConfig[]
@@ -38,18 +40,21 @@ export const navigationSections: NavigationSectionConfig[] = [
         id: "dashboard",
         permissionCode: "access",
         label: "控制台",
+        labelKey: "admin.navigation.dashboard",
         path: "/",
         icon: <LayoutDashboard />,
       },
       {
         id: "account-management",
         label: "账号管理",
+        labelKey: "admin.navigation.accountManagement",
         icon: <UsersRound />,
         subItems: [
           {
             id: "admin-users",
             permissionCode: "user:list",
             label: "后台账号",
+            labelKey: "admin.navigation.adminUsers",
             href: "/accounts/admin-users",
             matcher: (pathname) => pathname.startsWith("/accounts/admin-users"),
           },
@@ -57,6 +62,7 @@ export const navigationSections: NavigationSectionConfig[] = [
             id: "app-users",
             permissionCode: "app_user:list",
             label: "App 用户",
+            labelKey: "admin.navigation.appUsers",
             href: "/accounts/app-users",
             matcher: (pathname) => pathname.startsWith("/accounts/app-users"),
           },
@@ -65,12 +71,14 @@ export const navigationSections: NavigationSectionConfig[] = [
       {
         id: "access-control",
         label: "权限中心",
+        labelKey: "admin.navigation.accessControl",
         icon: <ShieldCheck />,
         subItems: [
           {
             id: "roles",
             permissionCode: "role:list",
             label: "权限角色",
+            labelKey: "admin.navigation.roles",
             href: "/access/roles",
             matcher: (pathname) => pathname.startsWith("/access/roles"),
           },
@@ -78,6 +86,7 @@ export const navigationSections: NavigationSectionConfig[] = [
             id: "role-permissions",
             permissionCode: "role_permission:list",
             label: "角色授权",
+            labelKey: "admin.navigation.rolePermissions",
             href: "/access/role-permissions",
             matcher: (pathname) =>
               pathname.startsWith("/access/role-permissions"),
@@ -86,6 +95,7 @@ export const navigationSections: NavigationSectionConfig[] = [
             id: "app-roles",
             permissionCode: "app_role:list",
             label: "App 角色",
+            labelKey: "admin.navigation.appRoles",
             href: "/access/app-roles",
             matcher: (pathname) => pathname.startsWith("/access/app-roles"),
           },
@@ -93,6 +103,7 @@ export const navigationSections: NavigationSectionConfig[] = [
             id: "app-role-permissions",
             permissionCode: "app_role_permission:list",
             label: "App 角色授权",
+            labelKey: "admin.navigation.appRolePermissions",
             href: "/access/app-role-permissions",
             matcher: (pathname) =>
               pathname.startsWith("/access/app-role-permissions"),
@@ -100,42 +111,16 @@ export const navigationSections: NavigationSectionConfig[] = [
         ],
       },
       {
-        id: "operations",
-        label: "运营中心",
-        icon: <LayoutDashboard />,
-        subItems: [
-          {
-            id: "orders",
-            permissionCode: "access",
-            label: "订单管理",
-            href: "/orders",
-            matcher: (pathname) => pathname.startsWith("/orders"),
-          },
-          {
-            id: "members",
-            permissionCode: "access",
-            label: "会员管理",
-            href: "/members",
-            matcher: (pathname) => pathname.startsWith("/members"),
-          },
-        ],
-      },
-      {
         id: "system",
-        label: "系统配置",
+        label: "开发示例",
+        labelKey: "admin.navigation.examples",
         icon: <Settings />,
         subItems: [
-          {
-            id: "settings",
-            permissionCode: "access",
-            label: "系统设置",
-            href: "/settings",
-            matcher: (pathname) => pathname.startsWith("/settings"),
-          },
           {
             id: "datatable-demo",
             permissionCode: "access",
             label: "DataTable 示例",
+            labelKey: "admin.navigation.datatableDemo",
             href: "/datatable",
             matcher: (pathname) => pathname.startsWith("/datatable"),
           },

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import {
   Card,
   CardContent,
@@ -16,27 +17,37 @@ import {
 import { serviceStatus } from "../dashboard-data"
 
 export function ServiceStatusTable() {
+  const { t } = useTranslation()
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>服务状态</CardTitle>
-        <CardDescription>核心服务的健康状态。</CardDescription>
+        <CardTitle>{t("admin.dashboard.servicesPanel.title")}</CardTitle>
+        <CardDescription>
+          {t("admin.dashboard.servicesPanel.description")}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>服务</TableHead>
-              <TableHead>状态</TableHead>
-              <TableHead>指标</TableHead>
+              <TableHead>
+                {t("admin.dashboard.servicesPanel.columns.service")}
+              </TableHead>
+              <TableHead>
+                {t("admin.dashboard.servicesPanel.columns.status")}
+              </TableHead>
+              <TableHead>
+                {t("admin.dashboard.servicesPanel.columns.metric")}
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {serviceStatus.map((item) => (
-              <TableRow key={item[0]}>
-                <TableCell>{item[0]}</TableCell>
-                <TableCell>{item[1]}</TableCell>
-                <TableCell>{item[2]}</TableCell>
+              <TableRow key={item.serviceKey}>
+                <TableCell>{t(item.serviceKey)}</TableCell>
+                <TableCell>{t(item.statusKey)}</TableCell>
+                <TableCell>{item.metric}</TableCell>
               </TableRow>
             ))}
           </TableBody>

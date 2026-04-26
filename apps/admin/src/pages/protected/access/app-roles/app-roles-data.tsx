@@ -6,11 +6,7 @@ import type {
 } from "@workspace/app-components"
 import { listAppRolesApi } from "@/api"
 import { appRolesQueryKey } from "./constants"
-import {
-  filterRoles,
-  paginateRoles,
-  sortRoles,
-} from "./table/logic"
+import { filterRoles, paginateRoles, sortRoles } from "./table/logic"
 import { compareRoleSortValues, getRoleSortValue } from "./table/sort"
 import type { RoleRow, RoleTableQuery } from "./types"
 
@@ -27,7 +23,7 @@ export function useAppRolesData() {
     }))
   }, [])
 
-  const rolesQuery = useQuery({
+  useQuery({
     queryKey: appRolesQueryKey,
     queryFn: loadRoleRows,
   })

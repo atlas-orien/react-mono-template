@@ -1,4 +1,5 @@
 import { useEffect, type ReactNode } from "react"
+import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router"
 import {
@@ -22,6 +23,7 @@ export interface AdminAppShellProps {
 export function AdminAppShell({ children }: AdminAppShellProps) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const user = useSelector((state: RootState) => state.auth.user)
   const { currentItem, defaultPath, hasVisibleMenus, isLoading, sections } =
     useAdminNavigation()
@@ -44,16 +46,16 @@ export function AdminAppShell({ children }: AdminAppShellProps) {
 
   return (
     <SidebarShell
-      brandEyebrow="Workspace"
-      brandTitle="Admin"
-      brandDescription="Enterprise"
+      brandEyebrow={t("admin.shell.brand.eyebrow", "Workspace")}
+      brandTitle={t("admin.shell.brand.title", "Admin")}
+      brandDescription={t("admin.shell.brand.description", "Enterprise")}
       sections={sections}
       header={
         <TopBar
-          title={currentItem?.label ?? "Admin"}
+          title={currentItem?.label ?? t("admin.shell.brand.title", "Admin")}
           trailing={[
             <Badge key="badge" variant="outline">
-              Admin Console
+              {t("admin.shell.consoleBadge", "Admin Console")}
             </Badge>,
             <LanguageSwitch key="lang" />,
             <ThemeToggle key="theme" />,
@@ -67,18 +69,21 @@ export function AdminAppShell({ children }: AdminAppShellProps) {
         displayName: user?.name ?? "Admin",
         displayId: (
           <CopyableText
-            value={user?.display_id || user?.email || "workspace-admin@example.com"}
+            value={
+              user?.display_id || user?.email || "workspace-admin@example.com"
+            }
             textClassName="block truncate"
           >
             {user?.display_id || user?.email || "workspace-admin@example.com"}
           </CopyableText>
         ),
         logout: {
-          label: "Log out",
+          label: t("admin.shell.account.logout", "Log out"),
           onSelect: handleLogout,
         },
         actions: accountActions.map((action) => ({
           ...action,
+          label: t(action.labelKey, action.label),
           onSelect: () => navigate(action.path),
         })),
       }}

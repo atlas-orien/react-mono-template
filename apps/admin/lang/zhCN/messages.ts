@@ -1,9 +1,158 @@
 const messages = {
+  admin: {
+    navigation: {
+      dashboard: "控制台",
+      accountManagement: "账号管理",
+      adminUsers: "后台账号",
+      appUsers: "App 用户",
+      accessControl: "权限中心",
+      roles: "权限角色",
+      rolePermissions: "角色授权",
+      appRoles: "App 角色",
+      appRolePermissions: "App 角色授权",
+      examples: "开发示例",
+      datatableDemo: "DataTable 示例",
+    },
+    shell: {
+      brand: {
+        eyebrow: "Workspace",
+        title: "Admin",
+        description: "Enterprise",
+      },
+      consoleBadge: "Admin Console",
+      account: {
+        logout: "退出登录",
+        actions: {
+          account: "账号",
+          billing: "计费",
+          notifications: "通知",
+        },
+      },
+    },
+    dashboard: {
+      heading: {
+        title: "控制台",
+        description: "今日关键经营指标、运营趋势和系统状态概览。",
+      },
+      metrics: {
+        revenue: "今日成交额",
+        newUsers: "新增会员",
+        pendingTickets: "待处理工单",
+        availability: "系统可用率",
+      },
+      days: {
+        mon: "周一",
+        tue: "周二",
+        wed: "周三",
+        thu: "周四",
+        fri: "周五",
+        sat: "周六",
+        sun: "周日",
+      },
+      charts: {
+        revenueTrend: {
+          title: "成交趋势",
+          description: "最近 7 天成交额与订单量走势。",
+        },
+        userSegments: {
+          title: "用户结构",
+          description: "会员活跃状态占比。",
+        },
+        channels: {
+          title: "渠道成交",
+          description: "本周各渠道成交贡献。",
+        },
+        series: {
+          revenue: "成交额",
+          orders: "订单量",
+          channelShare: "成交占比",
+        },
+      },
+      channels: {
+        directStore: "直营商城",
+        partner: "渠道伙伴",
+        miniProgram: "小程序",
+        offline: "线下门店",
+      },
+      userSegments: {
+        new: "新用户",
+        active: "活跃用户",
+        silent: "沉默用户",
+      },
+      orders: {
+        title: "最新订单流",
+        description: "高频业务动作的实时视图。",
+        columns: {
+          id: "单号",
+          source: "来源",
+          status: "状态",
+          amount: "金额",
+        },
+      },
+      orderSources: {
+        eastChina: "华东大区",
+        directStore: "直营商城",
+        partner: "渠道伙伴",
+        miniProgram: "小程序商城",
+      },
+      orderStatuses: {
+        reviewing: "待复核",
+        shipped: "已发货",
+        pendingPayment: "待付款",
+        completed: "已完成",
+      },
+      riskMonitor: {
+        title: "风险监控",
+        description: "后台系统常见待办和风险指标。",
+      },
+      risks: {
+        refundBacklog: "退款工单积压",
+        permissionReview: "权限变更待审",
+        inventoryDelay: "库存同步延迟",
+      },
+      servicesPanel: {
+        title: "服务状态",
+        description: "核心服务的健康状态。",
+        columns: {
+          service: "服务",
+          status: "状态",
+          metric: "指标",
+        },
+      },
+      services: {
+        apiGateway: "API 网关",
+        jobQueue: "任务队列",
+        notifications: "消息通知",
+      },
+      serviceStatuses: {
+        normal: "正常",
+        watching: "观察中",
+      },
+    },
+  },
   datatable: {
     insert: {
       label: "新增",
       title: "新增客户",
       description: "填写客户基础信息后保存。",
+    },
+    searchPlaceholder: "搜索客户",
+    fields: {
+      keyword: "关键字",
+      keywordField: "搜索字段",
+      keywordFieldAll: "全部",
+      keywordFieldId: "ID",
+      keywordFieldName: "名称",
+      keywordFieldOwner: "负责人",
+      createdAt: "创建时间",
+      status: "状态",
+      region: "区域",
+    },
+    options: {
+      status: {
+        active: "启用",
+        paused: "暂停",
+      },
     },
     actions: {
       deleteTitle: "删除 {{name}}？",

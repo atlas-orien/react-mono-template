@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import {
   Card,
   CardContent,
@@ -9,18 +10,22 @@ import { Progress } from "@workspace/ui-components/stable/progress"
 import { riskItems } from "../dashboard-data"
 
 export function RiskMonitor() {
+  const { t } = useTranslation()
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>风险监控</CardTitle>
-        <CardDescription>后台系统常见待办和风险指标。</CardDescription>
+        <CardTitle>{t("admin.dashboard.riskMonitor.title")}</CardTitle>
+        <CardDescription>
+          {t("admin.dashboard.riskMonitor.description")}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-5">
           {riskItems.map((item) => (
-            <div key={item.label} className="space-y-2">
+            <div key={item.labelKey} className="space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span>{item.label}</span>
+                <span>{t(item.labelKey)}</span>
                 <span>{item.value}%</span>
               </div>
               <Progress value={item.value} />

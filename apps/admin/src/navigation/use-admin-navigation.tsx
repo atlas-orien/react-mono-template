@@ -1,4 +1,6 @@
 import { useMemo } from "react"
+import type { TFunction } from "i18next"
+import { useTranslation } from "react-i18next"
 import { useSelector } from "react-redux"
 import { useLocation, useNavigate } from "react-router"
 import type { SidebarShellSection } from "@workspace/app-components/sidebar-shell"
@@ -35,7 +37,8 @@ function isVisibleSubItem(
 
 function findCurrentItem(
   sections: NavigationSectionConfig[],
-  pathname: string
+  pathname: string,
+  t: TFunction
 ): CurrentNavigationItem | null {
   for (const section of sections) {
     for (const item of section.items) {
@@ -43,7 +46,7 @@ function findCurrentItem(
         for (const subItem of item.subItems) {
           if (matchesNavigationSubItem(subItem, pathname)) {
             return {
-              label: subItem.label,
+              label: translateNavigationLabel(t, subItem),
               path: subItem.href,
             }
           }
@@ -56,7 +59,7 @@ function findCurrentItem(
 
       if (pathname === item.path) {
         return {
-          label: item.label,
+          label: translateNavigationLabel(t, item),
           path: item.path,
         }
       }
@@ -67,21 +70,22 @@ function findCurrentItem(
 }
 
 function getDefaultItem(
-  sections: NavigationSectionConfig[]
+  sections: NavigationSectionConfig[],
+  t: TFunction
 ): CurrentNavigationItem | null {
   for (const section of sections) {
     for (const item of section.items) {
       const firstSubItem = item.subItems?.[0]
       if (firstSubItem) {
         return {
-          label: firstSubItem.label,
+          label: translateNavigationLabel(t, firstSubItem),
           path: firstSubItem.href,
         }
       }
 
       if (item.path) {
         return {
-          label: item.label,
+          label: translateNavigationLabel(t, item),
           path: item.path,
         }
       }
@@ -94,24 +98,36 @@ function getDefaultItem(
 function toSidebarSubItems(
   subItems: NavigationSubItemConfig[] | undefined,
   pathname: string,
-  navigate: ReturnType<typeof useNavigate>
+  navigate: ReturnType<typeof useNavigate>,
+  t: TFunction
 ) {
   return subItems?.map((subItem) => ({
     key: subItem.id,
-    label: subItem.label,
+    label: translateNavigationLabel(t, subItem),
     href: subItem.href,
     active: matchesNavigationSubItem(subItem, pathname),
     onSelect: () => navigate(subItem.href),
   }))
 }
 
+function translateNavigationLabel(
+  t: TFunction,
+  item: { label: string; labelKey?: string }
+) {
+  return item.labelKey ? t(item.labelKey, item.label) : item.label
+}
+
 export function useAdminNavigation() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useTranslation()
   const permissionCodes = useSelector(
     (state: RootState) => state.adminAccess.permissionCodes
   )
-  const visibleCodes = useMemo(() => new Set(permissionCodes), [permissionCodes])
+  const visibleCodes = useMemo(
+    () => new Set(permissionCodes),
+    [permissionCodes]
+  )
 
   const visibleSections = useMemo<NavigationSectionConfig[]>(
     () =>
@@ -131,7 +147,10 @@ export function useAdminNavigation() {
                 }
               }
 
-              if (item.permissionCode && visibleCodes.has(item.permissionCode)) {
+              if (
+                item.permissionCode &&
+                visibleCodes.has(item.permissionCode)
+              ) {
                 return item
               }
 
@@ -144,13 +163,13 @@ export function useAdminNavigation() {
   )
 
   const currentItem = useMemo(
-    () => findCurrentItem(visibleSections, location.pathname),
-    [location.pathname, visibleSections]
+    () => findCurrentItem(visibleSections, location.pathname, t),
+    [location.pathname, t, visibleSections]
   )
 
   const defaultItem = useMemo(
-    () => getDefaultItem(visibleSections),
-    [visibleSections]
+    () => getDefaultItem(visibleSections, t),
+    [t, visibleSections]
   )
 
   const sections = useMemo<SidebarShellSection[]>(
@@ -161,16 +180,21 @@ export function useAdminNavigation() {
         items: section.items.map((item) => {
           return {
             key: item.id,
-            label: item.label,
+            label: translateNavigationLabel(t, item),
             href: item.path,
             active: item.path ? location.pathname === item.path : false,
             icon: item.icon,
             onSelect: item.path ? () => navigate(item.path!) : undefined,
-            subItems: toSidebarSubItems(item.subItems, location.pathname, navigate),
+            subItems: toSidebarSubItems(
+              item.subItems,
+              location.pathname,
+              navigate,
+              t
+            ),
           }
         }),
       })),
-    [location.pathname, navigate, visibleSections]
+    [location.pathname, navigate, t, visibleSections]
   )
 
   return {
