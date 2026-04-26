@@ -5,9 +5,31 @@
 For build, typecheck, lint, test, dev, preview, format, and clean operations in this repository:
 
 - Always use the exact script defined in the nearest relevant `package.json`.
-- At repo root, prefer root scripts such as `pnpm build`, `pnpm typecheck`, `pnpm lint`, `pnpm dev`, and `pnpm format`.
+- At repo root, prefer root scripts such as `pnpm build`, `pnpm typecheck`, `pnpm lint`, `pnpm test`, `pnpm rules`, `pnpm dev`, and `pnpm format`.
 - For app or package scoped work, prefer `pnpm -C <dir> <script>` using the script defined in that package.
 - Do not run ad hoc compile or build commands when a package script already exists.
+- The root `package.json` is the source of truth for workspace-wide verification scripts.
+
+## Required Verification After Code Changes
+
+After modifying source code, package metadata, protocol files that affect AI/code behavior, build config, tests, or rules, run verification before finishing.
+
+Minimum required gate:
+
+```bash
+rtk pnpm rules
+```
+
+`pnpm rules` is mandatory after code changes because it enforces repository architecture and AI-facing boundaries. Do not replace it with ad hoc `vitest`, `tsc`, or package-only checks unless the user explicitly limits the scope and accepts the narrower verification.
+
+Also run the nearest relevant package scripts based on the files changed:
+
+- TypeScript / React / package API changes: `rtk pnpm typecheck` or `rtk pnpm -C <dir> typecheck`
+- UI / Tailwind / TSX changes: `rtk pnpm lint` or `rtk pnpm -C <dir> lint`
+- Behavior or testable logic changes: `rtk pnpm test` or `rtk pnpm -C <dir> test`
+- Build or app runtime changes: `rtk pnpm build` or `rtk pnpm -C <dir> build`
+
+If a required script fails because of a pre-existing unrelated issue, report the exact failing file and command, then run the next closest non-ad-hoc script when available. Do not silently substitute raw commands for package scripts.
 
 ## Forbidden Without Explicit User Request
 
@@ -23,6 +45,8 @@ eslint
 ```
 
 Use the corresponding `package.json` script instead.
+
+If a package does not expose a needed script, prefer the root script. Only use a raw command for diagnosis after confirming no package script exists and after explaining why.
 
 ## TypeScript Safety
 
@@ -56,6 +80,7 @@ rtk pnpm build
 rtk pnpm -C apps/admin build
 rtk pnpm -C apps/web test
 rtk pnpm typecheck
+rtk pnpm rules
 ```
 
 ## Verification
