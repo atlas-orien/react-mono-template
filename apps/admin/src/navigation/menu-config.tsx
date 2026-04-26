@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { LayoutDashboard, Settings, ShieldCheck } from "lucide-react"
+import { LayoutDashboard, Settings, ShieldCheck, UsersRound } from "lucide-react"
 
 export interface NavigationSubItemConfig {
   id: string
@@ -30,9 +30,9 @@ export const navigationSections: NavigationSectionConfig[] = [
     label: "Platform",
     items: [
       {
-        id: "access-control",
-        label: "权限中心",
-        icon: <ShieldCheck />,
+        id: "account-management",
+        label: "账号管理",
+        icon: <UsersRound />,
         subItems: [
           {
             id: "admin-users",
@@ -41,6 +41,20 @@ export const navigationSections: NavigationSectionConfig[] = [
             href: "/access/admin-users",
             matcher: (pathname) => pathname.startsWith("/access/admin-users"),
           },
+          {
+            id: "app-users",
+            permissionCode: "admin:app_user:list",
+            label: "App 用户",
+            href: "/access/app-users",
+            matcher: (pathname) => pathname.startsWith("/access/app-users"),
+          },
+        ],
+      },
+      {
+        id: "access-control",
+        label: "权限中心",
+        icon: <ShieldCheck />,
+        subItems: [
           {
             id: "roles",
             permissionCode: "admin:role:list",
@@ -55,13 +69,6 @@ export const navigationSections: NavigationSectionConfig[] = [
             href: "/access/role-permissions",
             matcher: (pathname) =>
               pathname.startsWith("/access/role-permissions"),
-          },
-          {
-            id: "app-users",
-            permissionCode: "admin:app_user:list",
-            label: "App 用户",
-            href: "/access/app-users",
-            matcher: (pathname) => pathname.startsWith("/access/app-users"),
           },
           {
             id: "app-roles",
