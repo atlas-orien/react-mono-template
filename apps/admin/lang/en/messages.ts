@@ -19,7 +19,42 @@ const messages = {
         title: "Admin",
         description: "Enterprise",
       },
-      consoleBadge: "Admin Console",
+      notifications: {
+        label: "Notifications",
+        title: "Notifications",
+        empty: "You're all caught up.",
+        actions: {
+          markAllRead: "Mark all as read",
+          markRead: "Mark as read",
+          dismiss: "Dismiss",
+        },
+        items: {
+          weeklyReports: {
+            title: "14 new weekly reports arrived",
+            description:
+              "Review the latest regional summaries and flagged changes before the afternoon sync.",
+            time: "3 hours ago",
+          },
+          reply: {
+            title: "Zhu Pianyou replied to you",
+            description:
+              "The access review note now includes the rollout window and the owner confirmation.",
+            time: "Just now",
+          },
+          comment: {
+            title: "Qu Lili commented on your update",
+            description:
+              "She asked whether the dashboard prototype should keep the current chart grouping.",
+            time: "2024-01-01",
+          },
+          taskReminder: {
+            title: "Task reminder",
+            description:
+              "The finance export checklist is still waiting for your final verification.",
+            time: "1 day ago",
+          },
+        },
+      },
       account: {
         logout: "Log out",
         actions: {

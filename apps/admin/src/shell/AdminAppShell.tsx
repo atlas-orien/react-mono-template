@@ -5,6 +5,7 @@ import { useNavigate } from "react-router"
 import {
   CopyableText,
   LanguageSwitch,
+  NotificationDropdown,
   SidebarShell,
   ThemeToggle,
 } from "@workspace/app-components"
@@ -14,6 +15,7 @@ import { resetAccess } from "@/store/accessSlice"
 import type { RootState } from "@/store"
 import { useAdminNavigation } from "@/navigation"
 import { accountActions } from "./account-actions"
+import { getAdminNotifications } from "./admin-notifications"
 
 export interface AdminAppShellProps {
   children: ReactNode
@@ -26,6 +28,7 @@ export function AdminAppShell({ children }: AdminAppShellProps) {
   const user = useSelector((state: RootState) => state.auth.user)
   const { currentItem, defaultPath, hasVisibleMenus, isLoading, sections } =
     useAdminNavigation()
+  const notifications = getAdminNotifications(t)
 
   const handleLogout = () => {
     localStorage.removeItem("token")
@@ -53,6 +56,20 @@ export function AdminAppShell({ children }: AdminAppShellProps) {
         <TopBar
           title={currentItem?.label ?? t("admin.shell.brand.title", "Admin")}
           trailing={[
+            <NotificationDropdown
+              key="notifications"
+              label={t("admin.shell.notifications.label", "Notifications")}
+              panelTitle={t("admin.shell.notifications.title", "Notifications")}
+              markAllLabel={t(
+                "admin.shell.notifications.actions.markAllRead",
+                "Mark all as read"
+              )}
+              emptyLabel={t(
+                "admin.shell.notifications.empty",
+                "You're all caught up."
+              )}
+              items={notifications}
+            />,
             <LanguageSwitch key="lang" />,
             <ThemeToggle key="theme" />,
           ]}

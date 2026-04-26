@@ -1,6 +1,7 @@
 export {
   AvatarDropdown,
   AvatarDropdownItem,
+  NotificationDropdown,
   SidebarShell,
   TopBar,
 } from "./components/app-shell"
@@ -8,6 +9,9 @@ export type {
   AvatarDropdownAction,
   AvatarDropdownItemProps,
   AvatarDropdownProps,
+  NotificationDropdownAction,
+  NotificationDropdownItem,
+  NotificationDropdownProps,
   SidebarShellNavEntry,
   SidebarShellProps,
   SidebarShellSection,

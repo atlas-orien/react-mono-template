@@ -19,7 +19,38 @@ const messages = {
         title: "Admin",
         description: "Enterprise",
       },
-      consoleBadge: "Admin Console",
+      notifications: {
+        label: "通知",
+        title: "通知",
+        empty: "暂时没有新的通知。",
+        actions: {
+          markAllRead: "全部标记为已读",
+          markRead: "标记已读",
+          dismiss: "忽略通知",
+        },
+        items: {
+          weeklyReports: {
+            title: "收到了 14 份新周报",
+            description: "请在下午同步前查看最新的大区摘要和重点变更。",
+            time: "3 小时前",
+          },
+          reply: {
+            title: "朱偏右 回复了你",
+            description: "权限审核备注里已经补充了发布时间窗口和负责人确认。",
+            time: "刚刚",
+          },
+          comment: {
+            title: "曲丽丽 评论了你",
+            description: "她在确认控制台原型是否继续保留现在这组图表分区。",
+            time: "2024-01-01",
+          },
+          taskReminder: {
+            title: "待办提醒",
+            description: "财务导出检查单还在等待你的最终确认。",
+            time: "1 天前",
+          },
+        },
+      },
       account: {
         logout: "退出登录",
         actions: {

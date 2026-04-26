@@ -5,6 +5,12 @@ export type {
   AvatarDropdownProps,
 } from "./avatar-dropdown"
 export { AvatarDropdownItem } from "./avatar-dropdown"
+export { NotificationDropdown } from "./notification-dropdown"
+export type {
+  NotificationDropdownAction,
+  NotificationDropdownItem,
+  NotificationDropdownProps,
+} from "./notification-dropdown"
 export { SidebarShell } from "./sidebar-shell"
 export type {
   SidebarShellNavEntry,
