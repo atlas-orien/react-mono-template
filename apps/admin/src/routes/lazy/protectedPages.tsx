@@ -1,7 +1,7 @@
 import { lazy } from "react"
 
 export const AdminUsersPage = lazy(
-  () => import("@/pages/protected/access/admin-users")
+  () => import("@/pages/protected/accounts/admin-users")
 )
 export const AppRolePermissionsPage = lazy(
   () => import("@/pages/protected/access/app-role-permissions")
@@ -10,7 +10,7 @@ export const AppRolesPage = lazy(
   () => import("@/pages/protected/access/app-roles")
 )
 export const AppUsersPage = lazy(
-  () => import("@/pages/protected/access/app-users")
+  () => import("@/pages/protected/accounts/app-users")
 )
 export const DashboardPage = lazy(() => import("@/pages/protected/dashboard"))
 export const OrdersPage = lazy(() => import("@/pages/protected/orders"))

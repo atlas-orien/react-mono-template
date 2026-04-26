@@ -2,7 +2,7 @@ import path from "node:path"
 import { describe, expect, it } from "vitest"
 import { findImportFindings, resolveProtectedPage, toLocations } from "./ast-helpers"
 
-const adminUsersPageDir = resolveProtectedPage("access", "admin-users")
+const adminUsersPageDir = resolveProtectedPage("accounts", "admin-users")
 const adminUsersIndexFile = path.join(adminUsersPageDir, "index.tsx")
 const adminUsersDataFile = path.join(adminUsersPageDir, "admin-users-data.tsx")
 

@@ -4,8 +4,8 @@ import { fileExists, resolveProtectedPage } from "./ast-helpers"
 
 const templatePages = [
   {
-    name: "access/admin-users",
-    dir: resolveProtectedPage("access", "admin-users"),
+    name: "accounts/admin-users",
+    dir: resolveProtectedPage("accounts", "admin-users"),
     requiredFiles: [
       "index.tsx",
       "types.ts",

@@ -40,10 +40,14 @@ export const protectedRoutes: RouteObject = {
     },
     {
       path: "access",
-      element: <Navigate to="/access/admin-users" replace />,
+      element: <Navigate to="/access/roles" replace />,
     },
     {
-      path: "access/admin-users",
+      path: "accounts",
+      element: <Navigate to="/accounts/admin-users" replace />,
+    },
+    {
+      path: "accounts/admin-users",
       element: withSuspense(<AdminUsersPage />),
     },
     {
@@ -55,7 +59,7 @@ export const protectedRoutes: RouteObject = {
       element: withSuspense(<RolePermissionsPage />),
     },
     {
-      path: "access/app-users",
+      path: "accounts/app-users",
       element: withSuspense(<AppUsersPage />),
     },
     {
