@@ -251,6 +251,9 @@ importers:
       react-router:
         specifier: 'catalog:'
         version: 7.13.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      recharts:
+        specifier: 'catalog:'
+        version: 3.8.0(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react-is@19.2.5)(react@19.2.4)(redux@5.0.1)
       zod:
         specifier: 'catalog:'
         version: 4.3.6
@@ -616,6 +619,9 @@ importers:
       react-dom:
         specifier: 'catalog:'
         version: 19.2.4(react@19.2.4)
+      recharts:
+        specifier: 'catalog:'
+        version: 3.8.0(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react-is@19.2.5)(react@19.2.4)(redux@5.0.1)
     devDependencies:
       '@types/node':
         specifier: 'catalog:'

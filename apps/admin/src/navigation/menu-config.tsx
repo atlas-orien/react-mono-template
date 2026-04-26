@@ -1,5 +1,10 @@
 import type { ReactNode } from "react"
-import { LayoutDashboard, Settings, ShieldCheck, UsersRound } from "lucide-react"
+import {
+  LayoutDashboard,
+  Settings,
+  ShieldCheck,
+  UsersRound,
+} from "lucide-react"
 
 export interface NavigationSubItemConfig {
   id: string
@@ -29,6 +34,13 @@ export const navigationSections: NavigationSectionConfig[] = [
     id: "platform",
     label: "Platform",
     items: [
+      {
+        id: "dashboard",
+        permissionCode: "access",
+        label: "控制台",
+        path: "/",
+        icon: <LayoutDashboard />,
+      },
       {
         id: "account-management",
         label: "账号管理",
@@ -113,13 +125,6 @@ export const navigationSections: NavigationSectionConfig[] = [
         label: "系统配置",
         icon: <Settings />,
         subItems: [
-          {
-            id: "dashboard",
-            permissionCode: "access",
-            label: "控制台",
-            href: "/",
-            matcher: (pathname) => pathname === "/",
-          },
           {
             id: "settings",
             permissionCode: "access",

@@ -48,6 +48,7 @@ AI 在 app 中开发功能时，必须按以下顺序：
 - 具体 app 的协议负责定义本地特殊规则。
 - 若某类页面已经沉淀为稳定页面类型协议，应优先放在 `apps/page-protocols/*.PROTOCOL.md` 中按类型管理。
 - AI 在 app 中写页面时，除了读取 app 本地协议，还应判断是否存在对应页面类型协议。
+- AI 在 app 中写页面时，必须先遵守 `apps/page-protocols/page-directory-structure.PROTOCOL.md` 和 `apps/page-protocols/page-index-usage.PROTOCOL.md`，再套用具体页面类型协议。
 
 ## 7. 完成定义
 
