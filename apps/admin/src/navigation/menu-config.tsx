@@ -50,11 +50,33 @@ export const navigationSections: NavigationSectionConfig[] = [
           },
           {
             id: "role-permissions",
-            permissionCode: "admin:role_permission:grant",
+            permissionCode: "admin:role_permission:list",
             label: "角色授权",
             href: "/access/role-permissions",
             matcher: (pathname) =>
               pathname.startsWith("/access/role-permissions"),
+          },
+          {
+            id: "app-users",
+            permissionCode: "admin:app_user:list",
+            label: "App 用户",
+            href: "/access/app-users",
+            matcher: (pathname) => pathname.startsWith("/access/app-users"),
+          },
+          {
+            id: "app-roles",
+            permissionCode: "admin:app_role:list",
+            label: "App 角色",
+            href: "/access/app-roles",
+            matcher: (pathname) => pathname.startsWith("/access/app-roles"),
+          },
+          {
+            id: "app-role-permissions",
+            permissionCode: "admin:app_role_permission:list",
+            label: "App 角色授权",
+            href: "/access/app-role-permissions",
+            matcher: (pathname) =>
+              pathname.startsWith("/access/app-role-permissions"),
           },
         ],
       },

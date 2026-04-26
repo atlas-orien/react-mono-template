@@ -5,6 +5,9 @@ import { PageLoading, RouteErrorBoundary } from "@workspace/app-components"
 import AppLayout from "@/layouts/AppLayout"
 import {
   AdminUsersPage,
+  AppRolePermissionsPage,
+  AppRolesPage,
+  AppUsersPage,
   DataTablePage,
   DashboardPage,
   MembersPage,
@@ -50,6 +53,18 @@ export const protectedRoutes: RouteObject = {
     {
       path: "access/role-permissions",
       element: withSuspense(<RolePermissionsPage />),
+    },
+    {
+      path: "access/app-users",
+      element: withSuspense(<AppUsersPage />),
+    },
+    {
+      path: "access/app-roles",
+      element: withSuspense(<AppRolesPage />),
+    },
+    {
+      path: "access/app-role-permissions",
+      element: withSuspense(<AppRolePermissionsPage />),
     },
     {
       path: "settings",

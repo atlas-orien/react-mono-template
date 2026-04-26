@@ -1,6 +1,7 @@
 import { request } from "@workspace/services/api/base"
 
 export type AdminUserStatus = "enabled" | "disabled"
+export type AppUserStatus = "enabled" | "disabled"
 
 export interface AdminUserResponse {
   display_id?: string
@@ -8,6 +9,16 @@ export interface AdminUserResponse {
   display_name?: string
   remark?: string | null
   status: AdminUserStatus
+  admin_roles?: RoleResponse[]
+  roles?: RoleResponse[]
+}
+
+export interface AppUserResponse {
+  display_id?: string
+  user_id: string
+  display_name?: string
+  remark?: string | null
+  status: AppUserStatus
   roles: RoleResponse[]
 }
 
@@ -19,6 +30,16 @@ export interface CreateAdminUserRequest {
 export interface UpdateAdminUserRequest {
   remark?: string | null
   status: AdminUserStatus
+}
+
+export interface CreateAppUserRequest {
+  identifier: string
+  remark?: string | null
+}
+
+export interface UpdateAppUserRequest {
+  remark?: string | null
+  status: AppUserStatus
 }
 
 export interface RoleResponse {
@@ -54,6 +75,8 @@ export interface UserRoleOptionResponse {
   checked: boolean
 }
 
+export type AppUserRoleOptionResponse = UserRoleOptionResponse
+
 export interface UpdateRolePermissionsRequest {
   permission_ids: number[]
 }
@@ -76,6 +99,8 @@ export interface CurrentUserPermissionsResponse {
   permission_codes: string[]
 }
 
+export type CurrentAppUserPermissionsResponse = CurrentUserPermissionsResponse
+
 export interface CurrentUserMenuNode {
   id: number
   name: string
@@ -89,7 +114,7 @@ export const createAdminUserApi = async (
 ): Promise<AdminUserResponse> => {
   return request<CreateAdminUserRequest, AdminUserResponse>({
     method: "POST",
-    url: "/api/admin/admin-users",
+    url: "/api/admin/users",
     body,
   })
 }
@@ -97,7 +122,7 @@ export const createAdminUserApi = async (
 export const listAdminUsersApi = async (): Promise<AdminUserResponse[]> => {
   return request<undefined, AdminUserResponse[]>({
     method: "GET",
-    url: "/api/admin/admin-users",
+    url: "/api/admin/users",
   })
 }
 
@@ -107,7 +132,7 @@ export const updateAdminUserApi = async (
 ): Promise<AdminUserResponse> => {
   return request<UpdateAdminUserRequest, AdminUserResponse>({
     method: "PATCH",
-    url: `/api/admin/admin-users/${encodeURIComponent(userId)}`,
+    url: `/api/admin/users/${encodeURIComponent(userId)}`,
     body,
   })
 }
@@ -115,7 +140,42 @@ export const updateAdminUserApi = async (
 export const deleteAdminUserApi = async (userId: string): Promise<void> => {
   return request<undefined, void>({
     method: "DELETE",
-    url: `/api/admin/admin-users/${encodeURIComponent(userId)}`,
+    url: `/api/admin/users/${encodeURIComponent(userId)}`,
+  })
+}
+
+export const createAppUserApi = async (
+  body: CreateAppUserRequest
+): Promise<AppUserResponse> => {
+  return request<CreateAppUserRequest, AppUserResponse>({
+    method: "POST",
+    url: "/api/admin/app/users",
+    body,
+  })
+}
+
+export const listAppUsersApi = async (): Promise<AppUserResponse[]> => {
+  return request<undefined, AppUserResponse[]>({
+    method: "GET",
+    url: "/api/admin/app/users",
+  })
+}
+
+export const updateAppUserApi = async (
+  userId: string,
+  body: UpdateAppUserRequest
+): Promise<AppUserResponse> => {
+  return request<UpdateAppUserRequest, AppUserResponse>({
+    method: "PATCH",
+    url: `/api/admin/app/users/${encodeURIComponent(userId)}`,
+    body,
+  })
+}
+
+export const deleteAppUserApi = async (userId: string): Promise<void> => {
+  return request<undefined, void>({
+    method: "DELETE",
+    url: `/api/admin/app/users/${encodeURIComponent(userId)}`,
   })
 }
 
@@ -140,6 +200,30 @@ export const deleteRoleApi = async (roleId: number): Promise<void> => {
   return request<undefined, void>({
     method: "DELETE",
     url: `/api/admin/roles/${encodeURIComponent(String(roleId))}`,
+  })
+}
+
+export const createAppRoleApi = async (
+  body: CreateRoleRequest
+): Promise<RoleResponse> => {
+  return request<CreateRoleRequest, RoleResponse>({
+    method: "POST",
+    url: "/api/admin/app/roles",
+    body,
+  })
+}
+
+export const listAppRolesApi = async (): Promise<RoleResponse[]> => {
+  return request<undefined, RoleResponse[]>({
+    method: "GET",
+    url: "/api/admin/app/roles",
+  })
+}
+
+export const deleteAppRoleApi = async (roleId: number): Promise<void> => {
+  return request<undefined, void>({
+    method: "DELETE",
+    url: `/api/admin/app/roles/${encodeURIComponent(String(roleId))}`,
   })
 }
 
@@ -180,6 +264,26 @@ export const updateUserRolesApi = async (
   })
 }
 
+export const listAppUserRolesApi = async (
+  userId: string
+): Promise<AppUserRoleOptionResponse[]> => {
+  return request<undefined, AppUserRoleOptionResponse[]>({
+    method: "GET",
+    url: `/api/admin/app/users/${encodeURIComponent(userId)}/roles`,
+  })
+}
+
+export const updateAppUserRolesApi = async (
+  userId: string,
+  body: UpdateUserRolesRequest
+): Promise<AppUserRoleOptionResponse[]> => {
+  return request<UpdateUserRolesRequest, AppUserRoleOptionResponse[]>({
+    method: "PUT",
+    url: `/api/admin/app/users/${encodeURIComponent(userId)}/roles`,
+    body,
+  })
+}
+
 export const listRolePermissionsApi = async (
   roleId: number
 ): Promise<RolePermissionTreeNode[]> => {
@@ -200,6 +304,26 @@ export const updateRolePermissionsApi = async (
   })
 }
 
+export const listAppRolePermissionsApi = async (
+  roleId: number
+): Promise<RolePermissionTreeNode[]> => {
+  return request<undefined, RolePermissionTreeNode[]>({
+    method: "GET",
+    url: `/api/admin/app/roles/${encodeURIComponent(String(roleId))}/permissions`,
+  })
+}
+
+export const updateAppRolePermissionsApi = async (
+  roleId: number,
+  body: UpdateRolePermissionsRequest
+): Promise<RolePermissionTreeNode[]> => {
+  return request<UpdateRolePermissionsRequest, RolePermissionTreeNode[]>({
+    method: "PUT",
+    url: `/api/admin/app/roles/${encodeURIComponent(String(roleId))}/permissions`,
+    body,
+  })
+}
+
 export const getCurrentUserPermissionsApi =
   async (): Promise<CurrentUserPermissionsResponse> => {
     return request<undefined, CurrentUserPermissionsResponse>({
@@ -216,3 +340,11 @@ export const getCurrentUserMenusApi = async (): Promise<
     url: "/api/admin/me/menus",
   })
 }
+
+export const getCurrentAppUserPermissionsApi =
+  async (): Promise<CurrentAppUserPermissionsResponse> => {
+    return request<undefined, CurrentAppUserPermissionsResponse>({
+      method: "GET",
+      url: "/api/app/me/permissions",
+    })
+  }
