@@ -1,5 +1,10 @@
 const components = {
   header: {
+    language: {
+      label: "语言",
+      english: "English",
+      simplifiedChinese: "简体中文",
+    },
     theme: {
       system: "跟随系统",
       light: "浅色",

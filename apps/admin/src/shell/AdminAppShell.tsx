@@ -9,7 +9,6 @@ import {
   ThemeToggle,
 } from "@workspace/app-components"
 import { TopBar } from "@workspace/app-components/top-bar"
-import { Badge } from "@workspace/ui-components/stable/badge"
 import { logout } from "@/store/authSlice"
 import { resetAccess } from "@/store/accessSlice"
 import type { RootState } from "@/store"
@@ -54,9 +53,6 @@ export function AdminAppShell({ children }: AdminAppShellProps) {
         <TopBar
           title={currentItem?.label ?? t("admin.shell.brand.title", "Admin")}
           trailing={[
-            <Badge key="badge" variant="outline">
-              {t("admin.shell.consoleBadge", "Admin Console")}
-            </Badge>,
             <LanguageSwitch key="lang" />,
             <ThemeToggle key="theme" />,
           ]}

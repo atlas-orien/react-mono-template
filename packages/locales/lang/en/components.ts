@@ -1,5 +1,10 @@
 const components = {
   header: {
+    language: {
+      label: "Language",
+      english: "English",
+      simplifiedChinese: "Simplified Chinese",
+    },
     theme: {
       system: "System",
       light: "Light",
