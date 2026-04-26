@@ -226,6 +226,7 @@ export function DataTableHeader<TQuery extends object>({
   leadingBuiltInSearchField,
   trailingBuiltInQueryFields,
   queryFields,
+  queryTools,
   loading,
   insert,
   bulkDelete,
@@ -251,6 +252,7 @@ export function DataTableHeader<TQuery extends object>({
   leadingBuiltInSearchField: DataTableBuiltInQueryField<TQuery> | null
   trailingBuiltInQueryFields: readonly DataTableBuiltInQueryField<TQuery>[]
   queryFields: readonly DataTableQueryField<TQuery>[]
+  queryTools: boolean
   loading: boolean
   insert: false | { disabled?: boolean; label?: ReactNode }
   bulkDelete: false | { label?: ReactNode }
@@ -289,13 +291,15 @@ export function DataTableHeader<TQuery extends object>({
             ))}
           </div>
 
-          <QueryToolGroup
-            loading={loading}
-            resolvedResetLabel={resolvedResetLabel}
-            resolvedRefreshLabel={resolvedRefreshLabel}
-            onResetQuery={onResetQuery}
-            onRetry={onRetry}
-          />
+          {queryTools ? (
+            <QueryToolGroup
+              loading={loading}
+              resolvedResetLabel={resolvedResetLabel}
+              resolvedRefreshLabel={resolvedRefreshLabel}
+              onResetQuery={onResetQuery}
+              onRetry={onRetry}
+            />
+          ) : null}
         </div>
 
         {hasUserQueryFields ? (
@@ -335,13 +339,15 @@ export function DataTableHeader<TQuery extends object>({
   ) : (
     <div className="flex items-start justify-between gap-4">
       <div className="flex min-w-0 flex-1 items-center gap-3">
-        <QueryToolGroup
-          loading={loading}
-          resolvedResetLabel={resolvedResetLabel}
-          resolvedRefreshLabel={resolvedRefreshLabel}
-          onResetQuery={onResetQuery}
-          onRetry={onRetry}
-        />
+        {queryTools ? (
+          <QueryToolGroup
+            loading={loading}
+            resolvedResetLabel={resolvedResetLabel}
+            resolvedRefreshLabel={resolvedRefreshLabel}
+            onResetQuery={onResetQuery}
+            onRetry={onRetry}
+          />
+        ) : null}
       </div>
 
       <ToolbarActions

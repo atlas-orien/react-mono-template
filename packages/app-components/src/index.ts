@@ -15,12 +15,15 @@ export type {
   TopBarProps,
 } from "./components/app-shell"
 export {
+  AppNotice,
   PageErrorState,
   PageLoading,
   RouteErrorBoundary,
   showGlobalError,
 } from "./components/feedback"
 export type {
+  AppNoticeProps,
+  AppNoticeVariant,
   PageErrorStateProps,
   PageLoadingProps,
 } from "./components/feedback"

@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react"
+import { useCallback } from "react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import type {
   DataTableFetchResult,
@@ -6,7 +6,6 @@ import type {
 } from "@workspace/app-components"
 import { listRolesApi } from "@/api"
 import { rolesQueryKey } from "./constants"
-import { buildRoleMetricCards } from "./metrics"
 import {
   filterRoles,
   paginateRoles,
@@ -28,15 +27,10 @@ export function useRolesData() {
     }))
   }, [])
 
-  const rolesQuery = useQuery({
+  useQuery({
     queryKey: rolesQueryKey,
     queryFn: loadRoleRows,
   })
-
-  const metricCards = useMemo(
-    () => buildRoleMetricCards(rolesQuery.data ?? []),
-    [rolesQuery.data]
-  )
 
   const fetchData = useCallback(
     async ({
@@ -80,7 +74,6 @@ export function useRolesData() {
   )
 
   return {
-    metricCards,
     fetchData,
     invalidateRoles,
   }

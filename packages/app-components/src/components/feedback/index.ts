@@ -1,3 +1,5 @@
+export { AppNotice } from "./app-notice"
+export type { AppNoticeProps, AppNoticeVariant } from "./app-notice"
 export { PageLoading } from "./page-loading"
 export type { PageLoadingProps } from "./page-loading"
 export { PageErrorState } from "./page-error-state"

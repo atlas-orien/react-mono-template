@@ -13,7 +13,8 @@ export function useCreateRoleInsertAction(
     () => ({
       label: "新增角色",
       title: "创建角色",
-      description: "创建 roles 表中的角色定义。角色授权请在角色授权页面处理。",
+      description:
+        "编码只是角色的唯一编号。创建后请到角色授权页面配置权限。",
       renderContent: () => (
         <div className="grid gap-4 py-2">
           <div className="grid gap-2">

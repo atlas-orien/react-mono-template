@@ -104,6 +104,7 @@ export function DataTable<T, TQuery extends object = object>({
   initialQuery,
   builtInQueryFields = [],
   queryFields = [],
+  queryTools = true,
   toolbarActions,
   insert = false,
   selection,
@@ -760,6 +761,7 @@ export function DataTable<T, TQuery extends object = object>({
               }
               trailingBuiltInQueryFields={trailingBuiltInQueryFields}
               queryFields={queryFields}
+              queryTools={queryTools}
               loading={loading}
               insert={insert}
               bulkDelete={bulkDelete}

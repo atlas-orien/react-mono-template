@@ -254,6 +254,7 @@ export interface DataTableProps<T, TQuery extends object = object> {
   initialQuery?: TQuery
   builtInQueryFields?: readonly DataTableBuiltInQueryField<TQuery>[]
   queryFields?: readonly DataTableQueryField<TQuery>[]
+  queryTools?: boolean
   toolbarActions?: ReactNode
   insert?: false | DataTableInsertActionConfig
   selection?: false | DataTableRowSelectionConfig<T>
