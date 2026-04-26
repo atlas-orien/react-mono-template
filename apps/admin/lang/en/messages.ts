@@ -56,7 +56,7 @@ const messages = {
         },
       },
       workspaceTabs: {
-        clear: "Clear history",
+        clear: "Close other pages",
       },
       account: {
         logout: "Log out",

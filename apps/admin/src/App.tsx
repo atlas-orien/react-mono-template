@@ -54,18 +54,20 @@ export default function App() {
   }, [dispatch, restoreQuery.error, restoreQuery.isError])
 
   const isRestored = !token || restoreQuery.status !== "pending"
+  const isAuthenticated =
+    isLogin || (Boolean(token) && restoreQuery.status === "success")
 
   const router = useMemo(() => {
     if (!isRestored) return null
 
     return createBrowserRouter([
-      isLogin ? protectedRoutes : publicRoutes,
+      isAuthenticated ? protectedRoutes : publicRoutes,
       {
         path: "*",
-        element: <Navigate to={isLogin ? "/" : "/login"} replace />,
+        element: <Navigate to={isAuthenticated ? "/" : "/login"} replace />,
       },
     ])
-  }, [isLogin, isRestored])
+  }, [isAuthenticated, isRestored])
 
   if (!router) return <PageLoading fullscreen />
 

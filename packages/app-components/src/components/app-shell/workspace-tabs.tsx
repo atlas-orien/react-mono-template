@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { RotateCcw, X } from "lucide-react"
+import { PanelTopClose, X } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../tooltip"
 import { cn } from "@workspace/ui-core/lib/utils.js"
 
@@ -38,7 +38,7 @@ export function WorkspaceTabs({
                 onClick={onClear}
                 className="inline-flex size-8 shrink-0 items-center justify-center rounded-md text-muted-foreground transition hover:bg-accent hover:text-accent-foreground"
               >
-                <RotateCcw aria-hidden="true" className="size-4.5" />
+                <PanelTopClose aria-hidden="true" className="size-4.5" />
                 <span className="sr-only">{clearLabel}</span>
               </button>
             </TooltipTrigger>
@@ -64,7 +64,7 @@ export function WorkspaceTabs({
                       onClick={item.onSelect}
                       className={cn(
                         "inline-flex min-w-0 items-center gap-1.5 rounded-md px-1 py-0.5 text-left outline-hidden transition hover:text-foreground focus-visible:ring-2 focus-visible:ring-[var(--ring)]",
-                        item.active && "text-foreground"
+                        item.active && "text-[var(--info)]"
                       )}
                     >
                       <span
