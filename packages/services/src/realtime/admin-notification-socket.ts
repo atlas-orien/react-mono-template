@@ -16,6 +16,9 @@ export interface AdminNotificationSocketOptions {
   baseHttpUrl?: string | null
   path?: string
   pingIntervalMs?: number
+  reconnect?: boolean
+  reconnectInitialDelayMs?: number
+  reconnectMaxDelayMs?: number
   onConnected?: (message: AdminWsServerMessage) => void
   onPong?: (message: WsPongMessage) => void
   onNotification?: (message: WsNotificationMessage) => void
@@ -38,6 +41,9 @@ export function createAdminNotificationSocket({
   baseHttpUrl,
   path = "/api/ws",
   pingIntervalMs = 30_000,
+  reconnect = true,
+  reconnectInitialDelayMs = 1_000,
+  reconnectMaxDelayMs = 30_000,
   onConnected,
   onPong,
   onNotification,
@@ -48,6 +54,9 @@ export function createAdminNotificationSocket({
   onSocketError,
 }: AdminNotificationSocketOptions): AdminNotificationSocketHandle {
   let pingTimer: ReturnType<typeof globalThis.setInterval> | null = null
+  let reconnectTimer: ReturnType<typeof globalThis.setTimeout> | null = null
+  let reconnectAttempt = 0
+  let manuallyClosed = false
 
   const clearPingTimer = () => {
     if (pingTimer == null) {
@@ -56,6 +65,15 @@ export function createAdminNotificationSocket({
 
     globalThis.clearInterval(pingTimer)
     pingTimer = null
+  }
+
+  const clearReconnectTimer = () => {
+    if (reconnectTimer == null) {
+      return
+    }
+
+    globalThis.clearTimeout(reconnectTimer)
+    reconnectTimer = null
   }
 
   const startPingTimer = (socket: WebSocket) => {
@@ -71,6 +89,32 @@ export function createAdminNotificationSocket({
     }, pingIntervalMs)
   }
 
+  const scheduleReconnect = () => {
+    if (!reconnect || manuallyClosed || reconnectTimer != null) {
+      return
+    }
+
+    const delay = Math.min(
+      reconnectInitialDelayMs * 2 ** reconnectAttempt,
+      reconnectMaxDelayMs
+    )
+
+    reconnectAttempt += 1
+    reconnectTimer = globalThis.setTimeout(() => {
+      reconnectTimer = null
+
+      if (manuallyClosed) {
+        return
+      }
+
+      try {
+        client.connect()
+      } catch {
+        scheduleReconnect()
+      }
+    }, delay)
+  }
+
   const client = createWebSocketClient({
     url: buildWebSocketUrl({
       path,
@@ -78,6 +122,8 @@ export function createAdminNotificationSocket({
       baseHttpUrl,
     }),
     onOpen(event, socket) {
+      reconnectAttempt = 0
+      clearReconnectTimer()
       onOpen?.()
       socket.send(JSON.stringify({ type: "ping" }))
       startPingTimer(socket)
@@ -113,13 +159,20 @@ export function createAdminNotificationSocket({
     onClose(event) {
       clearPingTimer()
       onClose?.(event)
+      scheduleReconnect()
     },
   })
 
   return {
-    connect: client.connect,
+    connect() {
+      manuallyClosed = false
+      clearReconnectTimer()
+      return client.connect()
+    },
     disconnect() {
+      manuallyClosed = true
       clearPingTimer()
+      clearReconnectTimer()
       client.disconnect(1000, "admin shell cleanup")
     },
     sendPing() {
