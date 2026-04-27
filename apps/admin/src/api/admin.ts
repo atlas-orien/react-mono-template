@@ -114,7 +114,7 @@ export const createAdminUserApi = async (
 ): Promise<AdminUserResponse> => {
   return request<CreateAdminUserRequest, AdminUserResponse>({
     method: "POST",
-    url: "/api/admin/users",
+    url: "/api/admin/account/admin-users",
     body,
   })
 }
@@ -122,7 +122,7 @@ export const createAdminUserApi = async (
 export const listAdminUsersApi = async (): Promise<AdminUserResponse[]> => {
   return request<undefined, AdminUserResponse[]>({
     method: "GET",
-    url: "/api/admin/users",
+    url: "/api/admin/account/admin-users",
   })
 }
 
@@ -132,7 +132,7 @@ export const updateAdminUserApi = async (
 ): Promise<AdminUserResponse> => {
   return request<UpdateAdminUserRequest, AdminUserResponse>({
     method: "PATCH",
-    url: `/api/admin/users/${encodeURIComponent(userId)}`,
+    url: `/api/admin/account/admin-users/${encodeURIComponent(userId)}`,
     body,
   })
 }
@@ -140,7 +140,7 @@ export const updateAdminUserApi = async (
 export const deleteAdminUserApi = async (userId: string): Promise<void> => {
   return request<undefined, void>({
     method: "DELETE",
-    url: `/api/admin/users/${encodeURIComponent(userId)}`,
+    url: `/api/admin/account/admin-users/${encodeURIComponent(userId)}`,
   })
 }
 
@@ -149,7 +149,7 @@ export const createAppUserApi = async (
 ): Promise<AppUserResponse> => {
   return request<CreateAppUserRequest, AppUserResponse>({
     method: "POST",
-    url: "/api/admin/app/users",
+    url: "/api/admin/account/app-users",
     body,
   })
 }
@@ -157,7 +157,7 @@ export const createAppUserApi = async (
 export const listAppUsersApi = async (): Promise<AppUserResponse[]> => {
   return request<undefined, AppUserResponse[]>({
     method: "GET",
-    url: "/api/admin/app/users",
+    url: "/api/admin/account/app-users",
   })
 }
 
@@ -167,7 +167,7 @@ export const updateAppUserApi = async (
 ): Promise<AppUserResponse> => {
   return request<UpdateAppUserRequest, AppUserResponse>({
     method: "PATCH",
-    url: `/api/admin/app/users/${encodeURIComponent(userId)}`,
+    url: `/api/admin/account/app-users/${encodeURIComponent(userId)}`,
     body,
   })
 }
@@ -175,7 +175,7 @@ export const updateAppUserApi = async (
 export const deleteAppUserApi = async (userId: string): Promise<void> => {
   return request<undefined, void>({
     method: "DELETE",
-    url: `/api/admin/app/users/${encodeURIComponent(userId)}`,
+    url: `/api/admin/account/app-users/${encodeURIComponent(userId)}`,
   })
 }
 
@@ -184,7 +184,7 @@ export const createRoleApi = async (
 ): Promise<RoleResponse> => {
   return request<CreateRoleRequest, RoleResponse>({
     method: "POST",
-    url: "/api/admin/roles",
+    url: "/api/admin/access/roles",
     body,
   })
 }
@@ -192,14 +192,14 @@ export const createRoleApi = async (
 export const listRolesApi = async (): Promise<RoleResponse[]> => {
   return request<undefined, RoleResponse[]>({
     method: "GET",
-    url: "/api/admin/roles",
+    url: "/api/admin/access/roles",
   })
 }
 
 export const deleteRoleApi = async (roleId: number): Promise<void> => {
   return request<undefined, void>({
     method: "DELETE",
-    url: `/api/admin/roles/${encodeURIComponent(String(roleId))}`,
+    url: `/api/admin/access/roles/${encodeURIComponent(String(roleId))}`,
   })
 }
 
@@ -208,7 +208,7 @@ export const createAppRoleApi = async (
 ): Promise<RoleResponse> => {
   return request<CreateRoleRequest, RoleResponse>({
     method: "POST",
-    url: "/api/admin/app/roles",
+    url: "/api/admin/access/app-roles",
     body,
   })
 }
@@ -216,14 +216,14 @@ export const createAppRoleApi = async (
 export const listAppRolesApi = async (): Promise<RoleResponse[]> => {
   return request<undefined, RoleResponse[]>({
     method: "GET",
-    url: "/api/admin/app/roles",
+    url: "/api/admin/access/app-roles",
   })
 }
 
 export const deleteAppRoleApi = async (roleId: number): Promise<void> => {
   return request<undefined, void>({
     method: "DELETE",
-    url: `/api/admin/app/roles/${encodeURIComponent(String(roleId))}`,
+    url: `/api/admin/access/app-roles/${encodeURIComponent(String(roleId))}`,
   })
 }
 
@@ -232,7 +232,7 @@ export const createMenuApi = async (
 ): Promise<MenuResponse> => {
   return request<CreateMenuRequest, MenuResponse>({
     method: "POST",
-    url: "/api/admin/menus",
+    url: "/api/admin/access/menus",
     body,
   })
 }
@@ -240,7 +240,7 @@ export const createMenuApi = async (
 export const listMenusApi = async (): Promise<MenuResponse[]> => {
   return request<undefined, MenuResponse[]>({
     method: "GET",
-    url: "/api/admin/menus",
+    url: "/api/admin/access/menus",
   })
 }
 
@@ -249,7 +249,7 @@ export const listUserRolesApi = async (
 ): Promise<UserRoleOptionResponse[]> => {
   return request<undefined, UserRoleOptionResponse[]>({
     method: "GET",
-    url: `/api/admin/users/${encodeURIComponent(userId)}/roles`,
+    url: `/api/admin/account/admin-users/${encodeURIComponent(userId)}/roles`,
   })
 }
 
@@ -259,7 +259,7 @@ export const updateUserRolesApi = async (
 ): Promise<UserRoleOptionResponse[]> => {
   return request<UpdateUserRolesRequest, UserRoleOptionResponse[]>({
     method: "PUT",
-    url: `/api/admin/users/${encodeURIComponent(userId)}/roles`,
+    url: `/api/admin/account/admin-users/${encodeURIComponent(userId)}/roles`,
     body,
   })
 }
@@ -269,7 +269,7 @@ export const listAppUserRolesApi = async (
 ): Promise<AppUserRoleOptionResponse[]> => {
   return request<undefined, AppUserRoleOptionResponse[]>({
     method: "GET",
-    url: `/api/admin/app/users/${encodeURIComponent(userId)}/roles`,
+    url: `/api/admin/account/app-users/${encodeURIComponent(userId)}/roles`,
   })
 }
 
@@ -279,7 +279,7 @@ export const updateAppUserRolesApi = async (
 ): Promise<AppUserRoleOptionResponse[]> => {
   return request<UpdateUserRolesRequest, AppUserRoleOptionResponse[]>({
     method: "PUT",
-    url: `/api/admin/app/users/${encodeURIComponent(userId)}/roles`,
+    url: `/api/admin/account/app-users/${encodeURIComponent(userId)}/roles`,
     body,
   })
 }
@@ -289,7 +289,7 @@ export const listRolePermissionsApi = async (
 ): Promise<RolePermissionTreeNode[]> => {
   return request<undefined, RolePermissionTreeNode[]>({
     method: "GET",
-    url: `/api/admin/roles/${encodeURIComponent(String(roleId))}/permissions`,
+    url: `/api/admin/access/roles/${encodeURIComponent(String(roleId))}/permissions`,
   })
 }
 
@@ -299,7 +299,7 @@ export const updateRolePermissionsApi = async (
 ): Promise<RolePermissionTreeNode[]> => {
   return request<UpdateRolePermissionsRequest, RolePermissionTreeNode[]>({
     method: "PUT",
-    url: `/api/admin/roles/${encodeURIComponent(String(roleId))}/permissions`,
+    url: `/api/admin/access/roles/${encodeURIComponent(String(roleId))}/permissions`,
     body,
   })
 }
@@ -309,7 +309,7 @@ export const listAppRolePermissionsApi = async (
 ): Promise<RolePermissionTreeNode[]> => {
   return request<undefined, RolePermissionTreeNode[]>({
     method: "GET",
-    url: `/api/admin/app/roles/${encodeURIComponent(String(roleId))}/permissions`,
+    url: `/api/admin/access/app-roles/${encodeURIComponent(String(roleId))}/permissions`,
   })
 }
 
@@ -319,7 +319,7 @@ export const updateAppRolePermissionsApi = async (
 ): Promise<RolePermissionTreeNode[]> => {
   return request<UpdateRolePermissionsRequest, RolePermissionTreeNode[]>({
     method: "PUT",
-    url: `/api/admin/app/roles/${encodeURIComponent(String(roleId))}/permissions`,
+    url: `/api/admin/access/app-roles/${encodeURIComponent(String(roleId))}/permissions`,
     body,
   })
 }
