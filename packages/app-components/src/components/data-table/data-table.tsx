@@ -88,7 +88,6 @@ export type {
 
 const DEFAULT_AUDIT_FIELD_KEY = "auditField"
 const DEFAULT_AUDIT_RANGE_KEY = "auditRange"
-const DATA_TABLE_HORIZONTAL_INSET = 24
 
 function getAuditRawValue<T>(row: T, column: DataTableAuditColumnKey) {
   if (typeof row !== "object" || row === null) return undefined
@@ -962,10 +961,17 @@ export function DataTable<T, TQuery extends object = object>({
           height: resolveTableHeight(height),
           width: fillWidth
             ? "100%"
-            : `min(100%, ${resolvedSurfaceWidth + DATA_TABLE_HORIZONTAL_INSET}px)`,
+            : `min(100%, ${resolvedSurfaceWidth}px)`,
         }}
       >
-        <div className="shrink-0 px-3 pt-2" data-slot="data-table-header">
+        <div
+          className={
+            fillWidth
+              ? "shrink-0 px-3 pt-2"
+              : "shrink-0 px-0 pt-2"
+          }
+          data-slot="data-table-header"
+        >
           <div
             className="max-w-full"
             style={
@@ -1244,7 +1250,11 @@ export function DataTable<T, TQuery extends object = object>({
         </div>
 
         <div
-          className="mt-2 overflow-x-auto px-3 py-2"
+          className={
+            fillWidth
+              ? "mt-2 overflow-x-auto px-3 py-2"
+              : "mt-2 overflow-x-auto px-0 py-2"
+          }
           data-slot="data-table-tail"
         >
           <div
