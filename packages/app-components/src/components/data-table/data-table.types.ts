@@ -144,7 +144,6 @@ export interface DataTableAuditColumnsConfig {
 }
 
 export interface DataTableAuditQueryConfig<TQuery> {
-  columns?: readonly DataTableAuditColumnKey[]
   rangeKey: keyof TQuery & string
   fieldKey?: keyof TQuery & string
   label?: ReactNode

@@ -375,8 +375,8 @@ export default function DataTablePage() {
             placeholder: t("datatable.searchPlaceholder", "Search customers"),
           },
         ]}
+        auditColumns={["createdAt"]}
         auditQuery={{
-          columns: ["createdAt"],
           rangeKey: "createdAt",
           label: t("datatable.fields.createdAt", "Created At"),
         }}

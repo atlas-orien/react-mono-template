@@ -33,7 +33,6 @@ export function useAppUsersTable(
     builtInQueryFields: appUserBuiltInQueryFields,
     queryFields: appUserQueryFields,
     auditQuery: {
-      columns: appUserAuditColumns,
       rangeKey: "timeRange",
       fieldKey: appUserAuditColumns.length > 1 ? "timeField" : undefined,
       label: "审计时间",

@@ -99,10 +99,9 @@ function resolveAuditColumnKeys(
   auditColumns:
     | boolean
     | readonly DataTableAuditColumnKey[]
-    | DataTableAuditColumnsConfig,
-  fallbackColumns?: readonly DataTableAuditColumnKey[]
+    | DataTableAuditColumnsConfig
 ) {
-  if (auditColumns === false) return [...(fallbackColumns ?? [])]
+  if (auditColumns === false) return []
   if (auditColumns === true) return [...DEFAULT_AUDIT_COLUMNS]
   if (Array.isArray(auditColumns)) return [...auditColumns]
   if (isDataTableAuditColumnsConfig(auditColumns)) {
@@ -328,22 +327,26 @@ export function DataTable<T, TQuery extends object = object>({
     localeText?.updatedAtLabel ??
     (language === "zhCN" ? "更新时间" : "Updated At")
   const resolvedAuditEmptyText = localeText?.auditEmptyText ?? "-"
+  const auditColumnsConfig = isDataTableAuditColumnsConfig(auditColumns)
+    ? auditColumns
+    : undefined
+  const auditColumnKeys = useMemo(
+    () => resolveAuditColumnKeys(auditColumns),
+    [auditColumns]
+  )
   const auditQueryField = useMemo<DataTableRenderedQueryField<TQuery> | null>(
     () => {
       if (auditQuery === false) return null
 
-      const auditQueryColumns = [
-        ...(auditQuery.columns ?? DEFAULT_AUDIT_COLUMNS),
-      ]
-      if (auditQueryColumns.length === 0) return null
+      if (auditColumnKeys.length === 0) return null
 
-      const [firstColumn] = auditQueryColumns
+      const [firstColumn] = auditColumnKeys
       const getAuditQueryLabel = (column: DataTableAuditColumnKey) =>
         column === "createdAt"
           ? (auditQuery.createdAtLabel ?? resolvedCreatedAtLabel)
           : (auditQuery.updatedAtLabel ?? resolvedUpdatedAtLabel)
 
-      if (auditQueryColumns.length === 1) {
+      if (auditColumnKeys.length === 1) {
         return {
           key: auditQuery.rangeKey,
           type: "date-range",
@@ -365,13 +368,14 @@ export function DataTable<T, TQuery extends object = object>({
         label: auditQuery.label ?? resolvedCreatedAtLabel,
         scopePlaceholder: auditQuery.fieldPlaceholder,
         rangePlaceholder: auditQuery.rangePlaceholder ?? auditQuery.placeholder,
-        options: auditQueryColumns.map((column) => ({
+        options: auditColumnKeys.map((column) => ({
           label: String(getAuditQueryLabel(column)),
           value: column,
         })),
       }
     },
     [
+      auditColumnKeys,
       auditQuery,
       resolvedCreatedAtLabel,
       resolvedUpdatedAtLabel,
@@ -394,19 +398,6 @@ export function DataTable<T, TQuery extends object = object>({
       ...queryFields,
     ],
     [auditQueryField, builtInQueryFields, queryFields]
-  )
-  const auditColumnsConfig = isDataTableAuditColumnsConfig(auditColumns)
-    ? auditColumns
-    : undefined
-  const auditColumnKeys = useMemo(
-    () =>
-      resolveAuditColumnKeys(
-        auditColumns,
-        auditQuery === false
-          ? undefined
-          : (auditQuery.columns ?? DEFAULT_AUDIT_COLUMNS)
-      ),
-    [auditColumns, auditQuery]
   )
 
   const bulkUpdateFields = bulkUpdate !== false ? bulkUpdate.fields : []

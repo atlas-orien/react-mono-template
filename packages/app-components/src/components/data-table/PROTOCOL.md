@@ -165,19 +165,26 @@ AI 不应在业务页复制 `DataTable` 内部 sticky 计算逻辑。
 
 ## 6. 时间能力
 
-`DataTable` 当前支持标准审计时间能力，但它不属于 `builtInQueryFields` 或 `queryFields`。时间能力只能通过 `auditQuery` 启用，并且只允许以下字段：
+`DataTable` 当前支持标准审计时间能力，但它不属于 `builtInQueryFields` 或 `queryFields`。时间字段集合只能通过 `auditColumns` 配置，并且只允许以下字段：
 
 - `createdAt`
 - `updatedAt`
 
 禁止业务通过自定义 query field 添加任意时间字段。不要为 `renewalAt`、`lastActiveAt`、`deletedAt` 等字段私自加时间 query。
 
-`auditQuery.columns` 是单一事实源：
+`auditColumns` 是字段和列展示的单一事实源：
 
-- 开启 `createdAt` 会同时显示创建时间筛选和创建时间列
-- 开启 `updatedAt` 会同时显示更新时间筛选和更新时间列
-- 同时开启两者时，query 会显示字段切换 + 时间范围
-- 关闭某个字段时，它的 query 和列都应一起消失
+- 开启 `createdAt` 会显示创建时间列
+- 开启 `updatedAt` 会显示更新时间列
+- 同时开启两者时，表格显示两列
+- 关闭某个字段时，它的列和对应 query 选项都应一起消失
+
+`auditQuery` 只控制是否显示时间 query 组件：
+
+- `auditQuery={false}` 不显示时间 query
+- 传入 `auditQuery` 时，query 组件自动跟随 `auditColumns`
+- 如果 `auditColumns` 只有一个字段，query 显示单个日期范围
+- 如果 `auditColumns` 有两个字段，query 显示字段切换 + 日期范围
 
 ### 单字段时间查询
 
@@ -185,8 +192,8 @@ AI 不应在业务页复制 `DataTable` 内部 sticky 计算逻辑。
 
 ```tsx
 <DataTable
+  auditColumns={["createdAt"]}
   auditQuery={{
-    columns: ["createdAt"],
     rangeKey: "createdAt",
     label: "创建时间",
   }}
@@ -209,8 +216,8 @@ interface Query {
 
 ```tsx
 <DataTable
+  auditColumns={["createdAt", "updatedAt"]}
   auditQuery={{
-    columns: ["createdAt", "updatedAt"],
     rangeKey: "auditRange",
     fieldKey: "auditField",
     label: "审计时间",
@@ -243,9 +250,9 @@ HTTP JSON 和业务 DTO 应继续使用 camelCase，不要引入 `created_at` / 
 
 ## 7. 审计时间列
 
-如果页面需要展示标准审计时间字段，优先通过 `auditQuery.columns` 启用。不要在每个页面重复手写列。
+如果页面需要展示标准审计时间字段，优先通过 `auditColumns` 启用。不要在每个页面重复手写列。
 
-`auditColumns` 仍可用于只展示审计列或覆盖列展示文案/格式，但不应作为时间筛选开关。存在 `auditQuery` 时，如果没有显式传 `auditColumns`，表格会自动使用 `auditQuery.columns` 生成审计列。
+`auditColumns` 用于决定标准审计列集合，也决定 `auditQuery` 可选择的时间字段。`auditQuery` 不应重复声明字段集合。
 
 `auditColumns` 支持：
 
@@ -497,8 +504,8 @@ AI 修改 `DataTable` 时，必须同时考虑：
 2. 定义清晰的 `Row` 和 `Query`
 3. 主查询放入 `builtInQueryFields`
 4. 业务补充筛选放入 `queryFields`
-5. 时间查询只能通过 `auditQuery` 启用，字段只允许 `createdAt` / `updatedAt`
-6. 标准审计时间列默认跟随 `auditQuery.columns`
+5. 标准时间字段只能通过 `auditColumns` 启用，字段只允许 `createdAt` / `updatedAt`
+6. 时间 query 只能通过 `auditQuery` 显示，并自动跟随 `auditColumns`
 7. 行级操作优先使用 `rowActions`
 8. 批量操作优先使用 `bulkUpdate` / `bulkDelete`
 9. 新增操作优先使用 `insert`

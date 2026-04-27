@@ -78,6 +78,7 @@ interface FeatureState {
   advancedFilters: boolean
   createdAtQuery: boolean
   updatedAtQuery: boolean
+  auditQuery: boolean
   stickyLeft: boolean
   stickyRight: boolean
   denseColumns: boolean
@@ -106,6 +107,7 @@ const PRESET_FEATURES: Record<ScenarioPreset, FeatureState> = {
     advancedFilters: false,
     createdAtQuery: false,
     updatedAtQuery: false,
+    auditQuery: false,
     stickyLeft: false,
     stickyRight: false,
     denseColumns: false,
@@ -125,6 +127,7 @@ const PRESET_FEATURES: Record<ScenarioPreset, FeatureState> = {
     advancedFilters: true,
     createdAtQuery: false,
     updatedAtQuery: false,
+    auditQuery: false,
     stickyLeft: true,
     stickyRight: true,
     denseColumns: false,
@@ -144,6 +147,7 @@ const PRESET_FEATURES: Record<ScenarioPreset, FeatureState> = {
     advancedFilters: true,
     createdAtQuery: true,
     updatedAtQuery: true,
+    auditQuery: true,
     stickyLeft: true,
     stickyRight: true,
     denseColumns: true,
@@ -626,16 +630,22 @@ export default function DataTableGuidePage() {
                   (value) => setFeature("advancedFilters", value)
                 )}
                 {renderFeatureChip(
-                  "创建时间筛选",
-                  "auditQuery.createdAt",
+                  "创建时间",
+                  "auditColumns.createdAt",
                   features.createdAtQuery,
                   (value) => setFeature("createdAtQuery", value)
                 )}
                 {renderFeatureChip(
-                  "更新时间筛选",
-                  "auditQuery.updatedAt",
+                  "更新时间",
+                  "auditColumns.updatedAt",
                   features.updatedAtQuery,
                   (value) => setFeature("updatedAtQuery", value)
+                )}
+                {renderFeatureChip(
+                  "时间筛选",
+                  "auditQuery",
+                  features.auditQuery,
+                  (value) => setFeature("auditQuery", value)
                 )}
                 {renderFeatureChip(
                   "固定左列",
@@ -767,6 +777,9 @@ export default function DataTableGuidePage() {
                       {features.denseColumns ? <Badge>wide table</Badge> : null}
                       {features.createdAtQuery ? <Badge>createdAt query</Badge> : null}
                       {features.updatedAtQuery ? <Badge>updatedAt query</Badge> : null}
+                      {features.auditQuery && auditQueryColumns.length > 0 ? (
+                        <Badge>audit query</Badge>
+                      ) : null}
                       {auditQueryColumns.length > 0 ? <Badge>audit columns</Badge> : null}
                     </div>
 
@@ -802,6 +815,7 @@ export default function DataTableGuidePage() {
                         stripedRows={features.zebraRows}
                         compactColumns={features.compactColumns}
                         compactRows={features.compactRows}
+                        auditColumns={auditQueryColumns}
                         height="100%"
                         fixedLeftColumns={features.stickyLeft ? 2 : 0}
                         fixedRightColumns={features.stickyRight ? 1 : 0}
@@ -812,9 +826,8 @@ export default function DataTableGuidePage() {
                         builtInQueryFields={builtInQueryFields}
                         queryFields={queryFields}
                         auditQuery={
-                          auditQueryColumns.length > 0
+                          features.auditQuery
                             ? {
-                                columns: auditQueryColumns,
                                 rangeKey: "auditRange",
                                 fieldKey:
                                   auditQueryColumns.length > 1
@@ -1244,8 +1257,12 @@ function buildSnippet({
   }
 
   if (features.createdAtQuery || features.updatedAtQuery) {
+    lines.push(`  auditColumns={auditColumns}`)
+  }
+
+  if (features.auditQuery) {
     lines.push(
-      `  auditQuery={{ columns: auditQueryColumns, rangeKey: "auditRange", fieldKey: "auditField" }}`
+      `  auditQuery={{ rangeKey: "auditRange", fieldKey: "auditField" }}`
     )
   }
 
