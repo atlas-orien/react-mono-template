@@ -13,6 +13,7 @@ import {
 } from "@workspace/ui-core/components/popover"
 import { cn } from "@workspace/ui-core/lib/utils.js"
 import { Calendar, type CalendarProps } from "@workspace/ui-components/stable/calendar"
+import { toIntlLocale } from "./shared"
 
 type CalendarSingleValue = Date | undefined
 
@@ -25,8 +26,8 @@ export interface DatePickerProps {
   calendarProps?: Omit<CalendarProps, "mode" | "value" | "onValueChange">
 }
 
-function formatDate(value: Date) {
-  return new Intl.DateTimeFormat("zh-CN", {
+function formatDate(value: Date, language: ReturnType<typeof normalizeLanguage>) {
+  return new Intl.DateTimeFormat(toIntlLocale(language), {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
@@ -47,7 +48,7 @@ export function DatePicker({
   const [open, setOpen] = useState(false)
   const triggerId = useId()
   const resolvedPlaceholder = placeholder ?? copy.placeholder
-  const displayValue = value ? formatDate(value) : resolvedPlaceholder
+  const displayValue = value ? formatDate(value, language) : resolvedPlaceholder
   const hasValue = Boolean(value)
 
   return (

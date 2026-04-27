@@ -14,7 +14,7 @@ import {
 import { cn } from "@workspace/ui-core/lib/utils.js"
 import { Calendar, type CalendarProps } from "@workspace/ui-components/stable/calendar"
 import { Time, type TimeValue } from "@workspace/ui-components/stable/time"
-import { pad } from "./shared"
+import { pad, toIntlLocale } from "./shared"
 
 export interface DateTimePickerProps {
   value?: Date | null
@@ -40,8 +40,11 @@ const DATE_TIME_PICKER_PRESETS = [
   { key: "yearStart" },
 ] as const
 
-function formatDateTime(value: Date) {
-  return new Intl.DateTimeFormat("zh-CN", {
+function formatDateTime(
+  value: Date,
+  language: ReturnType<typeof normalizeLanguage>
+) {
+  return new Intl.DateTimeFormat(toIntlLocale(language), {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
@@ -63,7 +66,10 @@ export function DateTimePicker({
   const triggerId = useId()
   const hasValue = Boolean(value)
   const resolvedPlaceholder = placeholder ?? copy.placeholder
-  const displayValue = hasValue && value ? formatDateTime(value) : resolvedPlaceholder
+  const displayValue =
+    hasValue && value
+      ? formatDateTime(value, language)
+      : resolvedPlaceholder
   const timeValue = useMemo(
     () => (value ? toTimeValue(value) : DEFAULT_TIME_VALUE),
     [value]

@@ -26,6 +26,13 @@ export interface AppUserResponse {
   roles: RoleResponse[]
 }
 
+export interface AppUserMetricsResponse {
+  total: number
+  enabled: number
+  disabled: number
+  multiRole: number
+}
+
 export interface PaginatedResponse<T> {
   items: T[]
   page: number
@@ -175,6 +182,14 @@ export const listAppUsersApi = async (
     body: params,
   })
 }
+
+export const listAppUserMetricsApi =
+  async (): Promise<AppUserMetricsResponse> => {
+    return request<undefined, AppUserMetricsResponse>({
+      method: "GET",
+      url: "/api/admin/account/app-users/metrics",
+    })
+  }
 
 export const updateAppUserApi = async (
   userId: string,

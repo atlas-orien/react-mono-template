@@ -1,5 +1,6 @@
 import type { ReactNode } from "react"
 import { ChevronsUpDown, LogOut } from "lucide-react"
+import { useTranslation } from "react-i18next"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -88,6 +89,10 @@ export function AvatarDropdown({
   logout,
   triggerVariant = "icon",
 }: AvatarDropdownProps) {
+  const { t } = useTranslation("components")
+  const openAccountMenuLabel = t("header.common.openAccountMenu")
+  const logoutLabel = t("header.me.logout")
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -95,7 +100,7 @@ export function AvatarDropdown({
           <button
             type="button"
             className="flex w-full items-center gap-2.5 overflow-hidden rounded-xl bg-[var(--surface)] px-2.5 py-2 text-left outline-hidden transition hover:bg-[var(--surface-hover)] focus-visible:ring-2 focus-visible:ring-(--app-primary) group-data-[collapsible=icon]:w-9 group-data-[collapsible=icon]:gap-0 group-data-[collapsible=icon]:rounded-full group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:py-0"
-            aria-label="Open account menu"
+            aria-label={openAccountMenuLabel}
           >
             <span className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#0f1724]">
               {avatarSrc ? (
@@ -125,7 +130,7 @@ export function AvatarDropdown({
           <button
             type="button"
             className="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/35 bg-[#121821] p-0.5 outline-hidden transition hover:border-white/55 focus-visible:ring-2 focus-visible:ring-(--app-primary)"
-            aria-label="Open account menu"
+            aria-label={openAccountMenuLabel}
           >
             <span className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full bg-[#0f1724]">
               {avatarSrc ? (
@@ -193,7 +198,7 @@ export function AvatarDropdown({
             disabled={logout?.disabled}
           >
             <LogOut className="size-5 shrink-0 text-muted-foreground" />
-            <span>{logout?.label ?? "Log out"}</span>
+            <span>{logout?.label ?? logoutLabel}</span>
           </DropdownMenuItem>
         </div>
       </DropdownMenuContent>

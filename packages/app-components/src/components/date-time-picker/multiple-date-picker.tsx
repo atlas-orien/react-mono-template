@@ -12,6 +12,7 @@ import {
 } from "@workspace/ui-core/components/popover"
 import { cn } from "@workspace/ui-core/lib/utils.js"
 import { Calendar, type CalendarProps } from "@workspace/ui-components/stable/calendar"
+import { toIntlLocale } from "./shared"
 
 type CalendarMultipleValue = Date[] | undefined
 
@@ -27,10 +28,13 @@ export interface MultipleDatePickerProps {
   >
 }
 
-function formatDateList(values: Date[]) {
+function formatDateList(
+  values: Date[],
+  language: ReturnType<typeof normalizeLanguage>
+) {
   return values
     .map((value) =>
-      new Intl.DateTimeFormat("zh-CN", {
+      new Intl.DateTimeFormat(toIntlLocale(language), {
         month: "2-digit",
         day: "2-digit",
       }).format(value)
@@ -59,11 +63,11 @@ export function MultipleDatePicker({
     }
 
     if (value.length <= 3) {
-      return formatDateList(value)
+      return formatDateList(value, language)
     }
 
     return copy.selectedDays(value.length)
-  }, [copy, resolvedPlaceholder, value])
+  }, [copy, language, resolvedPlaceholder, value])
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -82,7 +86,9 @@ export function MultipleDatePicker({
           disabled={disabled}
         >
           <span>{label}</span>
-          <span className="text-xs text-muted-foreground">Multi</span>
+          <span className="text-xs text-muted-foreground">
+            {copy.modeLabel}
+          </span>
         </Button>
       </PopoverTrigger>
       <PopoverContent

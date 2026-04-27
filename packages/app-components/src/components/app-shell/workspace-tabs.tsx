@@ -1,5 +1,6 @@
 import type { ReactNode } from "react"
 import { PanelTopClose, X } from "lucide-react"
+import { useTranslation } from "react-i18next"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../tooltip"
 import { cn } from "@workspace/ui-core/lib/utils.js"
 
@@ -23,6 +24,8 @@ export function WorkspaceTabs({
   items,
   onClear,
 }: WorkspaceTabsProps) {
+  const { t } = useTranslation("components")
+
   if (items.length === 0) {
     return null
   }
@@ -82,7 +85,7 @@ export function WorkspaceTabs({
                         type="button"
                         onClick={item.onClose}
                         className="inline-flex size-4.5 items-center justify-center rounded-full text-muted-foreground outline-hidden transition hover:bg-[var(--surface-hover)] hover:text-foreground focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
-                        aria-label="Close tab"
+                        aria-label={t("header.common.closeTab")}
                       >
                         <X
                           aria-hidden="true"

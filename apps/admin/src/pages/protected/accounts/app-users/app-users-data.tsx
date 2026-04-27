@@ -4,10 +4,14 @@ import type {
   DataTableFetchResult,
   DataTableSortState,
 } from "@workspace/app-components"
-import { listAppUsersApi, type ListAppUsersRequest } from "@/api"
+import {
+  listAppUserMetricsApi,
+  listAppUsersApi,
+  type ListAppUsersRequest,
+} from "@/api"
 import { buildAppUserMetricCards } from "./metrics"
 import { mapStatusLabelToApiStatus } from "./table/status"
-import { appUserAuditColumns, appUsersFirstPageQueryKey } from "./constants"
+import { appUserAuditColumns, appUserMetricsQueryKey } from "./constants"
 import type {
   AppUserRow,
   AppUserTableQuery,
@@ -117,14 +121,14 @@ export function useAppUsersData() {
     }
   }, [])
 
-  const appUsersQuery = useQuery({
-    queryKey: appUsersFirstPageQueryKey,
-    queryFn: async () => loadAppUserPage({ page: 1, pageSize: 10 }),
+  const appUserMetricsQuery = useQuery({
+    queryKey: appUserMetricsQueryKey,
+    queryFn: listAppUserMetricsApi,
   })
 
   const metricCards = useMemo(
-    () => buildAppUserMetricCards(appUsersQuery.data),
-    [appUsersQuery.data]
+    () => buildAppUserMetricCards(appUserMetricsQuery.data),
+    [appUserMetricsQuery.data]
   )
 
   const fetchData = useCallback(
@@ -157,7 +161,7 @@ export function useAppUsersData() {
   const invalidateAppUsers = useCallback(
     () =>
       queryClient.refetchQueries({
-        queryKey: appUsersFirstPageQueryKey,
+        queryKey: appUserMetricsQueryKey,
       }),
     [queryClient]
   )

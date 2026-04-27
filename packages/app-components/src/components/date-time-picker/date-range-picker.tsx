@@ -13,6 +13,7 @@ import {
 } from "@workspace/ui-core/components/popover"
 import { cn } from "@workspace/ui-core/lib/utils.js"
 import { Calendar, type CalendarProps } from "@workspace/ui-components/stable/calendar"
+import { toIntlLocale } from "./shared"
 
 export interface DateRangeValue {
   from: Date | undefined
@@ -37,8 +38,8 @@ export interface DateRangePickerProps {
   >
 }
 
-function formatDate(value: Date) {
-  return new Intl.DateTimeFormat("zh-CN", {
+function formatDate(value: Date, language: ReturnType<typeof normalizeLanguage>) {
+  return new Intl.DateTimeFormat(toIntlLocale(language), {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
@@ -67,11 +68,11 @@ export function DateRangePicker({
     }
 
     if (!value.to) {
-      return `${formatDate(value.from)} - ${copy.endDate}`
+      return `${formatDate(value.from, language)} - ${copy.endDate}`
     }
 
-    return `${formatDate(value.from)} - ${formatDate(value.to)}`
-  }, [copy.endDate, resolvedPlaceholder, value])
+    return `${formatDate(value.from, language)} - ${formatDate(value.to, language)}`
+  }, [copy.endDate, language, resolvedPlaceholder, value])
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

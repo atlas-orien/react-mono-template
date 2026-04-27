@@ -1,9 +1,9 @@
 const components = {
   header: {
-    language: {
-      label: "语言",
-      english: "English",
-      simplifiedChinese: "简体中文",
+    common: {
+      openAccountMenu: "打开账户菜单",
+      toggleSidebar: "切换侧边栏",
+      closeTab: "关闭标签页",
     },
     theme: {
       system: "跟随系统",
@@ -93,6 +93,7 @@ const components = {
   },
   multipleDatePicker: {
     placeholder: "选择多个日期",
+    modeLabel: "多选",
     selectedDaysSuffix: "天",
   },
   timePicker: {

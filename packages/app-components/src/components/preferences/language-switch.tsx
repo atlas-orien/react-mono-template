@@ -11,20 +11,23 @@ import {
 } from "@workspace/ui-core/components/dropdown-menu"
 import { cn } from "@workspace/ui-core/lib/utils.js"
 
-const LANGUAGE_OPTIONS = [{ value: "en" }, { value: "zhCN" }] as const
+const LANGUAGE_OPTIONS = [
+  { value: "en", nativeLabel: "English", uiLabel: "Language" },
+  { value: "zhCN", nativeLabel: "简体中文", uiLabel: "语言" },
+] as const
 
 export interface LanguageSwitchProps {
   className?: string
 }
 
 export function LanguageSwitch({ className }: LanguageSwitchProps) {
-  const { i18n, t } = useTranslation("components")
+  const { i18n } = useTranslation()
   const currentLanguage = i18n.language || "en"
   const currentValue =
     LANGUAGE_OPTIONS.find((item) => item.value === currentLanguage) ??
     LANGUAGE_OPTIONS.find((item) => currentLanguage.startsWith(item.value)) ??
     LANGUAGE_OPTIONS[0]
-  const label = t("header.language.label")
+  const label = currentValue.uiLabel
 
   return (
     <DropdownMenu>
@@ -74,11 +77,7 @@ export function LanguageSwitch({ className }: LanguageSwitchProps) {
                   "bg-[var(--select-item-hover)] text-[var(--select-item-hover-foreground)]"
               )}
             >
-              <span className="block flex-1 text-left">
-                {option.value === "en"
-                  ? t("header.language.english")
-                  : t("header.language.simplifiedChinese")}
-              </span>
+              <span className="block flex-1 text-left">{option.nativeLabel}</span>
               {currentValue.value === option.value ? (
                 <Check
                   aria-hidden="true"

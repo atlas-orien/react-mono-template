@@ -12,10 +12,10 @@ const appUserAuditColumnList =
 export const appUserDefaultTimeField: DataTableAuditColumnKey | undefined =
   appUserAuditColumnList[0]
 
-export const appUsersFirstPageQueryKey = [
+export const appUserMetricsQueryKey = [
   "admin",
   "app-users",
-  "first-page",
+  "metrics",
 ] as const
 
 export const appUserInitialQuery: AppUserTableQuery = {

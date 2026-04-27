@@ -58,6 +58,7 @@
 - 组件内部只能消费 `@workspace/locales` 暴露的 copy getter，或消费业务层已翻译完成的文案 props。
 - 禁止在组件源码里直接写中文、英文按钮文案、placeholder、label、empty text、dialog 文案。
 - 禁止通过 `t("key", "fallback")` 在组件里留下英文 fallback 文案；已有 key 就应该直接从 `locales` 取值。
+- 唯一例外是语言切换器的语言选项名；它们必须显示各自母语名，例如 `English`、`简体中文`，不跟随当前 locale 翻译。
 - 允许保留语言无关的技术字符串，例如 className、DOM attribute 值、数据 key、日志 tag、标准格式标识符。
 
 ## 7. AI 默认判断规则

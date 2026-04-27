@@ -18,7 +18,7 @@ import {
   updateAppUserRolesApi,
   type AppUserRoleOptionResponse,
 } from "@/api"
-import { appUsersFirstPageQueryKey } from "../constants"
+import { appUserMetricsQueryKey } from "../constants"
 import type { AppUserRow } from "../types"
 
 const userRoleOptionsQueryKey = (userId: string) =>
@@ -145,7 +145,7 @@ function EditAppUserRolesForm({
     onSuccess: async (roles) => {
       queryClient.setQueryData(userRoleOptionsQueryKey(userId), roles)
       await queryClient.refetchQueries({
-        queryKey: appUsersFirstPageQueryKey,
+        queryKey: appUserMetricsQueryKey,
       })
       onSaved()
       toast.success("用户角色已更新")

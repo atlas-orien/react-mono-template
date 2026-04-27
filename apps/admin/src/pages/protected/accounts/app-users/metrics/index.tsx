@@ -1,26 +1,22 @@
 import { ShieldCheck, ShieldOff, SquareUserRound, Users } from "lucide-react"
-import type { DataTableFetchResult } from "@workspace/app-components"
 import type { MetricCardsItem } from "@workspace/app-components"
-import type { AppUserRow } from "../types"
+import type { AppUserMetricsResponse } from "@/api"
 
 export function buildAppUserMetricCards(
-  pageData?: DataTableFetchResult<AppUserRow>
+  metrics?: AppUserMetricsResponse
 ): MetricCardsItem[] {
-  const rows = pageData?.items ?? []
-  const total = pageData?.total ?? 0
-
   return [
     {
       key: "all",
       label: "App 用户总数",
-      value: `${total}`,
+      value: `${metrics?.total ?? 0}`,
       tail: "服务端返回的 App 用户总量。",
       icon: <SquareUserRound className="size-4" />,
     },
     {
       key: "enabled",
       label: "启用账号",
-      value: `${rows.filter((row) => row.status === "enabled").length}`,
+      value: `${metrics?.enabled ?? 0}`,
       tail: "具备正常 App 权限访问能力的账号。",
       icon: <ShieldCheck className="size-4" />,
       variant: "success",
@@ -28,7 +24,7 @@ export function buildAppUserMetricCards(
     {
       key: "disabled",
       label: "停用账号",
-      value: `${rows.filter((row) => row.status === "disabled").length}`,
+      value: `${metrics?.disabled ?? 0}`,
       tail: "已被禁用，需要人工恢复或复核。",
       icon: <ShieldOff className="size-4" />,
       variant: "danger",
@@ -36,7 +32,7 @@ export function buildAppUserMetricCards(
     {
       key: "multi-role",
       label: "多角色账号",
-      value: `${rows.filter((row) => row.roles.length > 1).length}`,
+      value: `${metrics?.multiRole ?? 0}`,
       tail: "同时挂载多个角色的重点账号。",
       icon: <Users className="size-4" />,
       variant: "accent",

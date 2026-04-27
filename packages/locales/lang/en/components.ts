@@ -1,9 +1,9 @@
 const components = {
   header: {
-    language: {
-      label: "Language",
-      english: "English",
-      simplifiedChinese: "Simplified Chinese",
+    common: {
+      openAccountMenu: "Open account menu",
+      toggleSidebar: "Toggle sidebar",
+      closeTab: "Close tab",
     },
     theme: {
       system: "System",
@@ -93,6 +93,7 @@ const components = {
   },
   multipleDatePicker: {
     placeholder: "Select multiple dates",
+    modeLabel: "Multi",
     selectedDaysSuffix: "days selected",
   },
   timePicker: {

@@ -17,6 +17,9 @@ export function getDefaultYearRange(): YearRange {
   }
 }
 
+export function toIntlLocale(language: PickerLanguage) {
+  return language === "zhCN" ? "zh-CN" : "en-US"
+}
 
 export function pad(value: number) {
   return String(value).padStart(2, "0")

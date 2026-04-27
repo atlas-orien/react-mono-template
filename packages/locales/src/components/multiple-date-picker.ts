@@ -3,6 +3,7 @@ import { localeResources } from "../resources"
 
 export interface MultipleDatePickerCopy {
   placeholder: string
+  modeLabel: string
   selectedDays: (count: number) => string
 }
 
@@ -11,6 +12,7 @@ export function getMultipleDatePickerCopy(language: SupportedLanguage) {
 
   return {
     placeholder: copy.placeholder,
+    modeLabel: copy.modeLabel,
     selectedDays: (count: number) =>
       language === "zhCN"
         ? `已选择 ${count} ${copy.selectedDaysSuffix}`
