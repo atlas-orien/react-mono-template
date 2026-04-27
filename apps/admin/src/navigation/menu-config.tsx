@@ -38,7 +38,7 @@ export const navigationSections: NavigationSectionConfig[] = [
     items: [
       {
         id: "dashboard",
-        permissionCode: "access",
+        permissionCode: "dashboard",
         label: "控制台",
         labelKey: "admin.navigation.dashboard",
         path: "/",
@@ -52,7 +52,7 @@ export const navigationSections: NavigationSectionConfig[] = [
         subItems: [
           {
             id: "admin-users",
-            permissionCode: "user:list",
+            permissionCode: "accounts:admin_users",
             label: "后台账号",
             labelKey: "admin.navigation.adminUsers",
             href: "/accounts/admin-users",
@@ -60,7 +60,7 @@ export const navigationSections: NavigationSectionConfig[] = [
           },
           {
             id: "app-users",
-            permissionCode: "app_user:list",
+            permissionCode: "accounts:app_users",
             label: "App 用户",
             labelKey: "admin.navigation.appUsers",
             href: "/accounts/app-users",
@@ -76,7 +76,7 @@ export const navigationSections: NavigationSectionConfig[] = [
         subItems: [
           {
             id: "roles",
-            permissionCode: "role:list",
+            permissionCode: "access_control:roles",
             label: "权限角色",
             labelKey: "admin.navigation.roles",
             href: "/access/roles",
@@ -84,7 +84,7 @@ export const navigationSections: NavigationSectionConfig[] = [
           },
           {
             id: "role-permissions",
-            permissionCode: "role_permission:list",
+            permissionCode: "access_control:role_permissions",
             label: "角色授权",
             labelKey: "admin.navigation.rolePermissions",
             href: "/access/role-permissions",
@@ -93,7 +93,7 @@ export const navigationSections: NavigationSectionConfig[] = [
           },
           {
             id: "app-roles",
-            permissionCode: "app_role:list",
+            permissionCode: "access_control:app_roles",
             label: "App 角色",
             labelKey: "admin.navigation.appRoles",
             href: "/access/app-roles",
@@ -101,7 +101,7 @@ export const navigationSections: NavigationSectionConfig[] = [
           },
           {
             id: "app-role-permissions",
-            permissionCode: "app_role_permission:list",
+            permissionCode: "access_control:app_role_permissions",
             label: "App 角色授权",
             labelKey: "admin.navigation.appRolePermissions",
             href: "/access/app-role-permissions",
@@ -118,7 +118,7 @@ export const navigationSections: NavigationSectionConfig[] = [
         subItems: [
           {
             id: "datatable-demo",
-            permissionCode: "access",
+            permissionCode: "access_control",
             label: "DataTable 示例",
             labelKey: "admin.navigation.datatableDemo",
             href: "/datatable",
