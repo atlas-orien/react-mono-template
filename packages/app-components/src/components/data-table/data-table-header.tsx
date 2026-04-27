@@ -183,9 +183,9 @@ function ToolbarActions({
       ? bulkDelete.label ?? resolvedBulkDeleteLabel(selectedRowKeysCount)
       : null
   return (
-    <div className="flex-none self-start border border-red-500">
-      <div className="flex items-center justify-end border border-blue-500">
-        <div className="flex flex-col items-center justify-center gap-1.5 border border-green-500 sm:flex-row sm:items-center sm:justify-end sm:gap-1">
+    <div className="flex-none self-start">
+      <div className="flex items-center justify-end">
+        <div className="flex flex-col items-center justify-center gap-1.5 sm:flex-row sm:items-center sm:justify-end sm:gap-1">
           {insert !== false ? (
             <IconToolButton
               icon={<Plus aria-hidden="true" className="size-4" />}
@@ -276,9 +276,9 @@ export function DataTableHeader<TQuery extends object>({
   onOpenBulkDelete: () => void
 }) {
   return hasAnyQueryFields ? (
-    <div className="flex min-w-0 items-start gap-4 border border-amber-500">
-      <div className="min-w-0 flex-1 overflow-x-auto border border-cyan-500 pb-2">
-        <div className="flex w-max items-center gap-1.5 border border-fuchsia-500 sm:gap-2.5">
+    <div className="flex min-w-0 items-start gap-4">
+      <div className="min-w-0 flex-1 overflow-x-auto pb-2">
+        <div className="flex w-max items-center gap-1.5 sm:gap-2.5">
           {leadingBuiltInSearchField ? (
             <QueryFieldItem
               key={leadingBuiltInSearchField.key}
@@ -342,8 +342,8 @@ export function DataTableHeader<TQuery extends object>({
       />
     </div>
   ) : (
-    <div className="flex items-start justify-between gap-4 border border-amber-500">
-      <div className="flex flex-1 items-center gap-3 border border-cyan-500">
+    <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-1 items-center gap-3">
         {queryTools ? (
           <QueryToolGroup
             loading={loading}
