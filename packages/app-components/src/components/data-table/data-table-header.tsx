@@ -43,13 +43,6 @@ function getCustomQueryFieldLayoutStyle(
   return getQueryFieldLayoutStyle(field)
 }
 
-function getToolbarWidthClass(actionCount: number) {
-  if (actionCount >= 3) return "sm:w-[7.5rem]"
-  if (actionCount === 2) return "sm:w-[5rem]"
-  if (actionCount === 1) return "sm:w-8"
-  return "sm:w-auto"
-}
-
 function QueryFieldItem<TQuery extends object>({
   field,
   renderQueryFieldControl,
@@ -192,17 +185,10 @@ function ToolbarActions({
     bulkDelete !== false
       ? bulkDelete.label ?? resolvedBulkDeleteLabel(selectedRowKeysCount)
       : null
-  const actionCount =
-    (insert !== false ? 1 : 0) +
-    (bulkUpdate !== false ? 1 : 0) +
-    (bulkDelete !== false && rowSelectionEnabled ? 1 : 0)
-
   return (
-    <div
-      className={`w-8 flex-none self-stretch ${getToolbarWidthClass(actionCount)}`}
-    >
-      <div className="flex h-full w-full items-center justify-center">
-        <div className="flex w-full flex-col items-center justify-center gap-1.5 sm:flex-row sm:items-center sm:justify-center sm:gap-1">
+    <div className="flex-none self-start">
+      <div className="flex items-center justify-end">
+        <div className="flex flex-col items-center justify-center gap-1.5 sm:flex-row sm:items-center sm:justify-end sm:gap-1">
           {insert !== false ? (
             <IconToolButton
               icon={<Plus aria-hidden="true" className="size-4" />}

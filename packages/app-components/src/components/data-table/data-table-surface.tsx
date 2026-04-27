@@ -105,7 +105,7 @@ export function DataTableSurface({
 }: DataTableSurfaceProps) {
   return (
     <CoreTable
-      className={fillWidth ? "w-max min-w-full" : "w-max"}
+      className={fillWidth ? "w-full min-w-full" : "w-max"}
       containerClassName="overflow-visible"
     >
       {children}

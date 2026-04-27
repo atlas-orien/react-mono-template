@@ -133,12 +133,6 @@ export interface DataTableLocaleText {
 
 export type DataTableAuditColumnKey = "createdAt" | "updatedAt"
 
-export interface DataTableAuditColumnsConfig {
-  columns?: readonly DataTableAuditColumnKey[]
-  emptyText?: ReactNode
-  formatDateTime?: (value: Date, column: DataTableAuditColumnKey) => ReactNode
-}
-
 export interface DataTableSelectionContext<T> {
   clearSelection: () => void
   selectedRowKeys: Key[]
@@ -205,12 +199,6 @@ export interface DataTableBulkUpdateConfig<T> {
   ) => Promise<void> | void
 }
 
-export interface DataTableRowSelectionConfig<T> {
-  columnWidth?: number
-  selectedRowKeys?: readonly Key[]
-  onSelectedRowKeysChange?: (keys: Key[], rows: T[]) => void
-}
-
 export interface DataTableRowActionItem<T> {
   key: string
   label: ReactNode | ((row: T, rowIndex: number) => ReactNode)
@@ -266,19 +254,13 @@ export interface DataTableStickyColumnsConfig {
 
 export interface DataTableProps<T, TQuery extends object = object> {
   columns: readonly DataTableColumn<T>[]
-  auditColumns?:
-    | boolean
-    | readonly DataTableAuditColumnKey[]
-    | DataTableAuditColumnsConfig
+  auditColumns?: readonly DataTableAuditColumnKey[]
   stickyColumns?: DataTableStickyColumnsConfig
   fetchData: (
     params: DataTableFetchParams<TQuery>
   ) => Promise<DataTableFetchResult<T>>
   getRowId: (row: T, rowIndex: number) => Key
   caption?: ReactNode
-  emptyText?: ReactNode
-  errorText?: ReactNode
-  loadingText?: ReactNode
   renderEmpty?: () => ReactNode
   renderError?: (error: unknown, retry: () => void) => ReactNode
   renderLoading?: () => ReactNode
@@ -290,7 +272,6 @@ export interface DataTableProps<T, TQuery extends object = object> {
   query?: DataTableQueryConfig<TQuery>
   toolbarActions?: ReactNode
   insert?: false | DataTableInsertActionConfig
-  selection?: false | DataTableRowSelectionConfig<T>
   bulkDelete?: false | DataTableBulkDeleteConfig<T>
   bulkUpdate?: false | DataTableBulkUpdateConfig<T>
   rowActions?: false | DataTableRowActionsConfig<T>

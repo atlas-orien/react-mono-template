@@ -36,7 +36,6 @@ export function useAdminUsersTable(
     },
     pageSizeOptions: adminUserPageSizeOptions,
     rowActions,
-    selection: false,
     bulkDelete: false,
     bulkUpdate: false,
     compactColumns: true,

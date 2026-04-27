@@ -1,5 +1,6 @@
 import { Check, Languages } from "lucide-react"
 import { useTranslation } from "react-i18next"
+import { normalizeLanguage } from "@workspace/locales"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,10 +23,9 @@ export interface LanguageSwitchProps {
 
 export function LanguageSwitch({ className }: LanguageSwitchProps) {
   const { i18n } = useTranslation()
-  const currentLanguage = i18n.language || "en"
+  const currentLanguage = normalizeLanguage(i18n.language)
   const currentValue =
     LANGUAGE_OPTIONS.find((item) => item.value === currentLanguage) ??
-    LANGUAGE_OPTIONS.find((item) => currentLanguage.startsWith(item.value)) ??
     LANGUAGE_OPTIONS[0]
   const label = currentValue.uiLabel
 

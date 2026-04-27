@@ -71,7 +71,6 @@ interface TableQuery {
 }
 
 interface FeatureState {
-  selection: boolean
   insert: boolean
   bulkUpdate: boolean
   bulkDelete: boolean
@@ -100,7 +99,6 @@ const STATUSES = ["Active", "Paused", "Review"] as const
 
 const PRESET_FEATURES: Record<ScenarioPreset, FeatureState> = {
   minimal: {
-    selection: false,
     insert: false,
     bulkUpdate: false,
     bulkDelete: false,
@@ -120,7 +118,6 @@ const PRESET_FEATURES: Record<ScenarioPreset, FeatureState> = {
     customEmptyCopy: false,
   },
   operations: {
-    selection: true,
     insert: true,
     bulkUpdate: true,
     bulkDelete: false,
@@ -140,7 +137,6 @@ const PRESET_FEATURES: Record<ScenarioPreset, FeatureState> = {
     customEmptyCopy: false,
   },
   audit: {
-    selection: true,
     insert: false,
     bulkUpdate: false,
     bulkDelete: true,
@@ -240,13 +236,6 @@ export default function DataTableGuidePage() {
         ...current,
         [key]: value,
       }
-
-      next.selection =
-        key === "selection"
-          ? value
-          : key === "bulkUpdate" || key === "bulkDelete"
-            ? value || current.selection
-            : current.selection
 
       if (key === "customEmptyCopy" && value) {
         next.showEmptyState = true
@@ -598,12 +587,6 @@ export default function DataTableGuidePage() {
                   业务能力
                 </div>
                 {renderFeatureChip(
-                  "首列勾选",
-                  "selection",
-                  features.selection,
-                  (value) => setFeature("selection", value)
-                )}
-                {renderFeatureChip(
                   "新增弹窗",
                   "insert",
                   features.insert,
@@ -803,9 +786,12 @@ export default function DataTableGuidePage() {
                             ? "Guide demo with custom empty experience"
                             : "Guide demo for DataTable configuration"
                         }
-                        emptyText={
+                        localeText={
                           features.customEmptyCopy
-                            ? "当前筛选下没有客户数据。你可以修改筛选条件后重试。"
+                            ? {
+                                emptyText:
+                                  "当前筛选下没有客户数据。你可以修改筛选条件后重试。",
+                              }
                             : undefined
                         }
                         renderEmpty={

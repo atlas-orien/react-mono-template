@@ -9,7 +9,7 @@ export function useRoleRowActions(
 ): DataTableRowActionsConfig<RoleRow> {
   return useMemo(
     () => ({
-      columnWidth: 72,
+      columnWidth: 56,
       edit: false,
       delete: {
         label: "删除",

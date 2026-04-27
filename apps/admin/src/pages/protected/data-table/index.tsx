@@ -365,7 +365,6 @@ export default function DataTablePage() {
           custom19: "",
           custom20: "",
         }}
-        selection={{}}
         auditColumns={["createdAt"]}
         query={{
           builtInFields: [

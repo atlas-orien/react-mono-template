@@ -2,6 +2,7 @@ import { http, HttpResponse } from "msw"
 
 interface MockUserState {
   id: string
+  displayUserId: string
   username: string
   displayName: string
   email: string
@@ -32,7 +33,8 @@ const authTokens = {
 }
 
 let currentUser: MockUserState = {
-  id: "u_mock_1001",
+  id: "1b1f4e1d-5b4f-4d25-ae07-520f587f8d13",
+  displayUserId: "u_mock_1001",
   username: "tester",
   displayName: "Tester",
   email: "tester@example.com",
@@ -189,7 +191,23 @@ export const handlers = [
     return success(authTokens)
   }),
 
-  http.post("*/auth/session/register", async () => {
+  http.post("*/auth/session/register", async ({ request }) => {
+    const body = (await request.json().catch(() => null)) as {
+      username?: string
+      display_name?: string
+      email?: string
+    } | null
+
+    currentUser = {
+      ...currentUser,
+      username: body?.username?.trim() || currentUser.username,
+      displayName:
+        body?.display_name?.trim() ||
+        body?.username?.trim() ||
+        currentUser.displayName,
+      email: body?.email?.trim() || currentUser.email,
+    }
+
     return success(null)
   }),
 
@@ -202,13 +220,34 @@ export const handlers = [
 
   http.get("*/auth/user/me", async () => {
     return success({
-      display_user_id: currentUser.id,
+      id: currentUser.id,
+      display_user_id: currentUser.displayUserId,
       username: currentUser.username,
       display_name: currentUser.displayName,
       avatar: currentUser.avatar,
       email: currentUser.email,
       email_verified: currentUser.emailVerified,
       disabled: currentUser.disabled,
+    })
+  }),
+
+  http.post("*/api/app/register", async ({ request }) => {
+    const body = (await request.json().catch(() => null)) as {
+      userId?: string
+      displayId?: string
+      displayName?: string
+      remark?: string | null
+    } | null
+
+    return success({
+      userId: body?.userId ?? currentUser.id,
+      displayId: body?.displayId ?? currentUser.displayUserId,
+      displayName: body?.displayName ?? currentUser.displayName,
+      remark: body?.remark ?? null,
+      status: "enabled",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      roles: [{ id: 1, name: "Free", code: "free" }],
     })
   }),
 

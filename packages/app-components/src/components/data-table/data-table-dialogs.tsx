@@ -133,7 +133,7 @@ export function DataTableDialogs<T>({
 }) {
   return (
     <>
-      {bulkUpdate !== false ? (
+      {bulkUpdate !== false && bulkUpdateDialogOpen ? (
         <Dialog
           open={bulkUpdateDialogOpen}
           onOpenChange={setBulkUpdateDialogOpen}
@@ -209,7 +209,7 @@ export function DataTableDialogs<T>({
         </Dialog>
       ) : null}
 
-      {bulkDelete !== false ? (
+      {bulkDelete !== false && bulkDeleteDialogOpen ? (
         <Dialog
           open={bulkDeleteDialogOpen}
           onOpenChange={setBulkDeleteDialogOpen}
@@ -251,7 +251,7 @@ export function DataTableDialogs<T>({
         </Dialog>
       ) : null}
 
-      {insert !== false ? (
+      {insert !== false && insertDialogOpen ? (
         <Dialog open={insertDialogOpen} onOpenChange={setInsertDialogOpen}>
           <DialogContent>
             <DialogHeader>

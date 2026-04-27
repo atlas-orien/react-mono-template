@@ -44,7 +44,6 @@ export function useAppUsersTable(
     },
     pageSizeOptions: appUserPageSizeOptions,
     rowActions,
-    selection: false,
     bulkDelete: false,
     bulkUpdate: false,
     compactColumns: true,

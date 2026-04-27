@@ -4,7 +4,12 @@ import { useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { registerApi } from "@/api"
+import {
+  getAuthUserProfileApi,
+  loginApi,
+  registerApi,
+  registerAppUserApi,
+} from "@/api"
 import { createRegisterSchema } from "@/forms/authSchemas"
 import { Button } from "@workspace/ui-components/stable/button"
 
@@ -51,6 +56,19 @@ export default function RegisterPage() {
     }
     try {
       await registerApi(payload)
+      const tokens = await loginApi({
+        identifier: payload.username,
+        password: payload.password,
+      })
+      const authUser = await getAuthUserProfileApi(tokens.accessToken)
+
+      await registerAppUserApi({
+        userId: authUser.id,
+        displayId: authUser.display_user_id || authUser.username,
+        displayName: authUser.display_name || authUser.username,
+        remark: null,
+      })
+
       navigate("/login", { replace: true })
     } catch (err) {
       console.error("Register failed:", err)

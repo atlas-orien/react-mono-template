@@ -170,7 +170,7 @@ export function DataTableRowActionsCell<T>({
         ) : null}
       </div>
 
-      {editAction ? (
+      {editAction && editDialogOpen ? (
         <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
           <DialogContent>
             <DialogHeader>
@@ -219,7 +219,7 @@ export function DataTableRowActionsCell<T>({
         </Dialog>
       ) : null}
 
-      {deleteAction ? (
+      {deleteAction && deleteDialogOpen ? (
         <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
           <DialogContent>
             <DialogHeader>

@@ -36,7 +36,6 @@ export function useRolesTable(
     },
     pageSizeOptions: rolePageSizeOptions,
     rowActions,
-    selection: false,
     bulkDelete: false,
     bulkUpdate: false,
     compactColumns: true,

@@ -35,13 +35,11 @@ import { DataTableHeader } from "./data-table-header"
 import { DataTableRowActionsCell } from "./data-table-row-actions-cell"
 import type {
   DataTableAuditColumnKey,
-  DataTableAuditColumnsConfig,
   DataTableBuiltInQueryField,
   DataTableColumn,
   DataTableProps,
   DataTableQueryConfig,
   DataTableRenderedQueryField,
-  DataTableRowSelectionConfig,
   DataTableStickyColumnsConfig,
   DataTableSortState,
 } from "./data-table.types"
@@ -78,7 +76,6 @@ export type {
   DataTableQueryField,
   DataTableRowActionItem,
   DataTableRowActionsConfig,
-  DataTableRowSelectionConfig,
   DataTableSearchQueryField,
   DataTableSelectOption,
   DataTableSelectionContext,
@@ -87,34 +84,11 @@ export type {
   DataTableSortState,
   DataTableTextQueryField,
   DataTableAuditColumnKey,
-  DataTableAuditColumnsConfig,
 } from "./data-table.types"
 
-const DEFAULT_AUDIT_COLUMNS = ["createdAt", "updatedAt"] as const
 const DEFAULT_AUDIT_FIELD_KEY = "auditField"
 const DEFAULT_AUDIT_RANGE_KEY = "auditRange"
-
-function isDataTableAuditColumnsConfig(
-  value: unknown
-): value is DataTableAuditColumnsConfig {
-  return typeof value === "object" && value !== null && !Array.isArray(value)
-}
-
-function resolveAuditColumnKeys(
-  auditColumns:
-    | boolean
-    | readonly DataTableAuditColumnKey[]
-    | DataTableAuditColumnsConfig
-) {
-  if (auditColumns === false) return []
-  if (auditColumns === true) return [...DEFAULT_AUDIT_COLUMNS]
-  if (Array.isArray(auditColumns)) return [...auditColumns]
-  if (isDataTableAuditColumnsConfig(auditColumns)) {
-    return [...(auditColumns.columns ?? DEFAULT_AUDIT_COLUMNS)]
-  }
-
-  return []
-}
+const DATA_TABLE_HORIZONTAL_INSET = 24
 
 function getAuditRawValue<T>(row: T, column: DataTableAuditColumnKey) {
   if (typeof row !== "object" || row === null) return undefined
@@ -185,16 +159,22 @@ function formatDefaultAuditDateTime(value: Date, language: string) {
   }).format(value)
 }
 
+function areMeasuredWidthsEqual(
+  current: readonly number[],
+  next: readonly number[]
+) {
+  if (current.length !== next.length) return false
+
+  return current.every((value, index) => value === next[index])
+}
+
 export function DataTable<T, TQuery extends object = object>({
   columns,
-  auditColumns = false,
+  auditColumns = [],
   stickyColumns,
   fetchData,
   getRowId,
   caption,
-  emptyText,
-  errorText,
-  loadingText,
   renderEmpty,
   renderError,
   renderLoading,
@@ -206,7 +186,6 @@ export function DataTable<T, TQuery extends object = object>({
   query,
   toolbarActions,
   insert = false,
-  selection,
   bulkDelete = false,
   bulkUpdate = false,
   rowActions = false,
@@ -238,6 +217,7 @@ export function DataTable<T, TQuery extends object = object>({
   const [error, setError] = useState<unknown>(null)
   const [reloadToken, setReloadToken] = useState(0)
   const [measuredColumnWidths, setMeasuredColumnWidths] = useState<number[]>([])
+  const [surfaceTableWidth, setSurfaceTableWidth] = useState(0)
   const [sort, setSort] = useState<DataTableSortState | null>(initialSort)
   const [internalSelectedRowKeys, setInternalSelectedRowKeys] = useState<Key[]>(
     []
@@ -254,25 +234,12 @@ export function DataTable<T, TQuery extends object = object>({
     createQueryState(initialQuery)
   )
   const headerCellRefs = useRef<Array<HTMLTableCellElement | null>>([])
+  const tableViewportRef = useRef<HTMLDivElement | null>(null)
   const previousFetchQueryRef = useRef<TQuery | null>(null)
 
-  const selectionConfig: false | DataTableRowSelectionConfig<T> =
-    selection === false
-      ? false
-      : selection
-        ? selection
-        : bulkDelete !== false || bulkUpdate !== false
-          ? {}
-          : false
-  const rowSelectionEnabled = selectionConfig !== false
-  const selectionColumnWidth =
-    selectionConfig !== false
-      ? (selectionConfig.columnWidth ?? DEFAULT_SELECTION_COLUMN_WIDTH)
-      : DEFAULT_SELECTION_COLUMN_WIDTH
-  const selectedRowKeys =
-    selectionConfig !== false && selectionConfig.selectedRowKeys
-      ? [...selectionConfig.selectedRowKeys]
-      : internalSelectedRowKeys
+  const rowSelectionEnabled = bulkDelete !== false || bulkUpdate !== false
+  const selectionColumnWidth = DEFAULT_SELECTION_COLUMN_WIDTH
+  const selectedRowKeys = internalSelectedRowKeys
 
   const safePageSizeOptions = useMemo(() => {
     const values = new Set<number>([...pageSizeOptions, initialPageSize])
@@ -281,10 +248,9 @@ export function DataTable<T, TQuery extends object = object>({
 
   const totalPages = Math.max(1, Math.ceil(total / pageSize))
   const hasRows = rows.length > 0
-  const resolvedEmptyText = localeText?.emptyText ?? emptyText ?? copy.emptyText
-  const resolvedErrorText = localeText?.errorText ?? errorText ?? copy.errorText
-  const resolvedLoadingText =
-    localeText?.loadingText ?? loadingText ?? copy.loadingText
+  const resolvedEmptyText = localeText?.emptyText ?? copy.emptyText
+  const resolvedErrorText = localeText?.errorText ?? copy.errorText
+  const resolvedLoadingText = localeText?.loadingText ?? copy.loadingText
   const resolvedRefreshLabel = localeText?.refreshLabel ?? copy.refreshLabel
   const resolvedResetLabel = localeText?.resetLabel ?? copy.resetLabel
   const resolvedTotalLabel = localeText?.totalLabel ?? copy.totalLabel
@@ -333,13 +299,7 @@ export function DataTable<T, TQuery extends object = object>({
   const resolvedCreatedAtRangePlaceholder = copy.createdAtRangePlaceholder
   const resolvedUpdatedAtRangePlaceholder = copy.updatedAtRangePlaceholder
   const resolvedAuditEmptyText = localeText?.auditEmptyText ?? copy.auditEmptyText
-  const auditColumnsConfig = isDataTableAuditColumnsConfig(auditColumns)
-    ? auditColumns
-    : undefined
-  const auditColumnKeys = useMemo(
-    () => resolveAuditColumnKeys(auditColumns),
-    [auditColumns]
-  )
+  const auditColumnKeys = useMemo(() => [...auditColumns], [auditColumns])
   const auditQueryField = useMemo<DataTableRenderedQueryField<TQuery> | null>(
     () => {
       if (auditQuery !== true) return null
@@ -434,16 +394,14 @@ export function DataTable<T, TQuery extends object = object>({
           if (!date) {
             return (
               <span className="text-sm text-(--app-muted-text)">
-                {auditColumnsConfig?.emptyText ?? resolvedAuditEmptyText}
+                {resolvedAuditEmptyText}
               </span>
             )
           }
 
           return (
             <span className="whitespace-nowrap">
-              {auditColumnsConfig?.formatDateTime
-                ? auditColumnsConfig.formatDateTime(date, columnKey)
-                : formatDefaultAuditDateTime(date, language)}
+              {formatDefaultAuditDateTime(date, language)}
             </span>
           )
         },
@@ -487,7 +445,6 @@ export function DataTable<T, TQuery extends object = object>({
     return [...baseColumns, actionColumn]
   }, [
     auditColumnKeys,
-    auditColumnsConfig,
     columns,
     resolvedAuditEmptyText,
     resolvedActionsLabel,
@@ -508,11 +465,24 @@ export function DataTable<T, TQuery extends object = object>({
 
   useLayoutEffect(() => {
     const updateWidths = () => {
-      setMeasuredColumnWidths(
-        resolvedColumns.map((_, columnIndex) => {
-          const cell = headerCellRefs.current[columnIndex]
-          return cell?.getBoundingClientRect().width ?? 0
-        })
+      const nextWidths = resolvedColumns.map((_, columnIndex) => {
+        const cell = headerCellRefs.current[columnIndex]
+        return cell?.getBoundingClientRect().width ?? 0
+      })
+
+      setMeasuredColumnWidths((current) =>
+        areMeasuredWidthsEqual(current, nextWidths) ? current : nextWidths
+      )
+
+      const tableElement = tableViewportRef.current?.querySelector(
+        "table[data-slot='table']"
+      )
+      const nextSurfaceWidth = Math.ceil(
+        tableElement?.getBoundingClientRect().width ?? 0
+      )
+
+      setSurfaceTableWidth((current) =>
+        current === nextSurfaceWidth ? current : nextSurfaceWidth
       )
     }
 
@@ -621,6 +591,7 @@ export function DataTable<T, TQuery extends object = object>({
     rowSelectionEnabled,
     selectionColumnWidth,
   ])
+  const resolvedSurfaceWidth = surfaceTableWidth || tableContentWidth
 
   useEffect(() => {
     if (
@@ -679,17 +650,7 @@ export function DataTable<T, TQuery extends object = object>({
   ])
 
   const updateSelectedRowKeys = (nextKeys: Key[]) => {
-    if (selectionConfig === false || !selectionConfig.selectedRowKeys) {
-      setInternalSelectedRowKeys(nextKeys)
-    }
-
-    const nextSelectedRows = rows.filter((row, rowIndex) =>
-      nextKeys.includes(getRowId(row, rowIndex))
-    )
-
-    if (selectionConfig !== false) {
-      selectionConfig.onSelectedRowKeysChange?.(nextKeys, nextSelectedRows)
-    }
+    setInternalSelectedRowKeys(nextKeys)
   }
 
   const clearSelection = () => {
@@ -995,15 +956,20 @@ export function DataTable<T, TQuery extends object = object>({
   return (
     <TooltipProvider>
       <div
-        className="flex h-full min-h-0 w-full max-w-full min-w-0 flex-col overflow-hidden rounded-xl"
+        className="flex h-full min-h-0 max-w-full min-w-0 flex-col overflow-hidden rounded-xl border border-border bg-background"
         data-slot="data-table"
-        style={{ height: resolveTableHeight(height) }}
+        style={{
+          height: resolveTableHeight(height),
+          width: fillWidth
+            ? "100%"
+            : `min(100%, ${resolvedSurfaceWidth + DATA_TABLE_HORIZONTAL_INSET}px)`,
+        }}
       >
         <div className="shrink-0 px-3 pt-2" data-slot="data-table-header">
           <div
             className="max-w-full"
             style={
-              fillWidth ? undefined : { width: `${tableContentWidth}px` }
+              fillWidth ? undefined : { minWidth: `${resolvedSurfaceWidth}px` }
             }
           >
             <DataTableHeader
@@ -1042,7 +1008,7 @@ export function DataTable<T, TQuery extends object = object>({
           className="mt-3 min-h-0 flex-1 overflow-hidden"
           data-slot="data-table-body"
         >
-          <div className="h-full overflow-auto">
+          <div ref={tableViewportRef} className="h-full overflow-auto">
           <DataTableSurface fillWidth={fillWidth}>
               {caption ? <DataTableSurfaceCaption>{caption}</DataTableSurfaceCaption> : null}
               <DataTableSurfaceHeader>
@@ -1284,7 +1250,7 @@ export function DataTable<T, TQuery extends object = object>({
           <div
             className="max-w-full"
             style={
-              fillWidth ? undefined : { width: `${tableContentWidth}px` }
+              fillWidth ? undefined : { width: `${resolvedSurfaceWidth}px` }
             }
           >
             <div className="flex min-w-max flex-nowrap items-center justify-between">

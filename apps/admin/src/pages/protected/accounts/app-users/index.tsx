@@ -35,7 +35,6 @@ export default function AppUsersPage() {
           initialSort={table.initialSort}
           initialQuery={table.initialQuery}
           query={table.query}
-          selection={table.selection}
           bulkDelete={table.bulkDelete}
           bulkUpdate={table.bulkUpdate}
           pageSizeOptions={table.pageSizeOptions}

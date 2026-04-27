@@ -1,6 +1,7 @@
 export {
   loginApi,
   meApi,
+  getAuthUserProfileApi,
   registerApi,
   updateEmailApi,
   updatePasswordApi,
@@ -15,6 +16,14 @@ export {
   type UpdateProfilePayload,
   type UserInfo,
 } from "@workspace/services/api/auth"
+
+export {
+  registerAppUserApi,
+  type AppRoleResponse,
+  type AppUserResponse,
+  type AppUserStatus,
+  type RegisterAppUserRequest,
+} from "./app"
 
 export {
   deleteWithSignedUrlApi,

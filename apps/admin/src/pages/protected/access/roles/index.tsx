@@ -24,7 +24,6 @@ export default function RolesPage() {
           insert={insertAction}
           query={table.query}
           pageSizeOptions={table.pageSizeOptions}
-          selection={table.selection}
           bulkDelete={table.bulkDelete}
           bulkUpdate={table.bulkUpdate}
           rowActions={table.rowActions}
