@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react"
 import { DataTable, MetricCards } from "@workspace/app-components"
+import { appUserAuditColumns } from "./constants"
 import { useAppUsersData } from "./app-users-data"
 import { EditAppUserRolesDialog } from "./dialogs/edit-app-user-roles-dialog"
 import { useAppUsersTable } from "./table"
@@ -25,6 +26,7 @@ export default function AppUsersPage() {
       <div className="flex h-[calc(100vh-22rem)] min-h-160 min-w-0 flex-1 overflow-hidden">
         <DataTable<AppUserRow, AppUserTableQuery>
           key={tableRefreshKey}
+          auditColumns={appUserAuditColumns}
           columns={table.columns}
           fetchData={table.fetchData}
           getRowId={table.getRowId}

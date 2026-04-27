@@ -4,7 +4,7 @@ import type { DataTableFetchResult } from "@workspace/app-components"
 import { listAppUsersApi, type ListAppUsersRequest } from "@/api"
 import { buildAppUserMetricCards } from "./metrics"
 import { mapStatusLabelToApiStatus } from "./table/status"
-import { appUsersFirstPageQueryKey } from "./constants"
+import { appUserAuditColumns, appUsersFirstPageQueryKey } from "./constants"
 import type {
   AppUserRow,
   AppUserTableQuery,
@@ -15,11 +15,13 @@ function mapAppUserRow(
   appUser: Awaited<ReturnType<typeof listAppUsersApi>>["items"][number]
 ): AppUserRow {
   return {
-    user_id: appUser.user_id,
-    display_id: appUser.display_id?.trim() || appUser.user_id,
-    display_name: appUser.display_name?.trim() || "未设置显示名称",
+    user_id: appUser.userId,
+    display_id: appUser.displayId?.trim() || appUser.userId,
+    display_name: appUser.displayName?.trim() || "未设置显示名称",
     remark: appUser.remark ?? null,
     status: appUser.status,
+    createdAt: appUser.createdAt ?? null,
+    updatedAt: appUser.updatedAt ?? null,
     roles: appUser.roles.map((role) => role.name),
   }
 }
@@ -46,14 +48,14 @@ function applyTimeRangeParams(
   const from = range.from ? toStartOfDayIso(range.from) : undefined
   const to = range.to ? toEndOfDayIso(range.to) : undefined
 
-  if (field === "created_at") {
-    params.created_at_from = from
-    params.created_at_to = to
+  if (field === "createdAt") {
+    params.createdAtFrom = from
+    params.createdAtTo = to
     return
   }
 
-  params.updated_at_from = from
-  params.updated_at_to = to
+  params.updatedAtFrom = from
+  params.updatedAtTo = to
 }
 
 function buildAppUserListParams(
@@ -63,7 +65,7 @@ function buildAppUserListParams(
 ): ListAppUsersRequest {
   const params: ListAppUsersRequest = {
     page,
-    page_size: pageSize,
+    pageSize,
   }
   const keyword = query.keyword.trim()
 
@@ -75,7 +77,10 @@ function buildAppUserListParams(
     params.status = mapStatusLabelToApiStatus(query.status)
   }
 
-  applyTimeRangeParams(params, query.timeField, query.timeRange)
+  const timeField =
+    appUserAuditColumns.length > 1 ? query.timeField : appUserAuditColumns[0]
+
+  applyTimeRangeParams(params, timeField, query.timeRange)
 
   return params
 }
@@ -94,7 +99,7 @@ export function useAppUsersData() {
 
   const appUsersQuery = useQuery({
     queryKey: appUsersFirstPageQueryKey,
-    queryFn: async () => loadAppUserPage({ page: 1, page_size: 10 }),
+    queryFn: async () => loadAppUserPage({ page: 1, pageSize: 10 }),
   })
 
   const metricCards = useMemo(

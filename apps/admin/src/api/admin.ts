@@ -4,32 +4,34 @@ export type AdminUserStatus = "enabled" | "disabled"
 export type AppUserStatus = "enabled" | "disabled"
 
 export interface AdminUserResponse {
-  display_id?: string
-  user_id: string
-  display_name?: string
+  displayId?: string
+  userId: string
+  displayName?: string
   remark?: string | null
   status: AdminUserStatus
-  admin_roles?: RoleResponse[]
+  adminRoles?: RoleResponse[]
   roles?: RoleResponse[]
 }
 
 export interface AppUserResponse {
-  display_id?: string
-  user_id: string
-  display_name?: string
+  displayId?: string
+  userId: string
+  displayName?: string
   remark?: string | null
   status: AppUserStatus
+  createdAt?: string | null
+  updatedAt?: string | null
   roles: RoleResponse[]
 }
 
 export interface PaginatedResponse<T> {
   items: T[]
   page: number
-  page_size: number
+  pageSize: number
   total: number
-  total_pages: number
-  has_next: boolean
-  has_prev: boolean
+  totalPages: number
+  hasNext: boolean
+  hasPrev: boolean
 }
 
 export interface CreateAdminUserRequest {
@@ -63,14 +65,14 @@ export type PermissionKind = "group" | "action"
 export interface MenuResponse {
   id: number
   name: string
-  parent_id: number | null
-  permission_code: string | null
+  parentId: number | null
+  permissionCode: string | null
 }
 
 export interface CreateMenuRequest {
   name: string
-  parent_id?: number | null
-  permission_code?: string | null
+  parentId?: number | null
+  permissionCode?: string | null
 }
 
 export interface UserRoleOptionResponse {
@@ -83,11 +85,11 @@ export interface UserRoleOptionResponse {
 export type AppUserRoleOptionResponse = UserRoleOptionResponse
 
 export interface UpdateRolePermissionsRequest {
-  permission_ids: number[]
+  permissionIds: number[]
 }
 
 export interface UpdateUserRolesRequest {
-  role_ids: number[]
+  roleIds: number[]
 }
 
 export interface RolePermissionTreeNode {
@@ -99,9 +101,9 @@ export interface RolePermissionTreeNode {
 }
 
 export interface CurrentUserPermissionsResponse {
-  user_id: string
-  role_codes: string[]
-  permission_codes: string[]
+  userId: string
+  roleCodes: string[]
+  permissionCodes: string[]
 }
 
 export type CurrentAppUserPermissionsResponse = CurrentUserPermissionsResponse
@@ -109,8 +111,8 @@ export type CurrentAppUserPermissionsResponse = CurrentUserPermissionsResponse
 export interface CurrentUserMenuNode {
   id: number
   name: string
-  parent_id: number | null
-  permission_code: string | null
+  parentId: number | null
+  permissionCode: string | null
   children: CurrentUserMenuNode[]
 }
 
@@ -151,13 +153,13 @@ export const deleteAdminUserApi = async (userId: string): Promise<void> => {
 
 export interface ListAppUsersRequest {
   page?: number
-  page_size?: number
+  pageSize?: number
   keyword?: string
   status?: AppUserStatus
-  created_at_from?: string
-  created_at_to?: string
-  updated_at_from?: string
-  updated_at_to?: string
+  createdAtFrom?: string
+  createdAtTo?: string
+  updatedAtFrom?: string
+  updatedAtTo?: string
 }
 
 export const listAppUsersApi = async (

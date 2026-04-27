@@ -29,6 +29,14 @@ function getCustomQueryFieldLayoutStyle(field: DataTableQueryField<object>) {
     }
   }
 
+  if (field.type === "scoped-date-range") {
+    return {
+      flex: "0 1 400px",
+      minWidth: "360px",
+      maxWidth: "440px",
+    }
+  }
+
   return getQueryFieldLayoutStyle(field)
 }
 

@@ -43,7 +43,7 @@ export function useRolePermissionsData({
       selectedPermissionIds: readonly string[]
     }) =>
       updateRolePermissionsApi(Number(nextRoleId), {
-        permission_ids: selectedPermissionIds.map((id) => Number(id)),
+        permissionIds: selectedPermissionIds.map((id) => Number(id)),
       }),
     onSuccess: (tree, variables) => {
       queryClient.setQueryData(rolePermissionQueryKey(variables.nextRoleId), tree)

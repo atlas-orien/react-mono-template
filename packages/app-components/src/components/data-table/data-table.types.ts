@@ -66,16 +66,29 @@ export interface DataTableDateRangeQueryField<
   placeholder?: string
 }
 
+export interface DataTableScopedDateRangeQueryField<
+  TQuery,
+> extends DataTableQueryFieldBase<TQuery> {
+  type: "scoped-date-range"
+  scopeKey: keyof TQuery & string
+  placeholder?: string
+  scopePlaceholder?: string
+  rangePlaceholder?: string
+  options: readonly DataTableSelectOption[]
+}
+
 export type DataTableBuiltInQueryField<TQuery> =
   | DataTableSearchQueryField<TQuery>
   | DataTableSelectQueryField<TQuery>
   | DataTableDateRangeQueryField<TQuery>
+  | DataTableScopedDateRangeQueryField<TQuery>
 
 export type DataTableQueryField<TQuery> =
   | DataTableTextQueryField<TQuery>
   | DataTableSearchQueryField<TQuery>
   | DataTableSelectQueryField<TQuery>
   | DataTableDateRangeQueryField<TQuery>
+  | DataTableScopedDateRangeQueryField<TQuery>
 
 export interface DataTableFetchParams<TQuery = object> {
   page: number
@@ -114,6 +127,19 @@ export interface DataTableLocaleText {
   bulkUpdateValueLabel?: ReactNode
   bulkUpdateCancelLabel?: ReactNode
   bulkUpdateApplyLabel?: ReactNode
+  createdAtLabel?: ReactNode
+  updatedAtLabel?: ReactNode
+  auditEmptyText?: ReactNode
+}
+
+export type DataTableAuditColumnKey = "createdAt" | "updatedAt"
+
+export interface DataTableAuditColumnsConfig {
+  columns?: readonly DataTableAuditColumnKey[]
+  createdAtLabel?: ReactNode
+  updatedAtLabel?: ReactNode
+  emptyText?: ReactNode
+  formatDateTime?: (value: Date, column: DataTableAuditColumnKey) => ReactNode
 }
 
 export interface DataTableSelectionContext<T> {
@@ -231,6 +257,10 @@ export interface DataTableRowActionsConfig<T> {
 
 export interface DataTableProps<T, TQuery extends object = object> {
   columns: readonly DataTableColumn<T>[]
+  auditColumns?:
+    | boolean
+    | readonly DataTableAuditColumnKey[]
+    | DataTableAuditColumnsConfig
   fixedLeftColumns?: number
   fixedRightColumns?: number
   fetchData: (

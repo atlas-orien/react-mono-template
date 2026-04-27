@@ -1,7 +1,9 @@
 import type {
   DataTableBuiltInQueryField,
   DataTableQueryField,
+  DataTableSelectOption,
 } from "@workspace/app-components"
+import { appUserAuditColumns } from "../constants"
 import type { AppUserTableQuery } from "../types"
 
 export const statusOptions = [
@@ -9,10 +11,34 @@ export const statusOptions = [
   { label: "停用", value: "停用" },
 ] as const
 
-export const timeFieldOptions = [
-  { label: "创建时间", value: "created_at" },
-  { label: "更新时间", value: "updated_at" },
-] as const
+const timeFieldLabels = {
+  createdAt: "创建时间",
+  updatedAt: "更新时间",
+} as const
+
+const timeFieldOptions: readonly DataTableSelectOption[] =
+  appUserAuditColumns.map((column) => ({
+    label: timeFieldLabels[column],
+    value: column,
+  }))
+
+const timeRangeQueryField: DataTableBuiltInQueryField<AppUserTableQuery> =
+  appUserAuditColumns.length > 1
+    ? {
+        key: "timeRange",
+        scopeKey: "timeField",
+        type: "scoped-date-range",
+        label: "时间字段",
+        scopePlaceholder: "时间字段",
+        rangePlaceholder: "选择时间范围",
+        options: timeFieldOptions,
+      }
+    : {
+        key: "timeRange",
+        type: "date-range",
+        label: timeFieldLabels[appUserAuditColumns[0]],
+        placeholder: `选择${timeFieldLabels[appUserAuditColumns[0]]}`,
+      }
 
 export const appUserBuiltInQueryFields: DataTableBuiltInQueryField<AppUserTableQuery>[] = [
   {
@@ -21,22 +47,7 @@ export const appUserBuiltInQueryFields: DataTableBuiltInQueryField<AppUserTableQ
     label: "关键字",
     placeholder: "搜索显示名称、ID、备注或角色",
   },
-  {
-    key: "timeField",
-    type: "select",
-    label: "时间字段",
-    placeholder: "时间字段",
-    options: timeFieldOptions.map((option) => ({
-      label: option.label,
-      value: option.value,
-    })),
-  },
-  {
-    key: "timeRange",
-    type: "date-range",
-    label: "时间范围",
-    placeholder: "选择时间范围",
-  },
+  timeRangeQueryField,
 ]
 
 export const appUserQueryFields: DataTableQueryField<AppUserTableQuery>[] = [

@@ -138,6 +138,14 @@ export function getQueryFieldLayoutStyle(field: DataTableQueryField<object>) {
     }
   }
 
+  if (field.type === "scoped-date-range") {
+    return {
+      flex: "0 1 400px",
+      minWidth: "360px",
+      maxWidth: "440px",
+    }
+  }
+
   if (field.type === "select") {
     return {
       flex: "0 1 180px",

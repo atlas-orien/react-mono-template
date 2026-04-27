@@ -60,8 +60,8 @@ export default function LoginPage() {
       dispatch(loginSuccess({ token, user }))
       dispatch(
         setAccess({
-          roleCodes: access.role_codes,
-          permissionCodes: access.permission_codes,
+          roleCodes: access.roleCodes,
+          permissionCodes: access.permissionCodes,
         })
       )
 

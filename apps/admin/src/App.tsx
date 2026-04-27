@@ -40,8 +40,8 @@ export default function App() {
     dispatch(loginSuccess({ token, user: restoreQuery.data.user }))
     dispatch(
       setAccess({
-        roleCodes: restoreQuery.data.access.role_codes,
-        permissionCodes: restoreQuery.data.access.permission_codes,
+        roleCodes: restoreQuery.data.access.roleCodes,
+        permissionCodes: restoreQuery.data.access.permissionCodes,
       })
     )
   }, [dispatch, restoreQuery.data, token])

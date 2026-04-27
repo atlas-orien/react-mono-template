@@ -22,12 +22,12 @@ export function useAdminUsersData() {
     const adminUsers = await listAdminUsersApi()
 
     return adminUsers.map((adminUser) => {
-      const roles = adminUser.admin_roles ?? adminUser.roles ?? []
+      const roles = adminUser.adminRoles ?? adminUser.roles ?? []
 
       return {
-        user_id: adminUser.user_id,
-        display_id: adminUser.display_id?.trim() || adminUser.user_id,
-        display_name: adminUser.display_name?.trim() || "未设置显示名称",
+        user_id: adminUser.userId,
+        display_id: adminUser.displayId?.trim() || adminUser.userId,
+        display_name: adminUser.displayName?.trim() || "未设置显示名称",
         remark: adminUser.remark ?? null,
         status: adminUser.status,
         roles: roles.map((role) => role.name),

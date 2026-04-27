@@ -34,6 +34,8 @@ import { DataTableDialogs } from "./data-table-dialogs"
 import { DataTableHeader } from "./data-table-header"
 import { DataTableRowActionsCell } from "./data-table-row-actions-cell"
 import type {
+  DataTableAuditColumnKey,
+  DataTableAuditColumnsConfig,
   DataTableBuiltInQueryField,
   DataTableColumn,
   DataTableProps,
@@ -78,13 +80,65 @@ export type {
   DataTableSearchQueryField,
   DataTableSelectOption,
   DataTableSelectionContext,
+  DataTableScopedDateRangeQueryField,
   DataTableSortDirection,
   DataTableSortState,
   DataTableTextQueryField,
+  DataTableAuditColumnKey,
+  DataTableAuditColumnsConfig,
 } from "./data-table.types"
+
+const DEFAULT_AUDIT_COLUMNS = ["createdAt", "updatedAt"] as const
+
+function isDataTableAuditColumnsConfig(
+  value: unknown
+): value is DataTableAuditColumnsConfig {
+  return typeof value === "object" && value !== null && !Array.isArray(value)
+}
+
+function resolveAuditColumnKeys(
+  auditColumns:
+    | boolean
+    | readonly DataTableAuditColumnKey[]
+    | DataTableAuditColumnsConfig
+) {
+  if (auditColumns === false) return []
+  if (auditColumns === true) return [...DEFAULT_AUDIT_COLUMNS]
+  if (Array.isArray(auditColumns)) return [...auditColumns]
+  if (isDataTableAuditColumnsConfig(auditColumns)) {
+    return [...(auditColumns.columns ?? DEFAULT_AUDIT_COLUMNS)]
+  }
+
+  return []
+}
+
+function getAuditRawValue<T>(row: T, column: DataTableAuditColumnKey) {
+  if (typeof row !== "object" || row === null) return undefined
+
+  return (row as Record<DataTableAuditColumnKey, unknown>)[column]
+}
+
+function toAuditDate(value: unknown) {
+  if (value instanceof Date) return Number.isNaN(value.getTime()) ? null : value
+  if (typeof value !== "string" && typeof value !== "number") return null
+
+  const date = new Date(value)
+  return Number.isNaN(date.getTime()) ? null : date
+}
+
+function formatDefaultAuditDateTime(value: Date, language: string) {
+  return new Intl.DateTimeFormat(language === "zhCN" ? "zh-CN" : "en-US", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(value)
+}
 
 export function DataTable<T, TQuery extends object = object>({
   columns,
+  auditColumns = false,
   fixedLeftColumns = 0,
   fixedRightColumns = 0,
   fetchData,
@@ -229,6 +283,20 @@ export function DataTable<T, TQuery extends object = object>({
     localeText?.bulkUpdateCancelLabel ?? copy.bulkUpdateCancelLabel
   const resolvedBulkUpdateApplyLabel =
     localeText?.bulkUpdateApplyLabel ?? copy.bulkUpdateApplyLabel
+  const resolvedCreatedAtLabel =
+    localeText?.createdAtLabel ??
+    (language === "zhCN" ? "创建时间" : "Created At")
+  const resolvedUpdatedAtLabel =
+    localeText?.updatedAtLabel ??
+    (language === "zhCN" ? "更新时间" : "Updated At")
+  const resolvedAuditEmptyText = localeText?.auditEmptyText ?? "-"
+  const auditColumnsConfig = isDataTableAuditColumnsConfig(auditColumns)
+    ? auditColumns
+    : undefined
+  const auditColumnKeys = useMemo(
+    () => resolveAuditColumnKeys(auditColumns),
+    [auditColumns]
+  )
 
   const bulkUpdateFields = bulkUpdate !== false ? bulkUpdate.fields : []
   const availableBulkUpdateFields = useMemo(
@@ -241,8 +309,40 @@ export function DataTable<T, TQuery extends object = object>({
   }, [])
 
   const resolvedColumns = useMemo(() => {
+    const auditResolvedColumns: DataTableColumn<T>[] = auditColumnKeys.map(
+      (columnKey) => ({
+        key: columnKey,
+        header:
+          columnKey === "createdAt"
+            ? (auditColumnsConfig?.createdAtLabel ?? resolvedCreatedAtLabel)
+            : (auditColumnsConfig?.updatedAtLabel ?? resolvedUpdatedAtLabel),
+        width: 160,
+        renderCell: (row) => {
+          const date = toAuditDate(getAuditRawValue(row, columnKey))
+
+          if (!date) {
+            return (
+              <span className="text-sm text-(--app-muted-text)">
+                {auditColumnsConfig?.emptyText ?? resolvedAuditEmptyText}
+              </span>
+            )
+          }
+
+          return (
+            <span className="whitespace-nowrap">
+              {auditColumnsConfig?.formatDateTime
+                ? auditColumnsConfig.formatDateTime(date, columnKey)
+                : formatDefaultAuditDateTime(date, language)}
+            </span>
+          )
+        },
+      })
+    )
+
+    const baseColumns = [...columns, ...auditResolvedColumns]
+
     if (rowActions === false) {
-      return [...columns]
+      return baseColumns
     }
 
     const moreItems = rowActions.moreItems ?? []
@@ -273,10 +373,15 @@ export function DataTable<T, TQuery extends object = object>({
       ),
     }
 
-    return [...columns, actionColumn]
+    return [...baseColumns, actionColumn]
   }, [
+    auditColumnKeys,
+    auditColumnsConfig,
     columns,
+    resolvedAuditEmptyText,
     resolvedActionsLabel,
+    resolvedCreatedAtLabel,
+    resolvedUpdatedAtLabel,
     resolvedCancelLabel,
     resolvedConfirmDeleteLabel,
     resolvedDeleteDialogDescription,
@@ -286,6 +391,7 @@ export function DataTable<T, TQuery extends object = object>({
     resolvedMoreLabel,
     resolvedSaveLabel,
     handleRetry,
+    language,
     rowActions,
   ])
 
@@ -715,6 +821,39 @@ export function DataTable<T, TQuery extends object = object>({
           placeholder={field.placeholder}
           disabled={disabled}
         />
+      )
+    }
+
+    if (field.type === "scoped-date-range") {
+      const scopeValue = draftQuery[field.scopeKey]
+
+      return (
+        <div className="flex min-w-0 items-center gap-1.5">
+          <AdvancedSelect
+            value={asStringValue(scopeValue)}
+            onValueChange={(nextValue) =>
+              updateDraftQueryValue(
+                field.scopeKey,
+                nextValue as TQuery[typeof field.scopeKey]
+              )
+            }
+            list={field.options.map((option) => ({
+              label: option.label,
+              value: option.value,
+              disabled: option.disabled,
+            }))}
+            disabled={disabled}
+            placeholder={field.scopePlaceholder}
+          />
+          <DateRangePicker
+            value={asDateRangeValue(value)}
+            onValueChange={(nextValue) =>
+              setValue(nextValue as TQuery[keyof TQuery & string])
+            }
+            placeholder={field.rangePlaceholder ?? field.placeholder}
+            disabled={disabled}
+          />
+        </div>
       )
     }
 

@@ -43,7 +43,7 @@ export function useAppRolePermissionsData({
       selectedPermissionIds: readonly string[]
     }) =>
       updateAppRolePermissionsApi(Number(nextRoleId), {
-        permission_ids: selectedPermissionIds.map((id) => Number(id)),
+        permissionIds: selectedPermissionIds.map((id) => Number(id)),
       }),
     onSuccess: (tree, variables) => {
       queryClient.setQueryData(

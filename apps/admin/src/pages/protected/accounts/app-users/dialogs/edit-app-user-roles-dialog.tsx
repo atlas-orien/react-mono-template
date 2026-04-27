@@ -140,7 +140,7 @@ function EditAppUserRolesForm({
   const updateRolesMutation = useMutation({
     mutationFn: () =>
       updateAppUserRolesApi(userId, {
-        role_ids: [...hiddenSelectedRoleIds, ...selectedRoleIds],
+        roleIds: [...hiddenSelectedRoleIds, ...selectedRoleIds],
       }),
     onSuccess: async (roles) => {
       queryClient.setQueryData(userRoleOptionsQueryKey(userId), roles)
