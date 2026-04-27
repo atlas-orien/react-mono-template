@@ -11,15 +11,13 @@ export function filterAdminUsers(
 ) {
   return rows.filter((row) => {
     const keyword = query.keyword.trim().toLowerCase()
-    const searchCandidatesByField = {
-      all: [row.display_name, row.display_id, row.user_id, row.remark ?? "", ...row.roles],
-      display_name: [row.display_name],
-      display_id: [row.display_id],
-      remark: row.remark ? [row.remark] : [],
-      role: row.roles,
-    } as const
-    const searchCandidates =
-      searchCandidatesByField[query.keywordField || "all"]
+    const searchCandidates = [
+      row.display_name,
+      row.display_id,
+      row.user_id,
+      row.remark ?? "",
+      ...row.roles,
+    ]
 
     const matchesKeyword =
       keyword.length === 0 ||

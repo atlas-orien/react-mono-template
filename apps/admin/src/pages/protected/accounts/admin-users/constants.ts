@@ -4,7 +4,6 @@ export const adminUsersQueryKey = ["admin", "admin-users", "rows"] as const
 
 export const adminUserInitialQuery: AdminUserTableQuery = {
   keyword: "",
-  keywordField: "all",
   status: "",
 }
 

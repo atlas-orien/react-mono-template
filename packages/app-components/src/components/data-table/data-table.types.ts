@@ -57,9 +57,6 @@ export interface DataTableSearchQueryField<
 > extends DataTableQueryFieldBase<TQuery> {
   type: "search"
   placeholder?: string
-  fieldKey?: keyof TQuery & string
-  fieldPlaceholder?: string
-  fieldOptions?: readonly DataTableSelectOption[]
 }
 
 export interface DataTableDateRangeQueryField<

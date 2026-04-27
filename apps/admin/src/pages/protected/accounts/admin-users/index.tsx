@@ -34,6 +34,7 @@ export default function AdminUsersPage() {
           initialPageSize={table.initialPageSize}
           initialQuery={table.initialQuery}
           insert={insertAction}
+          queryTools={false}
           selection={table.selection}
           bulkDelete={table.bulkDelete}
           bulkUpdate={table.bulkUpdate}

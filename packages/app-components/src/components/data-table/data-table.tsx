@@ -7,7 +7,6 @@ import {
   Input,
 } from "@workspace/ui-components"
 import { TooltipProvider } from "../tooltip"
-import { DataTableInlineSelect } from "./data-table-inline-select"
 import {
   DataTableSurface,
   DataTableSurfaceBody,
@@ -670,7 +669,7 @@ export function DataTable<T, TQuery extends object = object>({
     }
 
     if (field.type === "search") {
-      const searchInput = (
+      return (
         <SearchInput
           value={asStringValue(value)}
           onValueChange={(nextValue) =>
@@ -679,29 +678,8 @@ export function DataTable<T, TQuery extends object = object>({
           placeholder={field.placeholder}
           disabled={disabled}
           updateStrategy="enter"
-          trailingContentWidth={
-            field.fieldKey && field.fieldOptions?.length ? "wide" : "default"
-          }
-          trailingContent={
-            field.fieldKey && field.fieldOptions?.length ? (
-              <DataTableInlineSelect
-                value={asStringValue(draftQuery[field.fieldKey])}
-                onValueChange={(nextValue) =>
-                  updateDraftQueryValue(
-                    field.fieldKey as keyof TQuery,
-                    nextValue as TQuery[keyof TQuery]
-                  )
-                }
-                disabled={disabled}
-                placeholder={field.fieldPlaceholder}
-                options={field.fieldOptions}
-              />
-            ) : null
-          }
         />
       )
-
-      return searchInput
     }
 
     if (field.type === "select") {

@@ -6,5 +6,4 @@ export interface RoleRow {
 
 export interface RoleTableQuery {
   keyword: string
-  keywordField: "all" | "id" | "name" | "code"
 }

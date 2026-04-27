@@ -13,6 +13,5 @@ export interface AdminUserRow {
 
 export interface AdminUserTableQuery {
   keyword: string
-  keywordField: "all" | "display_name" | "display_id" | "remark" | "role"
   status: "" | AdminUserStatusLabel
 }

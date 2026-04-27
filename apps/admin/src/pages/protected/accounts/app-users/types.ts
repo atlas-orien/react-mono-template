@@ -13,6 +13,5 @@ export interface AppUserRow {
 
 export interface AppUserTableQuery {
   keyword: string
-  keywordField: "all" | "display_name" | "display_id" | "remark" | "role"
   status: "" | AppUserStatusLabel
 }

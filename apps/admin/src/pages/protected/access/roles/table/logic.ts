@@ -6,14 +6,7 @@ export function filterRoles(
 ) {
   return rows.filter((row) => {
     const keyword = query.keyword.trim().toLowerCase()
-    const searchCandidatesByField = {
-      all: [String(row.id), row.name, row.code],
-      id: [String(row.id)],
-      name: [row.name],
-      code: [row.code],
-    } as const
-    const searchCandidates =
-      searchCandidatesByField[query.keywordField || "all"]
+    const searchCandidates = [String(row.id), row.name, row.code]
 
     const matchesKeyword =
       keyword.length === 0 ||

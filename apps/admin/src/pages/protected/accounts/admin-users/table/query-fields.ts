@@ -15,15 +15,6 @@ export const adminUserBuiltInQueryFields: DataTableBuiltInQueryField<AdminUserTa
     type: "search",
     label: "关键字",
     placeholder: "搜索显示名称、ID、备注或角色",
-    fieldKey: "keywordField",
-    fieldPlaceholder: "搜索字段",
-    fieldOptions: [
-      { label: "全部", value: "all" },
-      { label: "显示名称", value: "display_name" },
-      { label: "ID", value: "display_id" },
-      { label: "备注", value: "remark" },
-      { label: "角色", value: "role" },
-    ],
   },
 ]
 

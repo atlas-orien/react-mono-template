@@ -2,6 +2,7 @@ import {
   useEffect,
   useState,
   type ChangeEvent,
+  type FormEvent,
   type KeyboardEvent,
   type ReactNode,
 } from "react"
@@ -70,6 +71,21 @@ export function SearchInput({
     }
   }
 
+  const handleInput = (event: FormEvent<HTMLInputElement>) => {
+    const nextValue = event.currentTarget.value
+
+    if (updateStrategy === "immediate") {
+      onValueChange(nextValue)
+      return
+    }
+
+    setDraftValue(nextValue)
+
+    if (nextValue === "") {
+      commitValue("")
+    }
+  }
+
   return (
     <div className="relative w-full">
       <span className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground">
@@ -79,6 +95,7 @@ export function SearchInput({
       <CoreInput
         value={updateStrategy === "immediate" ? value : draftValue}
         onChange={handleChange}
+        onInput={handleInput}
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
         placeholder={placeholder}

@@ -38,7 +38,6 @@ const customerRows: CustomerRow[] = Array.from({ length: 100 }, (_, index) => ({
 
 interface CustomerTableQuery {
   keyword: string
-  keywordField: "all" | "id" | "name" | "owner"
   status: "" | CustomerRow["status"]
   region: "" | CustomerRow["region"]
   createdAt?: DateRangeValue
@@ -96,14 +95,7 @@ export default function DataTablePage() {
       const filteredRows = customerRows.filter((row) => {
         const keyword = query.keyword.trim().toLowerCase()
         const owner = owners[Number(row.id.slice(-1)) % owners.length]
-        const searchCandidatesByField = {
-          all: [row.id, row.name, row.region, owner],
-          id: [row.id],
-          name: [row.name],
-          owner: [owner],
-        } as const
-        const searchCandidates =
-          searchCandidatesByField[query.keywordField || "all"]
+        const searchCandidates = [row.id, row.name, row.region, owner]
 
         const matchesKeyword =
           keyword.length === 0 ||
@@ -350,7 +342,6 @@ export default function DataTablePage() {
         initialPageSize={15}
         initialQuery={{
           keyword: "",
-          keywordField: "all",
           status: "",
           region: "",
           createdAt: undefined,
@@ -382,26 +373,6 @@ export default function DataTablePage() {
             type: "search",
             label: t("datatable.fields.keyword", "Keyword"),
             placeholder: t("datatable.searchPlaceholder", "Search customers"),
-            fieldKey: "keywordField",
-            fieldPlaceholder: t("datatable.fields.keywordField", "Search In"),
-            fieldOptions: [
-              {
-                label: t("datatable.fields.keywordFieldAll", "All"),
-                value: "all",
-              },
-              {
-                label: t("datatable.fields.keywordFieldId", "ID"),
-                value: "id",
-              },
-              {
-                label: t("datatable.fields.keywordFieldName", "Name"),
-                value: "name",
-              },
-              {
-                label: t("datatable.fields.keywordFieldOwner", "Owner"),
-                value: "owner",
-              },
-            ],
           },
           {
             key: "createdAt",

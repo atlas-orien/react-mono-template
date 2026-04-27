@@ -115,17 +115,11 @@ export function getStickyColumnStyles({
 
 export function getQueryFieldLayoutStyle(field: DataTableQueryField<object>) {
   if (field.type === "search") {
-    return field.fieldOptions?.length
-      ? {
-          flex: "0 1 440px",
-          minWidth: "300px",
-          maxWidth: "440px",
-        }
-      : {
-          flex: "0 1 360px",
-          minWidth: "240px",
-          maxWidth: "360px",
-        }
+    return {
+      flex: "0 1 360px",
+      minWidth: "240px",
+      maxWidth: "360px",
+    }
   }
 
   if (field.type === "text") {
