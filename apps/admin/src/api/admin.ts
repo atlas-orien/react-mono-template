@@ -22,6 +22,16 @@ export interface AppUserResponse {
   roles: RoleResponse[]
 }
 
+export interface PaginatedResponse<T> {
+  items: T[]
+  page: number
+  page_size: number
+  total: number
+  total_pages: number
+  has_next: boolean
+  has_prev: boolean
+}
+
 export interface CreateAdminUserRequest {
   identifier: string
   remark?: string | null
@@ -30,11 +40,6 @@ export interface CreateAdminUserRequest {
 export interface UpdateAdminUserRequest {
   remark?: string | null
   status: AdminUserStatus
-}
-
-export interface CreateAppUserRequest {
-  identifier: string
-  remark?: string | null
 }
 
 export interface UpdateAppUserRequest {
@@ -144,20 +149,24 @@ export const deleteAdminUserApi = async (userId: string): Promise<void> => {
   })
 }
 
-export const createAppUserApi = async (
-  body: CreateAppUserRequest
-): Promise<AppUserResponse> => {
-  return request<CreateAppUserRequest, AppUserResponse>({
-    method: "POST",
-    url: "/api/admin/account/app-users",
-    body,
-  })
+export interface ListAppUsersRequest {
+  page?: number
+  page_size?: number
+  keyword?: string
+  status?: AppUserStatus
+  created_at_from?: string
+  created_at_to?: string
+  updated_at_from?: string
+  updated_at_to?: string
 }
 
-export const listAppUsersApi = async (): Promise<AppUserResponse[]> => {
-  return request<undefined, AppUserResponse[]>({
+export const listAppUsersApi = async (
+  params: ListAppUsersRequest = {}
+): Promise<PaginatedResponse<AppUserResponse>> => {
+  return request<ListAppUsersRequest, PaginatedResponse<AppUserResponse>>({
     method: "GET",
     url: "/api/admin/account/app-users",
+    body: params,
   })
 }
 

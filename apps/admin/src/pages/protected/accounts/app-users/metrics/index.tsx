@@ -1,16 +1,20 @@
 import { ShieldCheck, ShieldOff, SquareUserRound, Users } from "lucide-react"
+import type { DataTableFetchResult } from "@workspace/app-components"
 import type { MetricCardsItem } from "@workspace/app-components"
 import type { AppUserRow } from "../types"
 
 export function buildAppUserMetricCards(
-  rows: readonly AppUserRow[]
+  pageData?: DataTableFetchResult<AppUserRow>
 ): MetricCardsItem[] {
+  const rows = pageData?.items ?? []
+  const total = pageData?.total ?? 0
+
   return [
     {
       key: "all",
       label: "App 用户总数",
-      value: `${rows.length}`,
-      tail: "当前已配置 App 权限的用户数量。",
+      value: `${total}`,
+      tail: "服务端返回的 App 用户总量。",
       icon: <SquareUserRound className="size-4" />,
     },
     {

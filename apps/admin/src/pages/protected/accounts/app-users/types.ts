@@ -1,6 +1,8 @@
 import type { AppUserStatus as ApiAppUserStatus } from "@/api"
+import type { DateRangeValue } from "@workspace/app-components"
 
 export type AppUserStatusLabel = "启用" | "停用"
+export type AppUserTimeField = "created_at" | "updated_at"
 
 export interface AppUserRow {
   user_id: string
@@ -14,4 +16,6 @@ export interface AppUserRow {
 export interface AppUserTableQuery {
   keyword: string
   status: "" | AppUserStatusLabel
+  timeField: AppUserTimeField
+  timeRange: DateRangeValue | undefined
 }

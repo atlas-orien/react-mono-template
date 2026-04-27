@@ -1,7 +1,4 @@
-import type {
-  DataTableFetchResult,
-  DataTableSortState,
-} from "@workspace/app-components"
+import type { DataTableFetchResult } from "@workspace/app-components"
 import { appUserColumns } from "./columns"
 import {
   appUserBuiltInQueryFields,
@@ -17,7 +14,6 @@ export function useAppUsersTable(
     pageSize: number
     query: AppUserTableQuery
     signal: AbortSignal
-    sort: DataTableSortState | null
   }) => Promise<DataTableFetchResult<AppUserRow>>,
   invalidateAppUsers: () => Promise<unknown>,
   onEditRoles: (row: AppUserRow) => void

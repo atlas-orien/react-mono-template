@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react"
 import { DataTable, MetricCards } from "@workspace/app-components"
 import { useAppUsersData } from "./app-users-data"
-import { useCreateAppUserInsertAction } from "./dialogs/create-app-user-dialog"
 import { EditAppUserRolesDialog } from "./dialogs/edit-app-user-roles-dialog"
 import { useAppUsersTable } from "./table"
 import type { AppUserRow, AppUserTableQuery } from "./types"
@@ -18,7 +17,6 @@ export default function AppUsersPage() {
     invalidateAppUsers,
     handleEditRoles
   )
-  const insertAction = useCreateAppUserInsertAction(invalidateAppUsers)
 
   return (
     <div className="w-full min-w-0 space-y-4">
@@ -33,7 +31,6 @@ export default function AppUsersPage() {
           height="100%"
           initialPageSize={table.initialPageSize}
           initialQuery={table.initialQuery}
-          insert={insertAction}
           queryTools={false}
           selection={table.selection}
           bulkDelete={table.bulkDelete}
