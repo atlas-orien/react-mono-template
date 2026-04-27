@@ -84,7 +84,7 @@ export default function ButtonGuidePage() {
               <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
                 Button Guide
               </h1>
-              <p className="text-sm leading-6 text-muted-foreground md:text-base">
+              <p className="text-sm/6  text-muted-foreground md:text-base">
                 这个页面把当前库里所有对外暴露的按钮形态集中展示出来。普通
                 Button 会覆盖全部 variant 和常用 size，IconButton 也单独列出。
               </p>

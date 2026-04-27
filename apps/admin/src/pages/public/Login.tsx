@@ -9,7 +9,6 @@ import { getCurrentUserPermissionsApi, meApi, loginApi } from "@/api"
 import { createLoginSchema } from "@/forms/authSchemas"
 import { loginSuccess } from "@/store/authSlice"
 import { setAccess } from "@/store/accessSlice"
-import { showGlobalError } from "@workspace/app-components"
 import { Alert } from "@workspace/ui-components/stable/alert"
 import { Badge } from "@workspace/ui-components/stable/badge"
 import { Button } from "@workspace/ui-components/stable/button"
@@ -69,7 +68,6 @@ export default function LoginPage() {
       navigate(from, { replace: true })
     } catch (err) {
       console.error("Login failed:", err)
-      showGlobalError(err)
     }
   })
 

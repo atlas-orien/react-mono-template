@@ -48,7 +48,7 @@ export default function ImageCropperModal({
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-xl rounded-2xl border border-(--app-border) bg-(--app-surface) p-6 shadow-[var(--ui-shadow-soft)]">
+      <div className="w-full max-w-xl rounded-2xl border border-(--app-border) bg-(--app-surface) p-6 shadow-(--ui-shadow-soft)">
         <h3 className="text-lg font-semibold text-(--app-text)">{title}</h3>
         <p className="mt-2 text-sm text-(--app-muted-text)">{description}</p>
 
@@ -89,7 +89,7 @@ export default function ImageCropperModal({
             step={0.01}
             value={zoom}
             onChange={(e) => onZoomChange(Number(e.target.value))}
-            className="w-full accent-[var(--primary)]"
+            className="w-full accent-(--primary)"
           />
         </div>
 
@@ -106,7 +106,7 @@ export default function ImageCropperModal({
             type="button"
             onClick={onConfirm}
             disabled={confirming}
-            className="inline-flex h-10 items-center justify-center rounded-lg bg-[var(--primary)] px-4 text-sm font-medium text-[var(--primary-foreground)] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex h-10 items-center justify-center rounded-lg bg-(--primary) px-4 text-sm font-medium text-(--primary-foreground) transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {confirming ? confirmingLabel : confirmLabel}
           </button>

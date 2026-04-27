@@ -49,7 +49,7 @@ export function GuidePage({
               <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
                 {title}
               </h1>
-              <p className="max-w-3xl text-sm leading-6 text-muted-foreground md:text-base">
+              <p className="max-w-3xl text-sm/6  text-muted-foreground md:text-base">
                 {description}
               </p>
             </div>
@@ -119,7 +119,7 @@ export function DemoBlock({
       <div className="mb-4 space-y-1">
         <p className="text-sm font-medium">{title}</p>
         {description ? (
-          <p className="text-xs leading-5 text-muted-foreground">{description}</p>
+          <p className="text-xs/5  text-muted-foreground">{description}</p>
         ) : null}
       </div>
       {children}

@@ -533,7 +533,7 @@ export default function DataTableGuidePage() {
                       </Button>
                     ))}
                   </div>
-                  <div className="rounded-2xl border border-dashed border-(--app-border) bg-(--app-surface) p-4 text-sm leading-6 text-(--app-muted-text)">
+                  <div className="rounded-2xl border border-dashed border-(--app-border) bg-(--app-surface) p-4 text-sm/6  text-(--app-muted-text)">
                     {currentPreset.summary}
                   </div>
                 </div>
@@ -551,7 +551,7 @@ export default function DataTableGuidePage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3 text-sm leading-6 text-(--app-muted-text)">
+              <div className="space-y-3 text-sm/6  text-(--app-muted-text)">
                 <p>业务用户最关心的通常不是实现细节，而是“我该开哪些能力”。</p>
                 <p>所以这页先提供按钮，再展示 props，对业务沟通会更顺。</p>
               </div>
@@ -726,7 +726,7 @@ export default function DataTableGuidePage() {
 
                 <TabsContent value="live">
                   <div className="space-y-4">
-                    <div className="rounded-xl border border-dashed border-(--app-border) px-4 py-3 text-sm leading-6 text-(--app-muted-text)">
+                    <div className="rounded-xl border border-dashed border-(--app-border) px-4 py-3 text-sm/6  text-(--app-muted-text)">
                       例子入口：
                       点表格右上角“新增客户”；点任意行的编辑、删除、更多菜单；更多菜单里的“打开审计弹窗”演示的是业务层自定义 Dialog。
                     </div>
@@ -975,7 +975,7 @@ export default function DataTableGuidePage() {
                         {generatedSnippet}
                       </pre>
                     </div>
-                    <p className="text-sm leading-6 text-(--app-muted-text)">
+                    <p className="text-sm/6  text-(--app-muted-text)">
                       这个片段不是完整页面，而是告诉用户当前这组按钮会映射成哪些关键 props。
                     </p>
                   </div>
@@ -991,20 +991,20 @@ export default function DataTableGuidePage() {
                     <div className="grid gap-3 lg:grid-cols-3">
                       <div className="rounded-2xl border border-(--app-border) p-4">
                         <div className="text-sm font-medium">新增弹窗</div>
-                        <div className="mt-2 text-sm leading-6 text-(--app-muted-text)">
+                        <div className="mt-2 text-sm/6  text-(--app-muted-text)">
                           用 `insert.title`、`insert.description` 和
                           `insert.renderContent` 自定义表单内容。
                         </div>
                       </div>
                       <div className="rounded-2xl border border-(--app-border) p-4">
                         <div className="text-sm font-medium">编辑弹窗</div>
-                        <div className="mt-2 text-sm leading-6 text-(--app-muted-text)">
+                        <div className="mt-2 text-sm/6  text-(--app-muted-text)">
                           `rowActions.edit.renderContent` 可以按当前行内容渲染不同表单。
                         </div>
                       </div>
                       <div className="rounded-2xl border border-(--app-border) p-4">
                         <div className="text-sm font-medium">更多菜单</div>
-                        <div className="mt-2 text-sm leading-6 text-(--app-muted-text)">
+                        <div className="mt-2 text-sm/6  text-(--app-muted-text)">
                           `moreItems` 适合挂复制、跳转、打开二次确认弹窗这类扩展动作。
                         </div>
                       </div>
@@ -1026,7 +1026,7 @@ export default function DataTableGuidePage() {
                             </CardTitle>
                           </CardHeader>
                           <CardContent>
-                            <div className="text-sm leading-6 text-(--app-muted-text)">
+                            <div className="text-sm/6  text-(--app-muted-text)">
                               {item.description}
                             </div>
                           </CardContent>
@@ -1053,7 +1053,7 @@ export default function DataTableGuidePage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-sm leading-6 text-(--app-muted-text)">
+              <div className="text-sm/6  text-(--app-muted-text)">
                 先定义 `Row` 和 `Query` 类型。DataTable 的复杂度主要来自这两个对象，不要先写 JSX。
               </div>
             </CardContent>
@@ -1068,7 +1068,7 @@ export default function DataTableGuidePage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-sm leading-6 text-(--app-muted-text)">
+              <div className="text-sm/6  text-(--app-muted-text)">
                 再把 `columns`、`queryFields`、`rowActions` 按功能块拆开，业务页面会更容易维护。
               </div>
             </CardContent>
@@ -1083,7 +1083,7 @@ export default function DataTableGuidePage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-sm leading-6 text-(--app-muted-text)">
+              <div className="text-sm/6  text-(--app-muted-text)">
                 最后才接 `insert`、`bulkUpdate`、`bulkDelete` 这些变更型操作，这样不会把表格页写成一团。
               </div>
             </CardContent>
@@ -1094,7 +1094,7 @@ export default function DataTableGuidePage() {
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="space-y-2">
               <h2 className="text-xl font-semibold">推荐对外展示方式</h2>
-              <p className="text-sm leading-6 text-(--app-muted-text)">
+              <p className="text-sm/6  text-(--app-muted-text)">
                 给用户看组件时，不要只放一个表格。最有效的是“场景按钮 + 实时示例 + props 片段 + 接入说明”四件套。
               </p>
             </div>
@@ -1158,8 +1158,8 @@ function renderFeatureChip(
   return (
     <div className="flex w-full items-center gap-1.5 rounded-lg border border-(--app-border) bg-(--app-surface) px-2 py-1.5">
       <div className="min-w-0 flex-1">
-        <div className="truncate text-[13px] font-medium leading-4">{title}</div>
-        <div className="truncate text-[9px] leading-3 text-(--app-muted-text)">
+        <div className="truncate text-[13px]/4 font-medium ">{title}</div>
+        <div className="truncate text-[9px]/3  text-(--app-muted-text)">
           {hint}
         </div>
       </div>
@@ -1171,8 +1171,8 @@ function renderFeatureChip(
 function renderDemoHint(title: string, description: string) {
   return (
     <div className="rounded-lg border border-(--app-border) px-2.5 py-2">
-      <div className="text-[12px] font-medium leading-4">{title}</div>
-      <div className="mt-1 text-[11px] leading-4 text-(--app-muted-text)">
+      <div className="text-[12px]/4 font-medium ">{title}</div>
+      <div className="mt-1 text-[11px]/4  text-(--app-muted-text)">
         {description}
       </div>
     </div>

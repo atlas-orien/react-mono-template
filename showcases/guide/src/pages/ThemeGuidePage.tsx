@@ -732,14 +732,14 @@ function ThemeTokenField({
         <button
           type="button"
           ref={triggerRef}
-          className="block h-14 w-14 shrink-0 cursor-pointer rounded-2xl border border-(--border) p-3"
+          className="block size-14  shrink-0 cursor-pointer rounded-2xl border border-(--border) p-3"
           aria-label={`${token.label} color picker`}
           title={`选择 ${activeMode} ${token.label} 颜色`}
           onClick={openColorPicker}
         >
           <span
             ref={swatchRef}
-            className="block h-full w-full rounded-md border border-black/10"
+            className="block size-full  rounded-md border border-black/10"
             style={{ background: value }}
           />
         </button>
@@ -752,7 +752,7 @@ function ThemeTokenField({
           value={resolveColorInputValue(value)}
           tabIndex={-1}
           aria-hidden="true"
-          className="pointer-events-none fixed z-[-1] h-px w-px opacity-0"
+          className="pointer-events-none fixed z-[-1] size-px  opacity-0"
           onChange={(event) => onChange(event.target.value)}
         />
         <div className="min-w-0 flex-1">

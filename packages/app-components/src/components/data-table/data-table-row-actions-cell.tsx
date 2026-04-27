@@ -75,6 +75,8 @@ export function DataTableRowActionsCell<T>({
       await editAction.onConfirm(row, rowIndex)
       setEditDialogOpen(false)
       onActionComplete()
+    } catch (editError) {
+      console.error("DataTable edit action failed:", editError)
     } finally {
       setSubmittingEdit(false)
     }
@@ -92,14 +94,20 @@ export function DataTableRowActionsCell<T>({
       await deleteAction.onConfirm(row, rowIndex)
       setDeleteDialogOpen(false)
       onActionComplete()
+    } catch (deleteError) {
+      console.error("DataTable delete action failed:", deleteError)
     } finally {
       setSubmittingDelete(false)
     }
   }
 
   const handleMoreItemSelect = async (item: DataTableRowActionItem<T>) => {
-    await item.onClick?.(row, rowIndex)
-    onActionComplete()
+    try {
+      await item.onClick?.(row, rowIndex)
+      onActionComplete()
+    } catch (actionError) {
+      console.error("DataTable row action failed:", actionError)
+    }
   }
 
   return (

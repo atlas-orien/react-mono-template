@@ -39,7 +39,6 @@
     "./page-loading": "./src/components/feedback/index.ts",
     "./page-error-state": "./src/components/feedback/index.ts",
     "./route-error-boundary": "./src/components/feedback/index.ts",
-    "./show-global-error": "./src/components/feedback/index.ts",
     "./top-bar": "./src/components/app-shell/index.ts",
     "./language-switch": "./src/components/preferences/index.ts",
     "./theme-toggle": "./src/components/preferences/index.ts",

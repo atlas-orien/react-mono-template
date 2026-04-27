@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { registerApi } from "@/api"
 import { createRegisterSchema } from "@/forms/authSchemas"
-import { showGlobalError } from "@workspace/app-components"
 import { Button } from "@workspace/ui-components/stable/button"
 
 const authShellClassName =
@@ -55,7 +54,6 @@ export default function RegisterPage() {
       navigate("/login", { replace: true })
     } catch (err) {
       console.error("Register failed:", err)
-      showGlobalError(err)
     }
   })
 
@@ -66,7 +64,7 @@ export default function RegisterPage() {
           <p className="text-xs tracking-[0.22em] text-(--app-muted-text)">
             {t("register.brand")}
           </p>
-          <h1 className="mt-4 text-4xl leading-tight font-semibold">
+          <h1 className="mt-4 text-4xl/tight  font-semibold">
             {t("register.hero.titleLine1")}
             <br />
             {t("register.hero.titleLine2")}

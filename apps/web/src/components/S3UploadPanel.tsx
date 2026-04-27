@@ -134,7 +134,7 @@ export default function S3UploadPanel() {
   }
 
   return (
-    <div className="rounded-2xl border border-(--app-border) bg-(--app-surface) p-5 shadow-[var(--ui-shadow-soft)]">
+    <div className="rounded-2xl border border-(--app-border) bg-(--app-surface) p-5 shadow-(--ui-shadow-soft)">
       <div className="flex flex-wrap gap-2">
         {(["image", "document"] as UploadKind[]).map((tab) => (
           <button
@@ -144,7 +144,7 @@ export default function S3UploadPanel() {
             onClick={() => setActiveTab(tab)}
             className={`inline-flex h-9 items-center justify-center rounded-lg border px-3 text-sm font-medium transition ${
               activeTab === tab
-                ? "border-[var(--primary)] bg-[var(--primary)] text-[var(--primary-foreground)]"
+                ? "border-(--primary) bg-(--primary) text-(--primary-foreground)"
                 : "border-(--app-border) bg-transparent text-(--app-text) hover:bg-(--app-active-bg)"
             } disabled:cursor-not-allowed disabled:opacity-60`}
           >
@@ -172,7 +172,7 @@ export default function S3UploadPanel() {
               void handleUpload(file)
               e.currentTarget.value = ""
             }}
-            className="block w-full cursor-pointer rounded-lg border border-(--app-border) bg-transparent px-3 py-2 text-sm text-(--app-text) file:mr-3 file:rounded-md file:border-0 file:bg-[var(--primary)] file:px-3 file:py-2 file:text-sm file:font-medium file:text-[var(--primary-foreground)] hover:file:opacity-90"
+            className="block w-full cursor-pointer rounded-lg border border-(--app-border) bg-transparent px-3 py-2 text-sm text-(--app-text) file:mr-3 file:rounded-md file:border-0 file:bg-(--primary) file:px-3 file:py-2 file:text-sm file:font-medium file:text-(--primary-foreground) hover:file:opacity-90"
           />
         </div>
 
@@ -189,7 +189,7 @@ export default function S3UploadPanel() {
             type="button"
             disabled={loading || !current?.uploadUrl}
             onClick={() => void handleDeleteSign()}
-            className="inline-flex h-10 items-center justify-center rounded-lg bg-[var(--destructive)] px-4 text-sm font-medium text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex h-10 items-center justify-center rounded-lg bg-(--destructive) px-4 text-sm font-medium text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
           >
             Delete By Sign
           </button>

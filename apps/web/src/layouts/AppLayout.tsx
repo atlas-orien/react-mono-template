@@ -29,7 +29,7 @@ export default function AppLayout() {
       </main>
 
       <footer className="border-t border-(--app-border) bg-(--app-surface)">
-        <div className="mx-auto w-full max-w-6xl px-4 py-4 text-xs text-(--app-muted-text) sm:px-6">
+        <div className="mx-auto w-full max-w-6xl p-4  text-xs text-(--app-muted-text) sm:px-6">
           © 2026 My App
         </div>
       </footer>

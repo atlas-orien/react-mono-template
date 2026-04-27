@@ -57,34 +57,25 @@ export function useWorkspaceTabs({
     readStoredTabs()
   )
 
-  useEffect(() => {
+  const resolvedTabs = useMemo(() => {
     if (!currentPath) {
-      return
+      return tabs
     }
 
-    setTabs((previous) => {
-      const nextTab: PersistedWorkspaceTab = {
-        path: currentPath,
-      }
+    if (tabs.some((item) => item.path === currentPath)) {
+      return tabs
+    }
 
-      const nextTabs = previous.some((item) => item.path === currentPath)
-        ? previous.map((item) =>
-            item.path === currentPath
-              ? {
-                  ...item,
-                }
-              : item
-          )
-        : [...previous, nextTab]
+    return [...tabs, { path: currentPath }]
+  }, [currentPath, tabs])
 
-      writeStoredTabs(nextTabs)
-      return nextTabs
-    })
-  }, [currentPath])
+  useEffect(() => {
+    writeStoredTabs(resolvedTabs)
+  }, [resolvedTabs])
 
   const items = useMemo(
     () =>
-      tabs
+      resolvedTabs
         .filter((tab) => Boolean(labelsByPath[tab.path]))
         .map((tab) => ({
           key: tab.path,
@@ -120,7 +111,7 @@ export function useWorkspaceTabs({
             })
           },
         })),
-    [defaultPath, labelsByPath, location.pathname, navigate, tabs]
+    [defaultPath, labelsByPath, location.pathname, navigate, resolvedTabs]
   )
 
   return {

@@ -612,6 +612,8 @@ export function DataTable<T, TQuery extends object = object>({
       })
       clearSelection()
       handleRetry()
+    } catch (deleteError) {
+      console.error("DataTable bulk delete failed:", deleteError)
     } finally {
       setDeleting(false)
     }
@@ -634,6 +636,8 @@ export function DataTable<T, TQuery extends object = object>({
       await insert.onConfirm()
       setInsertDialogOpen(false)
       handleRetry()
+    } catch (insertError) {
+      console.error("DataTable insert action failed:", insertError)
     } finally {
       setSubmittingInsert(false)
     }

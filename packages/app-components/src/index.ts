@@ -23,14 +23,15 @@ export type {
 } from "./components/app-shell"
 export {
   AppNotice,
+  GlobalRequestError,
   PageErrorState,
   PageLoading,
   RouteErrorBoundary,
-  showGlobalError,
 } from "./components/feedback"
 export type {
   AppNoticeProps,
   AppNoticeVariant,
+  GlobalRequestErrorProps,
   PageErrorStateProps,
   PageLoadingProps,
 } from "./components/feedback"

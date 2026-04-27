@@ -52,13 +52,13 @@ export default function GuidePage() {
                 </Button>
                 <button
                   type="button"
-                  className="inline-flex h-9 items-center justify-center bg-[var(--primary)] px-4 text-sm font-semibold text-[var(--primary-foreground)] transition-colors [clip-path:polygon(12%_0,100%_0,88%_100%,0_100%)] hover:bg-[var(--primary-hover)] active:bg-[var(--primary-active)] disabled:bg-[var(--primary-disabled)]"
+                  className="inline-flex h-9 items-center justify-center bg-(--primary) px-4 text-sm font-semibold text-(--primary-foreground) transition-colors [clip-path:polygon(12%_0,100%_0,88%_100%,0_100%)] hover:bg-(--primary-hover) active:bg-(--primary-active) disabled:bg-(--primary-disabled)"
                 >
                   左斜按钮
                 </button>
                 <button
                   type="button"
-                  className="inline-flex h-9 items-center justify-center bg-[var(--primary)] px-4 text-sm font-semibold text-[var(--primary-foreground)] transition-colors [clip-path:polygon(0_0,88%_0,100%_100%,12%_100%)] hover:bg-[var(--primary-hover)] active:bg-[var(--primary-active)] disabled:bg-[var(--primary-disabled)]"
+                  className="inline-flex h-9 items-center justify-center bg-(--primary) px-4 text-sm font-semibold text-(--primary-foreground) transition-colors [clip-path:polygon(0_0,88%_0,100%_100%,12%_100%)] hover:bg-(--primary-hover) active:bg-(--primary-active) disabled:bg-(--primary-disabled)"
                 >
                   右斜按钮
                 </button>

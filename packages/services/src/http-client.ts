@@ -19,6 +19,16 @@ class HttpError extends Error {
   }
 }
 
+type HttpClientErrorHandler = (error: unknown) => void
+
+let globalHttpClientErrorHandler: HttpClientErrorHandler | null = null
+
+export function setHttpClientErrorHandler(
+  handler: HttpClientErrorHandler | null
+) {
+  globalHttpClientErrorHandler = handler
+}
+
 const httpClient = {
   async request<T>({
     url,
@@ -50,6 +60,9 @@ const httpClient = {
       return { data: json }
     } catch (err) {
       clearTimeout(timer)
+      if (!isAbortError(err)) {
+        globalHttpClientErrorHandler?.(err)
+      }
       throw err
     }
   },
@@ -129,6 +142,10 @@ const httpClient = {
 }
 
 export default httpClient
+
+function isAbortError(error: unknown) {
+  return error instanceof DOMException && error.name === "AbortError"
+}
 
 function processBuffer(
   buffer: string,

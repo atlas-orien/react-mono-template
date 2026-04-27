@@ -115,7 +115,7 @@ export default function HeaderMe() {
           onClick={() => {
             setMenuOpen((prev) => !prev)
           }}
-          className="inline-flex items-center gap-3 rounded-full border border-(--app-border) bg-(--app-surface) px-3 py-2 text-sm text-(--app-text) shadow-[var(--ui-shadow-soft)] transition hover:bg-(--app-active-bg)"
+          className="inline-flex items-center gap-3 rounded-full border border-(--app-border) bg-(--app-surface) px-3 py-2 text-sm text-(--app-text) shadow-(--ui-shadow-soft) transition hover:bg-(--app-active-bg)"
         >
           {avatarUrl ? (
             <img
@@ -144,7 +144,7 @@ export default function HeaderMe() {
         </button>
 
         {menuOpen && (
-          <div className="absolute right-0 z-20 mt-2 min-w-44 rounded-xl border border-(--app-border) bg-(--app-surface) p-1 shadow-[var(--ui-shadow-soft)]">
+          <div className="absolute right-0 z-20 mt-2 min-w-44 rounded-xl border border-(--app-border) bg-(--app-surface) p-1 shadow-(--ui-shadow-soft)">
             <input
               ref={fileInputRef}
               type="file"
@@ -176,7 +176,7 @@ export default function HeaderMe() {
             <Link
               to="/logout"
               onClick={() => setMenuOpen(false)}
-              className="flex w-full items-center rounded-lg px-3 py-2 text-left text-sm text-[var(--destructive)] transition hover:bg-(--app-active-bg)"
+              className="flex w-full items-center rounded-lg px-3 py-2 text-left text-sm text-(--destructive) transition hover:bg-(--app-active-bg)"
             >
               {t("header.me.logout")}
             </Link>

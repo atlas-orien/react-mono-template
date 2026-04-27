@@ -8,7 +8,6 @@ import { z } from "zod"
 import { meApi, loginApi } from "@/api"
 import { createLoginSchema } from "@/forms/authSchemas"
 import { loginSuccess } from "@/store/authSlice"
-import { showGlobalError } from "@workspace/app-components"
 import { Button } from "@workspace/ui-components/stable/button"
 import { Input } from "@workspace/ui-components/stable/input"
 import { Select } from "@workspace/ui-components/stable/select"
@@ -63,7 +62,6 @@ export default function LoginPage() {
       navigate(from, { replace: true })
     } catch (err) {
       console.error("Login failed:", err)
-      showGlobalError(err)
     }
   })
 
@@ -75,7 +73,7 @@ export default function LoginPage() {
             <p className="text-xs tracking-[0.22em] text-(--app-muted-text)">
               {t("login.brand")}
             </p>
-            <h1 className="mt-4 text-4xl leading-tight font-semibold">
+            <h1 className="mt-4 text-4xl/tight  font-semibold">
               {t("login.hero.titleLine1")}
               <br />
               {t("login.hero.titleLine2")}
