@@ -965,11 +965,7 @@ export function DataTable<T, TQuery extends object = object>({
         }}
       >
         <div
-          className={
-            fillWidth
-              ? "shrink-0 px-3 pt-2"
-              : "shrink-0 px-0 pt-2"
-          }
+          className="shrink-0 px-3 pt-2"
           data-slot="data-table-header"
         >
           <div
