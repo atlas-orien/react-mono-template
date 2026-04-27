@@ -51,7 +51,16 @@
 - 但只要使用了 `ui-core`，就必须在本包重新定义清晰的场景协议。
 - app 应消费的是 `app-components` 的语义 API，而不是它内部依赖了什么 primitive。
 
-## 6. AI 默认判断规则
+## 6. 语言与文案规则
+
+- `app-components` 内禁止直接写死任何用户可见文案。
+- 所有语言相关内容必须统一沉淀到 `packages/locales/lang/*/components.ts`。
+- 组件内部只能消费 `@workspace/locales` 暴露的 copy getter，或消费业务层已翻译完成的文案 props。
+- 禁止在组件源码里直接写中文、英文按钮文案、placeholder、label、empty text、dialog 文案。
+- 禁止通过 `t("key", "fallback")` 在组件里留下英文 fallback 文案；已有 key 就应该直接从 `locales` 取值。
+- 允许保留语言无关的技术字符串，例如 className、DOM attribute 值、数据 key、日志 tag、标准格式标识符。
+
+## 7. AI 默认判断规则
 
 当 AI 需要新增共享能力时，按以下顺序判断：
 
@@ -71,7 +80,7 @@
    `pnpm -C packages/app-components rules`
    `pnpm -C packages/app-components typecheck`
 
-## 7. 局部协议
+## 8. 局部协议
 
 若某个复合组件已经成为框架核心件，必须在组件目录下补充局部 `PROTOCOL.md`。
 
@@ -81,14 +90,15 @@
 
 当任务涉及该组件本身，或需要在 app 中新增/修改其用法时，AI 必须继续阅读局部协议，而不能只看本包顶层协议。
 
-## 8. 规则系统
+## 9. 规则系统
 
 - `tests/rules/*` 用于防止本包对外泄露 primitive 控制面。
+- `tests/rules/*` 也应用于防止本包把语言文案直接写死在组件源码里。
 - `tests/rules/ast-helpers.ts` 是当前规则基础设施的一部分；新增规则应优先继续使用 AST，而不是退回文本匹配。
 - 这些规则的目标不是禁止本包内部实现灵活，而是禁止把这种灵活性直接外放给 app。
 - 通过 rules 不等于设计已经完美，只等于当前已定义边界没有被打破。
 
-## 9. 样例原则
+## 10. 样例原则
 
 - 本包组件首先是 AI 参考样例，其次才是功能集合。
 - 重点不是数量，而是让 AI 学会：
@@ -96,7 +106,7 @@
   - 如何内部使用 `ui-core`
   - 如何不把底层能力泄露出去
 
-## 10. 完成定义
+## 11. 完成定义
 
 改动只有在以下条件同时满足时才算完成：
 

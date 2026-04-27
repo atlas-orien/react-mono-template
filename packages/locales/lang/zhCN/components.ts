@@ -32,6 +32,10 @@ const components = {
     nextMonthLabel: "前往下个月",
     nextYearLabel: "前往下一年",
   },
+  copyableText: {
+    copyLabel: "复制",
+    copiedLabel: "已复制",
+  },
   dataTable: {
     emptyText: "暂无数据",
     errorText: "数据加载失败",

@@ -32,6 +32,10 @@ const components = {
     nextMonthLabel: "Go to next month",
     nextYearLabel: "Go to next year",
   },
+  copyableText: {
+    copyLabel: "Copy",
+    copiedLabel: "Copied",
+  },
   dataTable: {
     emptyText: "No data available.",
     errorText: "Failed to load data.",

@@ -9,6 +9,8 @@ import {
 } from "react"
 import { Check, Copy } from "lucide-react"
 import { cn } from "@workspace/ui-core/lib/utils.js"
+import { getCopyableTextCopy, normalizeLanguage } from "@workspace/locales"
+import { useTranslation } from "react-i18next"
 
 export interface CopyableTextProps {
   value: string
@@ -26,11 +28,16 @@ export function CopyableText({
   className,
   textClassName,
   disabled = false,
-  copyLabel = "复制",
-  copiedLabel = "已复制",
+  copyLabel,
+  copiedLabel,
 }: CopyableTextProps) {
+  const { i18n } = useTranslation()
+  const language = normalizeLanguage(i18n.language)
+  const copy = getCopyableTextCopy(language)
   const [copied, setCopied] = useState(false)
   const resetTimerRef = useRef<number | null>(null)
+  const resolvedCopyLabel = copyLabel ?? copy.copyLabel
+  const resolvedCopiedLabel = copiedLabel ?? copy.copiedLabel
 
   useEffect(() => {
     return () => {
@@ -100,7 +107,7 @@ export function CopyableText({
       <span
         role="button"
         tabIndex={isDisabled ? -1 : 0}
-        aria-label={copied ? copiedLabel : copyLabel}
+        aria-label={copied ? resolvedCopiedLabel : resolvedCopyLabel}
         aria-disabled={isDisabled}
         className={cn(
           "inline-flex size-8 shrink-0 items-center justify-center rounded-md text-muted-foreground transition",
@@ -118,7 +125,9 @@ export function CopyableText({
         }}
         onKeyDown={handleKeyDown}
       >
-        <span className="sr-only">{copied ? copiedLabel : copyLabel}</span>
+        <span className="sr-only">
+          {copied ? resolvedCopiedLabel : resolvedCopyLabel}
+        </span>
         {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
       </span>
     </span>

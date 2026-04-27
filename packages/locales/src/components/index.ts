@@ -1,5 +1,7 @@
 export { getCalendarCopy } from "./calendar"
 export type { CalendarCopy } from "./calendar"
+export { getCopyableTextCopy } from "./copyable-text"
+export type { CopyableTextCopy } from "./copyable-text"
 export { getDataTableCopy } from "./data-table"
 export type { DataTableCopy } from "./data-table"
 export { getDatePickerCopy } from "./date-picker"
