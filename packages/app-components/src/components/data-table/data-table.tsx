@@ -39,8 +39,10 @@ import type {
   DataTableBuiltInQueryField,
   DataTableColumn,
   DataTableProps,
+  DataTableQueryConfig,
   DataTableRenderedQueryField,
   DataTableRowSelectionConfig,
+  DataTableStickyColumnsConfig,
   DataTableSortState,
 } from "./data-table.types"
 import {
@@ -72,6 +74,7 @@ export type {
   DataTableInsertActionConfig,
   DataTableLocaleText,
   DataTableProps,
+  DataTableQueryConfig,
   DataTableQueryField,
   DataTableRowActionItem,
   DataTableRowActionsConfig,
@@ -79,6 +82,7 @@ export type {
   DataTableSearchQueryField,
   DataTableSelectOption,
   DataTableSelectionContext,
+  DataTableStickyColumnsConfig,
   DataTableSortDirection,
   DataTableSortState,
   DataTableTextQueryField,
@@ -184,8 +188,7 @@ function formatDefaultAuditDateTime(value: Date, language: string) {
 export function DataTable<T, TQuery extends object = object>({
   columns,
   auditColumns = false,
-  fixedLeftColumns = 0,
-  fixedRightColumns = 0,
+  stickyColumns,
   fetchData,
   getRowId,
   caption,
@@ -200,10 +203,7 @@ export function DataTable<T, TQuery extends object = object>({
   pageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS,
   onError,
   initialQuery,
-  builtInQueryFields = [],
-  queryFields = [],
-  auditQuery = false,
-  queryTools = true,
+  query,
   toolbarActions,
   insert = false,
   selection,
@@ -215,14 +215,20 @@ export function DataTable<T, TQuery extends object = object>({
   compactRows = false,
   fillWidth = true,
   height,
-  refreshLabel,
-  resetLabel,
   initialSort = null,
   localeText,
 }: DataTableProps<T, TQuery>) {
   const { i18n } = useTranslation()
   const language = normalizeLanguage(i18n.language)
   const copy = getDataTableCopy(language)
+  const queryConfig: DataTableQueryConfig<TQuery> = query ?? {}
+  const stickyColumnsConfig: DataTableStickyColumnsConfig = stickyColumns ?? {}
+  const fixedLeftColumns = stickyColumnsConfig.left ?? 0
+  const fixedRightColumns = stickyColumnsConfig.right ?? 0
+  const builtInQueryFields = queryConfig.builtInFields ?? []
+  const queryFields = queryConfig.fields ?? []
+  const auditQuery = queryConfig.audit ?? false
+  const queryTools = queryConfig.tools ?? true
 
   const [rows, setRows] = useState<T[]>([])
   const [page, setPage] = useState(initialPage)
@@ -279,10 +285,8 @@ export function DataTable<T, TQuery extends object = object>({
   const resolvedErrorText = localeText?.errorText ?? errorText ?? copy.errorText
   const resolvedLoadingText =
     localeText?.loadingText ?? loadingText ?? copy.loadingText
-  const resolvedRefreshLabel =
-    localeText?.refreshLabel ?? refreshLabel ?? copy.refreshLabel
-  const resolvedResetLabel =
-    localeText?.resetLabel ?? resetLabel ?? copy.resetLabel
+  const resolvedRefreshLabel = localeText?.refreshLabel ?? copy.refreshLabel
+  const resolvedResetLabel = localeText?.resetLabel ?? copy.resetLabel
   const resolvedTotalLabel = localeText?.totalLabel ?? copy.totalLabel
   const resolvedInsertLabel = localeText?.insertLabel ?? copy.insertLabel
   const resolvedActionsLabel = localeText?.actionsLabel ?? copy.actionsLabel

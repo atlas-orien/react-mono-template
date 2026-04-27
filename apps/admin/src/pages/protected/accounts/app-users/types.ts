@@ -1,5 +1,8 @@
 import type { AppUserStatus as ApiAppUserStatus } from "@/api"
-import type { DataTableAuditColumnKey, DateRangeValue } from "@workspace/app-components"
+import type {
+  DataTableAuditColumnKey,
+  DateRangeValue,
+} from "@workspace/app-components"
 
 export type AppUserStatusLabel = "启用" | "停用"
 export type AppUserTimeField = DataTableAuditColumnKey

@@ -146,8 +146,7 @@ export default function DataTablePage() {
   return (
     <div className="flex h-full min-h-0 min-w-0 flex-1 overflow-hidden">
       <DataTable<CustomerRow, CustomerTableQuery>
-        // fixedLeftColumns={1}
-        // fixedRightColumns={2}
+        // stickyColumns={{ left: 1, right: 2 }}
         columns={[
           {
             key: "seq",
@@ -367,45 +366,47 @@ export default function DataTablePage() {
           custom20: "",
         }}
         selection={{}}
-        builtInQueryFields={[
-          {
-            key: "keyword",
-            type: "search",
-            label: t("datatable.fields.keyword", "Keyword"),
-            placeholder: t("datatable.searchPlaceholder", "Search customers"),
-          },
-        ]}
         auditColumns={["createdAt"]}
-        auditQuery
-        queryFields={[
-          {
-            key: "status",
-            type: "select",
-            label: t("datatable.fields.status", "Status"),
-            placeholder: t("datatable.fields.status", "Status"),
-            options: [
-              {
-                label: t("datatable.options.status.active", "Active"),
-                value: "Active",
-              },
-              {
-                label: t("datatable.options.status.paused", "Paused"),
-                value: "Paused",
-              },
-            ],
-          },
-          {
-            key: "region",
-            type: "select",
-            label: t("datatable.fields.region", "Region"),
-            placeholder: t("datatable.fields.region", "Region"),
-            options: regions.map((region) => ({
-              label: region,
-              value: region,
-            })),
-          },
-          ...customQueryFields,
-        ]}
+        query={{
+          builtInFields: [
+            {
+              key: "keyword",
+              type: "search",
+              label: t("datatable.fields.keyword", "Keyword"),
+              placeholder: t("datatable.searchPlaceholder", "Search customers"),
+            },
+          ],
+          audit: true,
+          fields: [
+            {
+              key: "status",
+              type: "select",
+              label: t("datatable.fields.status", "Status"),
+              placeholder: t("datatable.fields.status", "Status"),
+              options: [
+                {
+                  label: t("datatable.options.status.active", "Active"),
+                  value: "Active",
+                },
+                {
+                  label: t("datatable.options.status.paused", "Paused"),
+                  value: "Paused",
+                },
+              ],
+            },
+            {
+              key: "region",
+              type: "select",
+              label: t("datatable.fields.region", "Region"),
+              placeholder: t("datatable.fields.region", "Region"),
+              options: regions.map((region) => ({
+                label: region,
+                value: region,
+              })),
+            },
+            ...customQueryFields,
+          ],
+        }}
         pageSizeOptions={[10, 15, 30, 50]}
         rowActions={{
           edit: {

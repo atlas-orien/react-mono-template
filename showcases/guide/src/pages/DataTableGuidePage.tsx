@@ -191,7 +191,7 @@ const FIELD_PLAYBOOK = [
   {
     title: "查询区域",
     description:
-      "`builtInQueryFields` 只放主搜索等非时间内建查询；状态、归属人、区域等业务筛选放 `queryFields`。",
+      "`query.builtInFields` 只放主搜索等非时间内建查询；状态、归属人、区域等业务筛选放 `query.fields`。",
   },
   {
     title: "操作能力",
@@ -201,7 +201,7 @@ const FIELD_PLAYBOOK = [
   {
     title: "时间字段",
     description:
-      "`auditColumns` 决定标准 `createdAt` / `updatedAt` 字段集合和列展示；`auditQuery` 只控制是否显示时间筛选组件。",
+      "`auditColumns` 决定标准 `createdAt` / `updatedAt` 字段集合和列展示；`query.audit` 只控制是否显示时间筛选组件。",
   },
 ]
 
@@ -629,13 +629,13 @@ export default function DataTableGuidePage() {
                 )}
                 {renderFeatureChip(
                   "搜索框",
-                  "builtInQueryFields.search",
+                  "query.builtInFields.search",
                   features.keywordSearch,
                   (value) => setFeature("keywordSearch", value)
                 )}
                 {renderFeatureChip(
                   "高级筛选",
-                  "queryFields",
+                  "query.fields",
                   features.advancedFilters,
                   (value) => setFeature("advancedFilters", value)
                 )}
@@ -653,19 +653,19 @@ export default function DataTableGuidePage() {
                 )}
                 {renderFeatureChip(
                   "时间筛选",
-                  "auditQuery",
+                  "query.audit",
                   features.auditQuery,
                   (value) => setFeature("auditQuery", value)
                 )}
                 {renderFeatureChip(
                   "固定左列",
-                  "fixedLeftColumns",
+                  "stickyColumns.left",
                   features.stickyLeft,
                   (value) => setFeature("stickyLeft", value)
                 )}
                 {renderFeatureChip(
                   "固定右侧操作列",
-                  "fixedRightColumns",
+                  "stickyColumns.right",
                   features.stickyRight,
                   (value) => setFeature("stickyRight", value)
                 )}
@@ -827,15 +827,19 @@ export default function DataTableGuidePage() {
                         compactRows={features.compactRows}
                         auditColumns={auditQueryColumns}
                         height="100%"
-                        fixedLeftColumns={features.stickyLeft ? 2 : 0}
-                        fixedRightColumns={features.stickyRight ? 1 : 0}
+                        stickyColumns={{
+                          left: features.stickyLeft ? 2 : 0,
+                          right: features.stickyRight ? 1 : 0,
+                        }}
                         initialPageSize={10}
                         initialQuery={INITIAL_QUERY}
                         pageSizeOptions={[10, 20, 50]}
                         initialSort={{ columnKey: "createdAt", direction: "desc" }}
-                        builtInQueryFields={builtInQueryFields}
-                        queryFields={queryFields}
-                        auditQuery={features.auditQuery}
+                        query={{
+                          builtInFields: builtInQueryFields,
+                          fields: queryFields,
+                          audit: features.auditQuery,
+                        }}
                         insert={
                           features.insert
                             ? {
@@ -1114,7 +1118,7 @@ export default function DataTableGuidePage() {
             </CardHeader>
             <CardContent>
               <div className="text-sm/6  text-(--app-muted-text)">
-                再把 `columns`、`queryFields`、`rowActions` 按功能块拆开，业务页面会更容易维护。
+                再把 `columns`、`query.fields`、`rowActions` 按功能块拆开，业务页面会更容易维护。
               </div>
             </CardContent>
           </Card>
@@ -1241,16 +1245,17 @@ function buildSnippet({
     `  getRowId={(row) => row.id}`,
     `  initialQuery={INITIAL_QUERY}`,
     `  initialPageSize={10}`,
-    `  fixedLeftColumns={${features.stickyLeft ? 2 : 0}}`,
-    `  fixedRightColumns={${features.stickyRight ? 1 : 0}}`,
+    `  stickyColumns={{ left: ${features.stickyLeft ? 2 : 0}, right: ${features.stickyRight ? 1 : 0} }}`,
   ]
 
+  const queryConfigLines: string[] = []
+
   if (features.keywordSearch) {
-    lines.push(`  builtInQueryFields={builtInQueryFields}`)
+    queryConfigLines.push(`builtInFields: builtInQueryFields`)
   }
 
   if (features.advancedFilters) {
-    lines.push(`  queryFields={queryFields}`)
+    queryConfigLines.push(`fields: queryFields`)
   }
 
   if (features.createdAtQuery || features.updatedAtQuery) {
@@ -1258,7 +1263,11 @@ function buildSnippet({
   }
 
   if (features.auditQuery) {
-    lines.push(`  auditQuery`)
+    queryConfigLines.push(`audit: true`)
+  }
+
+  if (queryConfigLines.length > 0) {
+    lines.push(`  query={{ ${queryConfigLines.join(", ")} }}`)
   }
 
   if (features.insert) {

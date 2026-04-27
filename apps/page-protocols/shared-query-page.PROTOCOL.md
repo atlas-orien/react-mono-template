@@ -246,8 +246,7 @@
 - `columns`
 - `getRowId`
 - `initialQuery`
-- `builtInQueryFields`
-- `queryFields`
+- `query`
 - `rowActions`
 - `pageSizeOptions`
 
@@ -271,8 +270,8 @@
 
 职责：
 
-- `builtInQueryFields`
-- `queryFields`
+- `query.builtInFields`
+- `query.fields`
 
 ### `table/status.ts`
 
@@ -452,7 +451,7 @@ const fetchData = async ({ page, pageSize, query, sort }) => {
 
 - 禁止把整个页面长期堆在 `index.tsx`
 - 禁止把卡片统计逻辑写死在 JSX 里
-- 禁止把 columns / queryFields / rowActions 全堆在主文件
+- 禁止把 columns / query.fields / rowActions 全堆在主文件
 - 禁止把 filter / sort / paginate 与 React 状态强耦合
 - 禁止把多个 dialog 长期塞在一个文件里
 - 禁止把这类页面写成一次性实现，却希望以后复制复用

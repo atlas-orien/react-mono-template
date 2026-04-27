@@ -1,6 +1,9 @@
 import { useCallback, useMemo } from "react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import type { DataTableFetchResult } from "@workspace/app-components"
+import type {
+  DataTableFetchResult,
+  DataTableSortState,
+} from "@workspace/app-components"
 import { listAppUsersApi, type ListAppUsersRequest } from "@/api"
 import { buildAppUserMetricCards } from "./metrics"
 import { mapStatusLabelToApiStatus } from "./table/status"
@@ -58,10 +61,23 @@ function applyTimeRangeParams(
   params.updatedAtTo = to
 }
 
+function applySortParams(
+  params: ListAppUsersRequest,
+  sort: DataTableSortState | null
+) {
+  if (sort?.columnKey !== "createdAt" && sort?.columnKey !== "updatedAt") {
+    return
+  }
+
+  params.sortBy = sort.columnKey
+  params.sortOrder = sort.direction
+}
+
 function buildAppUserListParams(
   page: number,
   pageSize: number,
-  query: AppUserTableQuery
+  query: AppUserTableQuery,
+  sort: DataTableSortState | null
 ): ListAppUsersRequest {
   const params: ListAppUsersRequest = {
     page,
@@ -80,9 +96,11 @@ function buildAppUserListParams(
   const auditField =
     appUserAuditColumns.length > 1 ? query.auditField : appUserAuditColumns[0]
 
-  if (!auditField) return params
+  applySortParams(params, sort)
 
-  applyTimeRangeParams(params, auditField, query.auditRange)
+  if (auditField) {
+    applyTimeRangeParams(params, auditField, query.auditRange)
+  }
 
   return params
 }
@@ -115,15 +133,17 @@ export function useAppUsersData() {
       pageSize,
       query,
       signal,
+      sort,
     }: {
       page: number
       pageSize: number
       query: AppUserTableQuery
       signal: AbortSignal
+      sort: DataTableSortState | null
     }): Promise<DataTableFetchResult<AppUserRow>> => {
       void signal
       const serverPage = await loadAppUserPage(
-        buildAppUserListParams(page, pageSize, query)
+        buildAppUserListParams(page, pageSize, query, sort)
       )
 
       return {

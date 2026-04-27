@@ -252,14 +252,25 @@ export interface DataTableRowActionsConfig<T> {
   moreItems?: readonly DataTableRowActionItem<T>[]
 }
 
+export interface DataTableQueryConfig<TQuery extends object> {
+  builtInFields?: readonly DataTableBuiltInQueryField<TQuery>[]
+  fields?: readonly DataTableQueryField<TQuery>[]
+  audit?: boolean
+  tools?: boolean
+}
+
+export interface DataTableStickyColumnsConfig {
+  left?: number
+  right?: number
+}
+
 export interface DataTableProps<T, TQuery extends object = object> {
   columns: readonly DataTableColumn<T>[]
   auditColumns?:
     | boolean
     | readonly DataTableAuditColumnKey[]
     | DataTableAuditColumnsConfig
-  fixedLeftColumns?: number
-  fixedRightColumns?: number
+  stickyColumns?: DataTableStickyColumnsConfig
   fetchData: (
     params: DataTableFetchParams<TQuery>
   ) => Promise<DataTableFetchResult<T>>
@@ -276,10 +287,7 @@ export interface DataTableProps<T, TQuery extends object = object> {
   pageSizeOptions?: readonly number[]
   onError?: (error: unknown) => void
   initialQuery?: TQuery
-  builtInQueryFields?: readonly DataTableBuiltInQueryField<TQuery>[]
-  queryFields?: readonly DataTableQueryField<TQuery>[]
-  auditQuery?: boolean
-  queryTools?: boolean
+  query?: DataTableQueryConfig<TQuery>
   toolbarActions?: ReactNode
   insert?: false | DataTableInsertActionConfig
   selection?: false | DataTableRowSelectionConfig<T>
@@ -291,8 +299,6 @@ export interface DataTableProps<T, TQuery extends object = object> {
   compactRows?: boolean
   fillWidth?: boolean
   height?: number | string
-  refreshLabel?: string
-  resetLabel?: string
   initialSort?: DataTableSortState | null
   localeText?: DataTableLocaleText
 }

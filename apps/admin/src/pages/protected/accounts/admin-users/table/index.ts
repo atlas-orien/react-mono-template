@@ -30,8 +30,10 @@ export function useAdminUsersTable(
     getRowId: (row: AdminUserRow) => row.user_id,
     initialPageSize: 10,
     initialQuery: adminUserInitialQuery,
-    builtInQueryFields: adminUserBuiltInQueryFields,
-    queryFields: adminUserQueryFields,
+    query: {
+      builtInFields: adminUserBuiltInQueryFields,
+      fields: adminUserQueryFields,
+    },
     pageSizeOptions: adminUserPageSizeOptions,
     rowActions,
     selection: false,

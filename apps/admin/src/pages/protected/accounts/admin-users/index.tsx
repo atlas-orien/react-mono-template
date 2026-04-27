@@ -34,12 +34,10 @@ export default function AdminUsersPage() {
           initialPageSize={table.initialPageSize}
           initialQuery={table.initialQuery}
           insert={insertAction}
-          queryTools={false}
+          query={table.query}
           selection={table.selection}
           bulkDelete={table.bulkDelete}
           bulkUpdate={table.bulkUpdate}
-          builtInQueryFields={table.builtInQueryFields}
-          queryFields={table.queryFields}
           pageSizeOptions={table.pageSizeOptions}
           rowActions={table.rowActions}
           compactColumns={table.compactColumns}

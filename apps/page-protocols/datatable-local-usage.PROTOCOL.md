@@ -74,8 +74,8 @@ const fetchData = async ({ page, pageSize, query, sort }) => {
 - `table/columns.tsx`
   - columns
 - `table/query-fields.ts`
-  - builtInQueryFields
-  - queryFields
+  - query.builtInFields
+  - query.fields
 - `table/status.ts`
   - 状态映射
 - `table/sort.ts`
@@ -102,8 +102,8 @@ const fetchData = async ({ page, pageSize, query, sort }) => {
 
 默认规则：
 
-- 主搜索放 `builtInQueryFields`
-- 附加筛选放 `queryFields`
+- 主搜索放 `query.builtInFields`
+- 附加筛选放 `query.fields`
 - 列表页的 query 变化只影响本地视图，不默认触发新请求
 
 如果 query 变化必须请求服务端，那说明页面不属于本协议。
@@ -145,7 +145,7 @@ AI 不能混用两种模式。
 
 - 禁止在本地数据页里让 `DataTable` 重新请求同一份全量接口
 - 禁止把 filter / sort / paginate 直接堆在 `index.tsx`
-- 禁止把 columns / queryFields / rowActions 长期塞在页面主文件
+- 禁止把 columns / query.fields / rowActions 长期塞在页面主文件
 - 禁止把服务端查询型逻辑混进本地数据型表格页
 - 禁止让 `data.tsx` 通过 `table/index.ts` 间接依赖表格纯逻辑
 

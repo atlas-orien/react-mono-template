@@ -2,6 +2,8 @@ import { request } from "@workspace/services/api/base"
 
 export type AdminUserStatus = "enabled" | "disabled"
 export type AppUserStatus = "enabled" | "disabled"
+export type AppUserSortBy = "createdAt" | "updatedAt"
+export type SortOrder = "asc" | "desc"
 
 export interface AdminUserResponse {
   displayId?: string
@@ -160,6 +162,8 @@ export interface ListAppUsersRequest {
   createdAtTo?: string
   updatedAtFrom?: string
   updatedAtTo?: string
+  sortBy?: AppUserSortBy
+  sortOrder?: SortOrder
 }
 
 export const listAppUsersApi = async (

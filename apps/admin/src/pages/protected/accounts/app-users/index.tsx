@@ -32,14 +32,12 @@ export default function AppUsersPage() {
           getRowId={table.getRowId}
           height="100%"
           initialPageSize={table.initialPageSize}
+          initialSort={table.initialSort}
           initialQuery={table.initialQuery}
-          queryTools
+          query={table.query}
           selection={table.selection}
           bulkDelete={table.bulkDelete}
           bulkUpdate={table.bulkUpdate}
-          builtInQueryFields={table.builtInQueryFields}
-          queryFields={table.queryFields}
-          auditQuery={table.auditQuery}
           pageSizeOptions={table.pageSizeOptions}
           rowActions={table.rowActions}
           compactColumns={table.compactColumns}

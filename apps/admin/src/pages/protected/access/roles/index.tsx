@@ -22,9 +22,7 @@ export default function RolesPage() {
           initialPageSize={table.initialPageSize}
           initialQuery={table.initialQuery}
           insert={insertAction}
-          builtInQueryFields={table.builtInQueryFields}
-          queryFields={table.queryFields}
-          queryTools={table.queryTools}
+          query={table.query}
           pageSizeOptions={table.pageSizeOptions}
           selection={table.selection}
           bulkDelete={table.bulkDelete}
