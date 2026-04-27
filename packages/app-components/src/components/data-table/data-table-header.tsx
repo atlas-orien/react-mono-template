@@ -19,7 +19,6 @@ function getCustomQueryFieldLayoutStyle(
   if (field.type === "select") {
     return {
       flex: "0 0 auto",
-      minWidth: "auto",
       maxWidth: "none",
     }
   }
@@ -27,7 +26,6 @@ function getCustomQueryFieldLayoutStyle(
   if (field.type === "date-range") {
     return {
       flex: "0 1 220px",
-      minWidth: "200px",
       maxWidth: "240px",
     }
   }
@@ -35,7 +33,6 @@ function getCustomQueryFieldLayoutStyle(
   if (field.type === "scoped-date-range") {
     return {
       flex: "0 0 auto",
-      minWidth: "auto",
       maxWidth: "none",
     }
   }
@@ -57,7 +54,7 @@ function QueryFieldItem<TQuery extends object>({
   return (
     <label
       key={field.key}
-      className="flex min-w-0 flex-col gap-1"
+      className="flex flex-col gap-1"
       style={
         compact
           ? getCustomQueryFieldLayoutStyle(
@@ -281,7 +278,7 @@ export function DataTableHeader<TQuery extends object>({
   return hasAnyQueryFields ? (
     <div className="flex min-w-0 items-start gap-4 border border-amber-500">
       <div className="min-w-0 flex-1 overflow-x-auto border border-cyan-500 pb-2">
-        <div className="flex min-w-max items-center gap-1.5 border border-fuchsia-500 sm:gap-2.5">
+        <div className="flex w-max items-center gap-1.5 border border-fuchsia-500 sm:gap-2.5">
           {leadingBuiltInSearchField ? (
             <QueryFieldItem
               key={leadingBuiltInSearchField.key}
@@ -346,7 +343,7 @@ export function DataTableHeader<TQuery extends object>({
     </div>
   ) : (
     <div className="flex items-start justify-between gap-4 border border-amber-500">
-      <div className="flex min-w-0 flex-1 items-center gap-3 border border-cyan-500">
+      <div className="flex flex-1 items-center gap-3 border border-cyan-500">
         {queryTools ? (
           <QueryToolGroup
             loading={loading}

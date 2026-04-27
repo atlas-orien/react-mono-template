@@ -920,7 +920,7 @@ export function DataTable<T, TQuery extends object = object>({
       const scopeValue = draftQuery[field.scopeKey]
 
       return (
-        <div className="flex min-w-0 items-center gap-1.5">
+        <div className="flex items-center gap-1.5">
           <AdvancedSelect
             value={asStringValue(scopeValue)}
             onValueChange={(nextValue) =>
@@ -968,12 +968,7 @@ export function DataTable<T, TQuery extends object = object>({
           className="shrink-0 px-3 pt-2"
           data-slot="data-table-header"
         >
-          <div
-            className="max-w-full"
-            style={
-              fillWidth ? undefined : { minWidth: `${resolvedSurfaceWidth}px` }
-            }
-          >
+          <div className="max-w-full">
             <DataTableHeader
               hasAnyQueryFields={hasAnyQueryFields}
               leadingBuiltInSearchField={

@@ -119,7 +119,6 @@ export function getQueryFieldLayoutStyle(
   if (field.type === "search") {
     return {
       flex: "0 1 360px",
-      minWidth: "240px",
       maxWidth: "360px",
     }
   }
@@ -127,7 +126,6 @@ export function getQueryFieldLayoutStyle(
   if (field.type === "text") {
     return {
       flex: "1 1 280px",
-      minWidth: "220px",
       maxWidth: "360px",
     }
   }
@@ -135,7 +133,6 @@ export function getQueryFieldLayoutStyle(
   if (field.type === "date-range") {
     return {
       flex: "0 1 240px",
-      minWidth: "220px",
       maxWidth: "280px",
     }
   }
@@ -143,7 +140,6 @@ export function getQueryFieldLayoutStyle(
   if (field.type === "scoped-date-range") {
     return {
       flex: "0 0 auto",
-      minWidth: "auto",
       maxWidth: "none",
     }
   }
@@ -151,14 +147,12 @@ export function getQueryFieldLayoutStyle(
   if (field.type === "select") {
     return {
       flex: "0 1 180px",
-      minWidth: "160px",
       maxWidth: "220px",
     }
   }
 
   return {
     flex: "0 1 220px",
-    minWidth: "180px",
     maxWidth: "280px",
   }
 }
