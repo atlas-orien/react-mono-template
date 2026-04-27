@@ -955,7 +955,7 @@ export function DataTable<T, TQuery extends object = object>({
   return (
     <TooltipProvider>
       <div
-        className="flex h-full min-h-0 max-w-full min-w-0 flex-col overflow-hidden rounded-xl border border-border bg-background"
+        className="flex h-full min-h-0 max-w-full min-w-0 flex-col overflow-hidden rounded-xl bg-background"
         data-slot="data-table"
         style={{
           height: resolveTableHeight(height),
