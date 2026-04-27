@@ -733,7 +733,6 @@ export function DataTable<T, TQuery extends object = object>({
           >
             <DataTableHeader
               hasAnyQueryFields={hasAnyQueryFields}
-              hasUserQueryFields={hasUserQueryFields}
               leadingBuiltInSearchField={
                 leadingBuiltInSearchField as DataTableBuiltInQueryField<TQuery> | null
               }

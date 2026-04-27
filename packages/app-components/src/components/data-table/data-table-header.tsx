@@ -108,7 +108,7 @@ function QueryToolGroup({
   onRetry: () => void
 }) {
   return (
-    <div className="flex shrink-0 items-center gap-1 self-center">
+    <div className="flex shrink-0 items-center gap-1">
       <IconToolButton
         icon={<RotateCcw aria-hidden="true" className="size-4.5" />}
         label={resolvedResetLabel}
@@ -222,7 +222,6 @@ function ToolbarActions({
 
 export function DataTableHeader<TQuery extends object>({
   hasAnyQueryFields,
-  hasUserQueryFields,
   leadingBuiltInSearchField,
   trailingBuiltInQueryFields,
   queryFields,
@@ -248,7 +247,6 @@ export function DataTableHeader<TQuery extends object>({
   onOpenBulkDelete,
 }: {
   hasAnyQueryFields: boolean
-  hasUserQueryFields: boolean
   leadingBuiltInSearchField: DataTableBuiltInQueryField<TQuery> | null
   trailingBuiltInQueryFields: readonly DataTableBuiltInQueryField<TQuery>[]
   queryFields: readonly DataTableQueryField<TQuery>[]
@@ -273,23 +271,17 @@ export function DataTableHeader<TQuery extends object>({
   onOpenBulkUpdate: () => void
   onOpenBulkDelete: () => void
 }) {
-  const builtInFields = leadingBuiltInSearchField
-    ? [leadingBuiltInSearchField, ...trailingBuiltInQueryFields]
-    : trailingBuiltInQueryFields
-
   return hasAnyQueryFields ? (
     <div className="flex min-w-0 items-start gap-4">
-      <div className="flex min-w-0 flex-1 flex-col gap-2.5">
-        <div className="flex min-w-0 flex-wrap items-start gap-3 sm:flex-nowrap sm:items-center sm:justify-between">
-          <div className="flex min-w-0 max-w-full flex-1 flex-wrap items-start gap-2.5 sm:flex-nowrap sm:items-center">
-            {builtInFields.map((field) => (
-              <QueryFieldItem
-                key={field.key}
-                field={field}
-                renderQueryFieldControl={renderQueryFieldControl}
-              />
-            ))}
-          </div>
+      <div className="min-w-0 flex-1 overflow-x-auto pb-2">
+        <div className="flex min-w-max items-center gap-1.5 sm:gap-2.5">
+          {leadingBuiltInSearchField ? (
+            <QueryFieldItem
+              key={leadingBuiltInSearchField.key}
+              field={leadingBuiltInSearchField}
+              renderQueryFieldControl={renderQueryFieldControl}
+            />
+          ) : null}
 
           {queryTools ? (
             <QueryToolGroup
@@ -300,24 +292,24 @@ export function DataTableHeader<TQuery extends object>({
               onRetry={onRetry}
             />
           ) : null}
-        </div>
 
-        {hasUserQueryFields ? (
-          <div className="min-w-0">
-            <div className="overflow-x-auto pb-2">
-              <div className="flex min-w-max items-start gap-1.5">
-                {queryFields.map((field) => (
-                  <QueryFieldItem
-                    key={field.key}
-                    field={field}
-                    renderQueryFieldControl={renderQueryFieldControl}
-                    compact
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        ) : null}
+          {trailingBuiltInQueryFields.map((field) => (
+            <QueryFieldItem
+              key={field.key}
+              field={field}
+              renderQueryFieldControl={renderQueryFieldControl}
+            />
+          ))}
+
+          {queryFields.map((field) => (
+            <QueryFieldItem
+              key={field.key}
+              field={field}
+              renderQueryFieldControl={renderQueryFieldControl}
+              compact
+            />
+          ))}
+        </div>
       </div>
 
       <ToolbarActions
