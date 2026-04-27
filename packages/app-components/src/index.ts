@@ -68,7 +68,6 @@ export type {
   DataTableBulkUpdateSubmitContext,
   DataTableAuditColumnKey,
   DataTableAuditColumnsConfig,
-  DataTableAuditQueryConfig,
   DataTableBuiltInQueryField,
   DataTableColumn,
   DataTableFetchParams,

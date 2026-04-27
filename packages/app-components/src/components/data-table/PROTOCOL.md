@@ -182,9 +182,10 @@ AI 不应在业务页复制 `DataTable` 内部 sticky 计算逻辑。
 `auditQuery` 只控制是否显示时间 query 组件：
 
 - `auditQuery={false}` 不显示时间 query
-- 传入 `auditQuery` 时，query 组件自动跟随 `auditColumns`
+- `auditQuery={true}` 时，query 组件自动跟随 `auditColumns`
 - 如果 `auditColumns` 只有一个字段，query 显示单个日期范围
 - 如果 `auditColumns` 有两个字段，query 显示字段切换 + 日期范围
+- 时间字段文案、select 选项、placeholder、列头都由组件内部固定规则决定，不允许外部配置
 
 ### 单字段时间查询
 
@@ -193,10 +194,7 @@ AI 不应在业务页复制 `DataTable` 内部 sticky 计算逻辑。
 ```tsx
 <DataTable
   auditColumns={["createdAt"]}
-  auditQuery={{
-    rangeKey: "createdAt",
-    label: "创建时间",
-  }}
+  auditQuery
 />
 ```
 
@@ -217,13 +215,7 @@ interface Query {
 ```tsx
 <DataTable
   auditColumns={["createdAt", "updatedAt"]}
-  auditQuery={{
-    rangeKey: "auditRange",
-    fieldKey: "auditField",
-    label: "审计时间",
-    fieldPlaceholder: "时间字段",
-    rangePlaceholder: "选择时间范围",
-  }}
+  auditQuery
 />
 ```
 
@@ -238,8 +230,9 @@ interface Query {
 
 特殊行为：
 
-- 只切换 `fieldKey` 且当前 range 为空时，源码会避免重复触发一次无意义 fetch
-- 一旦 range 有值，`fieldKey` 和 range 都是有效查询条件
+- 双字段模式下，内部固定使用 `auditField` 和 `auditRange`
+- 只切换内部时间字段选择且当前 range 为空时，源码会避免重复触发一次无意义 fetch
+- 一旦 range 有值，所选时间字段和 range 都是有效查询条件
 
 标准审计时间字段固定为：
 
@@ -252,14 +245,14 @@ HTTP JSON 和业务 DTO 应继续使用 camelCase，不要引入 `created_at` / 
 
 如果页面需要展示标准审计时间字段，优先通过 `auditColumns` 启用。不要在每个页面重复手写列。
 
-`auditColumns` 用于决定标准审计列集合，也决定 `auditQuery` 可选择的时间字段。`auditQuery` 不应重复声明字段集合。
+`auditColumns` 用于决定标准审计列集合，也决定 `auditQuery` 可选择的时间字段。
 
 `auditColumns` 支持：
 
 - `true`：展示 `createdAt` 和 `updatedAt`
 - `["createdAt"]`
 - `["updatedAt"]`
-- `{ columns, createdAtLabel, updatedAtLabel, emptyText, formatDateTime }`
+- `{ columns, emptyText, formatDateTime }`
 
 默认规则：
 
@@ -267,6 +260,7 @@ HTTP JSON 和业务 DTO 应继续使用 camelCase，不要引入 `created_at` / 
 - 支持 `Date`、可被 `Date` 解析的 string / number
 - 无值或非法值显示 `auditEmptyText`，默认 `"-"`
 - 默认格式跟随当前语言
+- 列头固定由组件内部决定，不允许页面覆盖
 - 如需业务格式，使用 `auditColumns.formatDateTime`
 
 示例：
@@ -275,8 +269,6 @@ HTTP JSON 和业务 DTO 应继续使用 camelCase，不要引入 `created_at` / 
 <DataTable
   auditColumns={{
     columns: ["createdAt", "updatedAt"],
-    createdAtLabel: "创建时间",
-    updatedAtLabel: "更新时间",
     formatDateTime: (value) => formatDateTime(value),
   }}
 />
@@ -505,7 +497,7 @@ AI 修改 `DataTable` 时，必须同时考虑：
 3. 主查询放入 `builtInQueryFields`
 4. 业务补充筛选放入 `queryFields`
 5. 标准时间字段只能通过 `auditColumns` 启用，字段只允许 `createdAt` / `updatedAt`
-6. 时间 query 只能通过 `auditQuery` 显示，并自动跟随 `auditColumns`
+6. 时间 query 只能通过 `auditQuery` 开关显示，并自动跟随 `auditColumns`
 7. 行级操作优先使用 `rowActions`
 8. 批量操作优先使用 `bulkUpdate` / `bulkDelete`
 9. 新增操作优先使用 `insert`
@@ -532,8 +524,8 @@ AI 不应默认：
 
 - `builtInQueryFields`：主搜索等非时间内建查询
 - `queryFields`：状态、区域、分类、负责人等附加筛选
-- `auditQuery`：标准 `createdAt` / `updatedAt` 时间查询和列展示
-- `auditColumns`：只展示审计列或覆盖审计列格式
+- `auditColumns`：标准 `createdAt` / `updatedAt` 字段集合，也是审计列展示的事实源
+- `auditQuery`：只控制是否显示标准时间查询组件
 - `insert`：新增
 - `bulkUpdate` / `bulkDelete`：批量操作
 - `rowActions.edit` / `rowActions.delete`：单行标准操作

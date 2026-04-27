@@ -128,8 +128,6 @@ export interface DataTableLocaleText {
   bulkUpdateValueLabel?: ReactNode
   bulkUpdateCancelLabel?: ReactNode
   bulkUpdateApplyLabel?: ReactNode
-  createdAtLabel?: ReactNode
-  updatedAtLabel?: ReactNode
   auditEmptyText?: ReactNode
 }
 
@@ -137,21 +135,8 @@ export type DataTableAuditColumnKey = "createdAt" | "updatedAt"
 
 export interface DataTableAuditColumnsConfig {
   columns?: readonly DataTableAuditColumnKey[]
-  createdAtLabel?: ReactNode
-  updatedAtLabel?: ReactNode
   emptyText?: ReactNode
   formatDateTime?: (value: Date, column: DataTableAuditColumnKey) => ReactNode
-}
-
-export interface DataTableAuditQueryConfig<TQuery> {
-  rangeKey: keyof TQuery & string
-  fieldKey?: keyof TQuery & string
-  label?: ReactNode
-  createdAtLabel?: ReactNode
-  updatedAtLabel?: ReactNode
-  placeholder?: string
-  fieldPlaceholder?: string
-  rangePlaceholder?: string
 }
 
 export interface DataTableSelectionContext<T> {
@@ -293,7 +278,7 @@ export interface DataTableProps<T, TQuery extends object = object> {
   initialQuery?: TQuery
   builtInQueryFields?: readonly DataTableBuiltInQueryField<TQuery>[]
   queryFields?: readonly DataTableQueryField<TQuery>[]
-  auditQuery?: false | DataTableAuditQueryConfig<TQuery>
+  auditQuery?: boolean
   queryTools?: boolean
   toolbarActions?: ReactNode
   insert?: false | DataTableInsertActionConfig

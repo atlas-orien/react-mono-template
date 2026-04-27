@@ -41,7 +41,7 @@ function toEndOfDayIso(value: Date) {
 function applyTimeRangeParams(
   params: ListAppUsersRequest,
   field: AppUserTimeField,
-  range: AppUserTableQuery["timeRange"]
+  range: AppUserTableQuery["auditRange"]
 ) {
   if (!range?.from && !range?.to) return
 
@@ -77,12 +77,12 @@ function buildAppUserListParams(
     params.status = mapStatusLabelToApiStatus(query.status)
   }
 
-  const timeField =
-    appUserAuditColumns.length > 1 ? query.timeField : appUserAuditColumns[0]
+  const auditField =
+    appUserAuditColumns.length > 1 ? query.auditField : appUserAuditColumns[0]
 
-  if (!timeField) return params
+  if (!auditField) return params
 
-  applyTimeRangeParams(params, timeField, query.timeRange)
+  applyTimeRangeParams(params, auditField, query.auditRange)
 
   return params
 }

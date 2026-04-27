@@ -5,7 +5,6 @@ export type {
   DataTableBulkUpdateConfig,
   DataTableBulkUpdateField,
   DataTableBulkUpdateSubmitContext,
-  DataTableAuditQueryConfig,
   DataTableBuiltInQueryField,
   DataTableAuditColumnKey,
   DataTableAuditColumnsConfig,

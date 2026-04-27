@@ -376,10 +376,7 @@ export default function DataTablePage() {
           },
         ]}
         auditColumns={["createdAt"]}
-        auditQuery={{
-          rangeKey: "createdAt",
-          label: t("datatable.fields.createdAt", "Created At"),
-        }}
+        auditQuery
         queryFields={[
           {
             key: "status",

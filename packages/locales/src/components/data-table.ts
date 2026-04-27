@@ -30,6 +30,14 @@ export interface DataTableCopy {
   bulkUpdateValueLabel: string
   bulkUpdateCancelLabel: string
   bulkUpdateApplyLabel: string
+  createdAtLabel: string
+  updatedAtLabel: string
+  auditQueryLabel: string
+  auditFieldPlaceholder: string
+  auditRangePlaceholder: string
+  createdAtRangePlaceholder: string
+  updatedAtRangePlaceholder: string
+  auditEmptyText: string
 }
 
 export function getDataTableCopy(language: SupportedLanguage) {

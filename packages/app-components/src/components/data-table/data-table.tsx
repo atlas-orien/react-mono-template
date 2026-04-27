@@ -63,7 +63,6 @@ export type {
   DataTableBulkUpdateConfig,
   DataTableBulkUpdateField,
   DataTableBulkUpdateSubmitContext,
-  DataTableAuditQueryConfig,
   DataTableBuiltInQueryField,
   DataTableColumn,
   DataTableDeleteActionConfig,
@@ -88,6 +87,8 @@ export type {
 } from "./data-table.types"
 
 const DEFAULT_AUDIT_COLUMNS = ["createdAt", "updatedAt"] as const
+const DEFAULT_AUDIT_FIELD_KEY = "auditField"
+const DEFAULT_AUDIT_RANGE_KEY = "auditRange"
 
 function isDataTableAuditColumnsConfig(
   value: unknown
@@ -320,13 +321,14 @@ export function DataTable<T, TQuery extends object = object>({
     localeText?.bulkUpdateCancelLabel ?? copy.bulkUpdateCancelLabel
   const resolvedBulkUpdateApplyLabel =
     localeText?.bulkUpdateApplyLabel ?? copy.bulkUpdateApplyLabel
-  const resolvedCreatedAtLabel =
-    localeText?.createdAtLabel ??
-    (language === "zhCN" ? "创建时间" : "Created At")
-  const resolvedUpdatedAtLabel =
-    localeText?.updatedAtLabel ??
-    (language === "zhCN" ? "更新时间" : "Updated At")
-  const resolvedAuditEmptyText = localeText?.auditEmptyText ?? "-"
+  const resolvedCreatedAtLabel = copy.createdAtLabel
+  const resolvedUpdatedAtLabel = copy.updatedAtLabel
+  const resolvedAuditQueryLabel = copy.auditQueryLabel
+  const resolvedAuditFieldPlaceholder = copy.auditFieldPlaceholder
+  const resolvedAuditRangePlaceholder = copy.auditRangePlaceholder
+  const resolvedCreatedAtRangePlaceholder = copy.createdAtRangePlaceholder
+  const resolvedUpdatedAtRangePlaceholder = copy.updatedAtRangePlaceholder
+  const resolvedAuditEmptyText = localeText?.auditEmptyText ?? copy.auditEmptyText
   const auditColumnsConfig = isDataTableAuditColumnsConfig(auditColumns)
     ? auditColumns
     : undefined
@@ -336,38 +338,35 @@ export function DataTable<T, TQuery extends object = object>({
   )
   const auditQueryField = useMemo<DataTableRenderedQueryField<TQuery> | null>(
     () => {
-      if (auditQuery === false) return null
+      if (auditQuery !== true) return null
 
       if (auditColumnKeys.length === 0) return null
 
       const [firstColumn] = auditColumnKeys
       const getAuditQueryLabel = (column: DataTableAuditColumnKey) =>
         column === "createdAt"
-          ? (auditQuery.createdAtLabel ?? resolvedCreatedAtLabel)
-          : (auditQuery.updatedAtLabel ?? resolvedUpdatedAtLabel)
+          ? resolvedCreatedAtLabel
+          : resolvedUpdatedAtLabel
 
       if (auditColumnKeys.length === 1) {
         return {
-          key: auditQuery.rangeKey,
+          key: firstColumn as keyof TQuery & string,
           type: "date-range",
-          label: auditQuery.label ?? getAuditQueryLabel(firstColumn),
+          label: getAuditQueryLabel(firstColumn),
           placeholder:
-            auditQuery.placeholder ??
-            (typeof getAuditQueryLabel(firstColumn) === "string"
-              ? `选择${getAuditQueryLabel(firstColumn)}`
-              : undefined),
+            firstColumn === "createdAt"
+              ? resolvedCreatedAtRangePlaceholder
+              : resolvedUpdatedAtRangePlaceholder,
         }
       }
 
-      if (!auditQuery.fieldKey) return null
-
       return {
-        key: auditQuery.rangeKey,
+        key: DEFAULT_AUDIT_RANGE_KEY as keyof TQuery & string,
         type: "scoped-date-range",
-        scopeKey: auditQuery.fieldKey,
-        label: auditQuery.label ?? resolvedCreatedAtLabel,
-        scopePlaceholder: auditQuery.fieldPlaceholder,
-        rangePlaceholder: auditQuery.rangePlaceholder ?? auditQuery.placeholder,
+        scopeKey: DEFAULT_AUDIT_FIELD_KEY as keyof TQuery & string,
+        label: resolvedAuditQueryLabel,
+        scopePlaceholder: resolvedAuditFieldPlaceholder,
+        rangePlaceholder: resolvedAuditRangePlaceholder,
         options: auditColumnKeys.map((column) => ({
           label: String(getAuditQueryLabel(column)),
           value: column,
@@ -377,7 +376,12 @@ export function DataTable<T, TQuery extends object = object>({
     [
       auditColumnKeys,
       auditQuery,
+      resolvedAuditFieldPlaceholder,
+      resolvedAuditQueryLabel,
+      resolvedAuditRangePlaceholder,
+      resolvedCreatedAtRangePlaceholder,
       resolvedCreatedAtLabel,
+      resolvedUpdatedAtRangePlaceholder,
       resolvedUpdatedAtLabel,
     ]
   )
@@ -416,8 +420,8 @@ export function DataTable<T, TQuery extends object = object>({
         key: columnKey,
         header:
           columnKey === "createdAt"
-            ? (auditColumnsConfig?.createdAtLabel ?? resolvedCreatedAtLabel)
-            : (auditColumnsConfig?.updatedAtLabel ?? resolvedUpdatedAtLabel),
+            ? resolvedCreatedAtLabel
+            : resolvedUpdatedAtLabel,
         width: 160,
         sortable: true,
         renderCell: (row) => {

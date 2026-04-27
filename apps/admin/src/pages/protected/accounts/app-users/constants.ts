@@ -21,8 +21,8 @@ export const appUsersFirstPageQueryKey = [
 export const appUserInitialQuery: AppUserTableQuery = {
   keyword: "",
   status: "",
-  timeField: appUserDefaultTimeField,
-  timeRange: undefined,
+  auditField: appUserDefaultTimeField,
+  auditRange: undefined,
 }
 
 export const appUserPageSizeOptions = [10, 20, 50] as const

@@ -64,6 +64,8 @@ interface TableQuery {
   status: "" | CustomerRow["status"]
   region: "" | CustomerRow["region"]
   owner: "" | CustomerRow["owner"]
+  createdAt?: DateRangeValue
+  updatedAt?: DateRangeValue
   auditField: "createdAt" | "updatedAt"
   auditRange?: DateRangeValue
 }
@@ -189,7 +191,7 @@ const FIELD_PLAYBOOK = [
   {
     title: "查询区域",
     description:
-      "`builtInQueryFields` 只放主搜索等非时间内建查询；时间范围、状态、归属人、区域都放 `queryFields`。",
+      "`builtInQueryFields` 只放主搜索等非时间内建查询；状态、归属人、区域等业务筛选放 `queryFields`。",
   },
   {
     title: "操作能力",
@@ -199,7 +201,7 @@ const FIELD_PLAYBOOK = [
   {
     title: "时间字段",
     description:
-      "`auditQuery` 用来同时启用标准 `createdAt` / `updatedAt` 的时间筛选和审计列展示。",
+      "`auditColumns` 决定标准 `createdAt` / `updatedAt` 字段集合和列展示；`auditQuery` 只控制是否显示时间筛选组件。",
   },
 ]
 
@@ -208,6 +210,8 @@ const INITIAL_QUERY: TableQuery = {
   status: "",
   region: "",
   owner: "",
+  createdAt: undefined,
+  updatedAt: undefined,
   auditField: "createdAt",
   auditRange: undefined,
 }
@@ -391,9 +395,15 @@ export default function DataTableGuidePage() {
           features.updatedAtQuery && !features.createdAtQuery
             ? "updatedAt"
             : query.auditField
+        const activeAuditRange =
+          features.createdAtQuery && features.updatedAtQuery
+            ? query.auditRange
+            : features.updatedAtQuery
+              ? query.updatedAt
+              : query.createdAt
         const auditDate = resolveAuditDate(row, auditField)
-        const auditFrom = query.auditRange?.from
-        const auditTo = query.auditRange?.to
+        const auditFrom = activeAuditRange?.from
+        const auditTo = activeAuditRange?.to
         const auditDateMatched =
           (!auditFrom || auditDate >= startOfDay(auditFrom)) &&
           (!auditTo || auditDate <= endOfDay(auditTo))
@@ -825,20 +835,7 @@ export default function DataTableGuidePage() {
                         initialSort={{ columnKey: "createdAt", direction: "desc" }}
                         builtInQueryFields={builtInQueryFields}
                         queryFields={queryFields}
-                        auditQuery={
-                          features.auditQuery
-                            ? {
-                                rangeKey: "auditRange",
-                                fieldKey:
-                                  auditQueryColumns.length > 1
-                                    ? "auditField"
-                                    : undefined,
-                                label: "审计时间",
-                                fieldPlaceholder: "时间字段",
-                                rangePlaceholder: "选择时间范围",
-                              }
-                            : false
-                        }
+                        auditQuery={features.auditQuery}
                         insert={
                           features.insert
                             ? {
@@ -1261,9 +1258,7 @@ function buildSnippet({
   }
 
   if (features.auditQuery) {
-    lines.push(
-      `  auditQuery={{ rangeKey: "auditRange", fieldKey: "auditField" }}`
-    )
+    lines.push(`  auditQuery`)
   }
 
   if (features.insert) {
