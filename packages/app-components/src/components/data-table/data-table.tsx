@@ -1250,11 +1250,7 @@ export function DataTable<T, TQuery extends object = object>({
         </div>
 
         <div
-          className={
-            fillWidth
-              ? "mt-2 overflow-x-auto px-3 py-2"
-              : "mt-2 overflow-x-auto px-0 py-2"
-          }
+          className="mt-2 overflow-x-auto px-3 py-2"
           data-slot="data-table-tail"
         >
           <div
