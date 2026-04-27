@@ -126,6 +126,51 @@ function toAuditDate(value: unknown) {
   return Number.isNaN(date.getTime()) ? null : date
 }
 
+function hasEmptyDateRange(value: unknown) {
+  const range = asDateRangeValue(value)
+  return !range?.from && !range?.to
+}
+
+function isScopedDateRangeScopeOnlyChange<TQuery extends object>({
+  previousQuery,
+  nextQuery,
+  fields,
+}: {
+  previousQuery: TQuery | null
+  nextQuery: TQuery
+  fields: readonly DataTableQueryField<TQuery>[]
+}) {
+  if (!previousQuery) return false
+
+  const scopedFields = fields.filter(
+    (field) => field.type === "scoped-date-range"
+  )
+
+  if (scopedFields.length === 0) return false
+
+  const changedKeys = new Set<string>()
+  const previousRecord = previousQuery as Record<string, unknown>
+  const nextRecord = nextQuery as Record<string, unknown>
+
+  for (const key of new Set([
+    ...Object.keys(previousRecord),
+    ...Object.keys(nextRecord),
+  ])) {
+    if (!Object.is(previousRecord[key], nextRecord[key])) {
+      changedKeys.add(key)
+    }
+  }
+
+  if (changedKeys.size === 0) return false
+
+  return [...changedKeys].every((key) =>
+    scopedFields.some(
+      (field) =>
+        field.scopeKey === key && hasEmptyDateRange(nextRecord[field.key])
+    )
+  )
+}
+
 function formatDefaultAuditDateTime(value: Date, language: string) {
   return new Intl.DateTimeFormat(language === "zhCN" ? "zh-CN" : "en-US", {
     year: "numeric",
@@ -202,6 +247,7 @@ export function DataTable<T, TQuery extends object = object>({
     createQueryState(initialQuery)
   )
   const headerCellRefs = useRef<Array<HTMLTableCellElement | null>>([])
+  const previousFetchQueryRef = useRef<TQuery | null>(null)
 
   const selectionConfig: false | DataTableRowSelectionConfig<T> =
     selection === false
@@ -236,6 +282,10 @@ export function DataTable<T, TQuery extends object = object>({
   const trailingBuiltInQueryFields = leadingBuiltInSearchField
     ? builtInQueryFields.filter((field) => field !== leadingBuiltInSearchField)
     : builtInQueryFields
+  const allQueryFields = useMemo(
+    () => [...builtInQueryFields, ...queryFields],
+    [builtInQueryFields, queryFields]
+  )
 
   const resolvedEmptyText = localeText?.emptyText ?? emptyText ?? copy.emptyText
   const resolvedErrorText = localeText?.errorText ?? errorText ?? copy.errorText
@@ -512,6 +562,18 @@ export function DataTable<T, TQuery extends object = object>({
   ])
 
   useEffect(() => {
+    if (
+      isScopedDateRangeScopeOnlyChange({
+        previousQuery: previousFetchQueryRef.current,
+        nextQuery: draftQuery,
+        fields: allQueryFields,
+      })
+    ) {
+      previousFetchQueryRef.current = draftQuery
+      return
+    }
+
+    previousFetchQueryRef.current = draftQuery
     const controller = new AbortController()
 
     setLoading(true)
@@ -544,7 +606,16 @@ export function DataTable<T, TQuery extends object = object>({
     })()
 
     return () => controller.abort()
-  }, [draftQuery, fetchData, onError, page, pageSize, reloadToken, sort])
+  }, [
+    allQueryFields,
+    draftQuery,
+    fetchData,
+    onError,
+    page,
+    pageSize,
+    reloadToken,
+    sort,
+  ])
 
   const updateSelectedRowKeys = (nextKeys: Key[]) => {
     if (selectionConfig === false || !selectionConfig.selectedRowKeys) {
