@@ -1,9 +1,16 @@
 import type { DataTableAuditColumnKey } from "@workspace/app-components"
 import type { AppUserTableQuery } from "./types"
 
-export const appUserAuditColumns = ["createdAt"] as const satisfies readonly DataTableAuditColumnKey[]
+export const appUserAuditColumns = [
+  "createdAt",
+  "updatedAt",
+] as const satisfies readonly DataTableAuditColumnKey[]
 
-export const appUserDefaultTimeField = appUserAuditColumns[0]
+const appUserAuditColumnList =
+  appUserAuditColumns as readonly DataTableAuditColumnKey[]
+
+export const appUserDefaultTimeField: DataTableAuditColumnKey | undefined =
+  appUserAuditColumnList[0]
 
 export const appUsersFirstPageQueryKey = [
   "admin",

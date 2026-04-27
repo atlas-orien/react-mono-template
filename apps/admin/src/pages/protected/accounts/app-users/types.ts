@@ -21,6 +21,6 @@ export interface AppUserRow {
 export interface AppUserTableQuery {
   keyword: string
   status: "" | AppUserStatusLabel
-  timeField: AppUserTimeField
+  timeField?: AppUserTimeField
   timeRange: DateRangeValue | undefined
 }

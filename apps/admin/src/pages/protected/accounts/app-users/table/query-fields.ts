@@ -1,4 +1,5 @@
 import type {
+  DataTableAuditColumnKey,
   DataTableBuiltInQueryField,
   DataTableQueryField,
   DataTableSelectOption,
@@ -16,39 +17,54 @@ const timeFieldLabels = {
   updatedAt: "更新时间",
 } as const
 
+const auditColumns =
+  appUserAuditColumns as readonly DataTableAuditColumnKey[]
+
 const timeFieldOptions: readonly DataTableSelectOption[] =
-  appUserAuditColumns.map((column) => ({
+  auditColumns.map((column) => ({
     label: timeFieldLabels[column],
     value: column,
   }))
 
-const timeRangeQueryField: DataTableBuiltInQueryField<AppUserTableQuery> =
-  appUserAuditColumns.length > 1
-    ? {
-        key: "timeRange",
-        scopeKey: "timeField",
-        type: "scoped-date-range",
-        label: "时间字段",
-        scopePlaceholder: "时间字段",
-        rangePlaceholder: "选择时间范围",
-        options: timeFieldOptions,
-      }
-    : {
-        key: "timeRange",
-        type: "date-range",
-        label: timeFieldLabels[appUserAuditColumns[0]],
-        placeholder: `选择${timeFieldLabels[appUserAuditColumns[0]]}`,
-      }
+function getTimeRangeQueryField():
+  | DataTableBuiltInQueryField<AppUserTableQuery>
+  | null {
+  if (auditColumns.length === 0) return null
 
-export const appUserBuiltInQueryFields: DataTableBuiltInQueryField<AppUserTableQuery>[] = [
-  {
-    key: "keyword",
-    type: "search",
-    label: "关键字",
-    placeholder: "搜索显示名称、ID、备注或角色",
-  },
-  timeRangeQueryField,
-]
+  if (auditColumns.length === 1) {
+    const timeField = auditColumns[0]
+
+    return {
+      key: "timeRange",
+      type: "date-range",
+      label: timeFieldLabels[timeField],
+      placeholder: `选择${timeFieldLabels[timeField]}`,
+    }
+  }
+
+  return {
+    key: "timeRange",
+    scopeKey: "timeField",
+    type: "scoped-date-range",
+    label: "时间字段",
+    scopePlaceholder: "时间字段",
+    rangePlaceholder: "选择时间范围",
+    options: timeFieldOptions,
+  }
+}
+
+const timeRangeQueryField = getTimeRangeQueryField()
+
+export const appUserBuiltInQueryFields: DataTableBuiltInQueryField<AppUserTableQuery>[] =
+  [
+    {
+      key: "keyword",
+      type: "search",
+      label: "关键字",
+      placeholder: "搜索显示名称、ID、备注或角色",
+    },
+    ...(timeRangeQueryField ? [timeRangeQueryField] : []),
+  ]
 
 export const appUserQueryFields: DataTableQueryField<AppUserTableQuery>[] = [
   {

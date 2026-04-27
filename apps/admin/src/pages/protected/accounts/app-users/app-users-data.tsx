@@ -80,6 +80,8 @@ function buildAppUserListParams(
   const timeField =
     appUserAuditColumns.length > 1 ? query.timeField : appUserAuditColumns[0]
 
+  if (!timeField) return params
+
   applyTimeRangeParams(params, timeField, query.timeRange)
 
   return params

@@ -33,7 +33,7 @@ export default function AppUsersPage() {
           height="100%"
           initialPageSize={table.initialPageSize}
           initialQuery={table.initialQuery}
-          queryTools={false}
+          queryTools
           selection={table.selection}
           bulkDelete={table.bulkDelete}
           bulkUpdate={table.bulkUpdate}
