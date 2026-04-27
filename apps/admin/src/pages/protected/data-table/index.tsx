@@ -374,12 +374,12 @@ export default function DataTablePage() {
             label: t("datatable.fields.keyword", "Keyword"),
             placeholder: t("datatable.searchPlaceholder", "Search customers"),
           },
-          {
-            key: "createdAt",
-            type: "date-range",
-            label: t("datatable.fields.createdAt", "Created At"),
-          },
         ]}
+        auditQuery={{
+          columns: ["createdAt"],
+          rangeKey: "createdAt",
+          label: t("datatable.fields.createdAt", "Created At"),
+        }}
         queryFields={[
           {
             key: "status",

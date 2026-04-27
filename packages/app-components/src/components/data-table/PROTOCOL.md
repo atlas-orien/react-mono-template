@@ -110,8 +110,8 @@ AI 不应在业务页复制 `DataTable` 内部 sticky 计算逻辑。
 
 设计约束：
 
-- 主搜索和框架级时间筛选优先放 `builtInQueryFields`
-- 状态、区域、负责人、类型、标签等业务筛选放 `queryFields`
+- 主搜索优先放 `builtInQueryFields`
+- 时间范围、状态、区域、负责人、类型、标签等筛选放 `queryFields`
 - 不允许业务页自己拼一套独立 table header 来绕过框架
 - 不允许新增万能 header render prop 来外放内部骨架
 
@@ -125,15 +125,13 @@ AI 不应在业务页复制 `DataTable` 内部 sticky 计算逻辑。
 
 - `search`
 - `select`
-- `date-range`
-- `scoped-date-range`
 
 默认规则：
 
 - 主搜索使用 `type: "search"`
-- 主时间范围使用 `type: "date-range"`
-- 如果同一个时间范围需要在多个时间字段之间切换，使用 `type: "scoped-date-range"`
-- built-in query 应保持视觉稳定，不承载零散业务筛选
+- built-in query 不允许承载 `date-range` / `scoped-date-range`
+- 时间类查询必须走 `auditQuery`
+- built-in query 应保持视觉稳定，不承载零散业务筛选和时间特例
 
 注意：当前源码里的 `search` 字段只支持 `key`、`label`、`description`、`disabled`、`placeholder`。不要使用 guide 旧示例里的 `fieldKey` / `fieldOptions`，除非先在源码类型和实现中补齐该能力。
 
@@ -146,8 +144,6 @@ AI 不应在业务页复制 `DataTable` 内部 sticky 计算逻辑。
 - `text`
 - `search`
 - `select`
-- `date-range`
-- `scoped-date-range`
 
 默认规则：
 
@@ -169,24 +165,35 @@ AI 不应在业务页复制 `DataTable` 内部 sticky 计算逻辑。
 
 ## 6. 时间能力
 
-`DataTable` 当前已经支持两类时间查询。
+`DataTable` 当前支持标准审计时间能力，但它不属于 `builtInQueryFields` 或 `queryFields`。时间能力只能通过 `auditQuery` 启用，并且只允许以下字段：
 
-### `date-range`
+- `createdAt`
+- `updatedAt`
+
+禁止业务通过自定义 query field 添加任意时间字段。不要为 `renewalAt`、`lastActiveAt`、`deletedAt` 等字段私自加时间 query。
+
+`auditQuery.columns` 是单一事实源：
+
+- 开启 `createdAt` 会同时显示创建时间筛选和创建时间列
+- 开启 `updatedAt` 会同时显示更新时间筛选和更新时间列
+- 同时开启两者时，query 会显示字段切换 + 时间范围
+- 关闭某个字段时，它的 query 和列都应一起消失
+
+### 单字段时间查询
 
 适合查询单一时间字段。
 
 ```tsx
-const builtInQueryFields = [
-  {
-    key: "createdAt",
-    type: "date-range",
+<DataTable
+  auditQuery={{
+    columns: ["createdAt"],
+    rangeKey: "createdAt",
     label: "创建时间",
-    placeholder: "选择创建时间",
-  },
-] satisfies DataTableBuiltInQueryField<Query>[]
+  }}
+/>
 ```
 
-对应 `Query` 字段应使用 `DateRangeValue | undefined`。
+对应 `Query`：
 
 ```ts
 interface Query {
@@ -196,25 +203,21 @@ interface Query {
 
 `fetchData` 负责解释 `from` / `to` 的业务含义。组件不替业务拼服务端参数。
 
-### `scoped-date-range`
+### 双字段时间查询
 
-适合一个时间范围配一个时间字段选择器，例如在 `createdAt` 和 `updatedAt` 之间切换。
+适合在 `createdAt` 和 `updatedAt` 之间切换。
 
 ```tsx
-const builtInQueryFields = [
-  {
-    key: "auditRange",
-    type: "scoped-date-range",
-    scopeKey: "auditField",
+<DataTable
+  auditQuery={{
+    columns: ["createdAt", "updatedAt"],
+    rangeKey: "auditRange",
+    fieldKey: "auditField",
     label: "审计时间",
-    scopePlaceholder: "时间字段",
+    fieldPlaceholder: "时间字段",
     rangePlaceholder: "选择时间范围",
-    options: [
-      { label: "创建时间", value: "createdAt" },
-      { label: "更新时间", value: "updatedAt" },
-    ],
-  },
-] satisfies DataTableBuiltInQueryField<Query>[]
+  }}
+/>
 ```
 
 对应 `Query`：
@@ -228,8 +231,8 @@ interface Query {
 
 特殊行为：
 
-- 只切换 `scopeKey` 且当前 range 为空时，源码会避免重复触发一次无意义 fetch
-- 一旦 range 有值，`scopeKey` 和 range 都是有效查询条件
+- 只切换 `fieldKey` 且当前 range 为空时，源码会避免重复触发一次无意义 fetch
+- 一旦 range 有值，`fieldKey` 和 range 都是有效查询条件
 
 标准审计时间字段固定为：
 
@@ -240,7 +243,9 @@ HTTP JSON 和业务 DTO 应继续使用 camelCase，不要引入 `created_at` / 
 
 ## 7. 审计时间列
 
-如果页面需要展示标准审计时间字段，优先使用 `auditColumns`，不要在每个页面重复手写列。
+如果页面需要展示标准审计时间字段，优先通过 `auditQuery.columns` 启用。不要在每个页面重复手写列。
+
+`auditColumns` 仍可用于只展示审计列或覆盖列展示文案/格式，但不应作为时间筛选开关。存在 `auditQuery` 时，如果没有显式传 `auditColumns`，表格会自动使用 `auditQuery.columns` 生成审计列。
 
 `auditColumns` 支持：
 
@@ -492,8 +497,8 @@ AI 修改 `DataTable` 时，必须同时考虑：
 2. 定义清晰的 `Row` 和 `Query`
 3. 主查询放入 `builtInQueryFields`
 4. 业务补充筛选放入 `queryFields`
-5. 时间查询优先使用 `date-range` 或 `scoped-date-range`
-6. 标准审计时间列优先使用 `auditColumns`
+5. 时间查询只能通过 `auditQuery` 启用，字段只允许 `createdAt` / `updatedAt`
+6. 标准审计时间列默认跟随 `auditQuery.columns`
 7. 行级操作优先使用 `rowActions`
 8. 批量操作优先使用 `bulkUpdate` / `bulkDelete`
 9. 新增操作优先使用 `insert`
@@ -518,9 +523,10 @@ AI 不应默认：
 
 推荐：
 
-- `builtInQueryFields`：主搜索、主日期范围、scoped 时间范围
+- `builtInQueryFields`：主搜索等非时间内建查询
 - `queryFields`：状态、区域、分类、负责人等附加筛选
-- `auditColumns`：标准 `createdAt` / `updatedAt` 展示
+- `auditQuery`：标准 `createdAt` / `updatedAt` 时间查询和列展示
+- `auditColumns`：只展示审计列或覆盖审计列格式
 - `insert`：新增
 - `bulkUpdate` / `bulkDelete`：批量操作
 - `rowActions.edit` / `rowActions.delete`：单行标准操作

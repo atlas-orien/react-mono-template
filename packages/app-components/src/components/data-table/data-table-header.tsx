@@ -9,10 +9,13 @@ import type { ReactNode } from "react"
 import type {
   DataTableBuiltInQueryField,
   DataTableQueryField,
+  DataTableRenderedQueryField,
 } from "./data-table.types"
 import { getQueryFieldLayoutStyle } from "./data-table.utils"
 
-function getCustomQueryFieldLayoutStyle(field: DataTableQueryField<object>) {
+function getCustomQueryFieldLayoutStyle(
+  field: DataTableRenderedQueryField<object>
+) {
   if (field.type === "select") {
     return {
       flex: "0 0 auto",
@@ -52,8 +55,10 @@ function QueryFieldItem<TQuery extends object>({
   renderQueryFieldControl,
   compact = false,
 }: {
-  field: DataTableQueryField<TQuery>
-  renderQueryFieldControl: (field: DataTableQueryField<TQuery>) => ReactNode
+  field: DataTableRenderedQueryField<TQuery>
+  renderQueryFieldControl: (
+    field: DataTableRenderedQueryField<TQuery>
+  ) => ReactNode
   compact?: boolean
 }) {
   return (
@@ -62,8 +67,12 @@ function QueryFieldItem<TQuery extends object>({
       className="flex min-w-0 flex-col gap-1"
       style={
         compact
-          ? getCustomQueryFieldLayoutStyle(field as DataTableQueryField<object>)
-          : getQueryFieldLayoutStyle(field as DataTableQueryField<object>)
+          ? getCustomQueryFieldLayoutStyle(
+              field as DataTableRenderedQueryField<object>
+            )
+          : getQueryFieldLayoutStyle(
+              field as DataTableRenderedQueryField<object>
+            )
       }
     >
       {renderQueryFieldControl(field)}
@@ -233,6 +242,7 @@ export function DataTableHeader<TQuery extends object>({
   leadingBuiltInSearchField,
   trailingBuiltInQueryFields,
   queryFields,
+  auditQueryField,
   queryTools,
   loading,
   insert,
@@ -258,6 +268,7 @@ export function DataTableHeader<TQuery extends object>({
   leadingBuiltInSearchField: DataTableBuiltInQueryField<TQuery> | null
   trailingBuiltInQueryFields: readonly DataTableBuiltInQueryField<TQuery>[]
   queryFields: readonly DataTableQueryField<TQuery>[]
+  auditQueryField: DataTableRenderedQueryField<TQuery> | null
   queryTools: boolean
   loading: boolean
   insert: false | { disabled?: boolean; label?: ReactNode }
@@ -272,7 +283,9 @@ export function DataTableHeader<TQuery extends object>({
   resolvedInsertLabel: ReactNode
   resolvedBulkUpdateLabel: (count: number) => ReactNode
   resolvedBulkDeleteLabel: (count: number) => ReactNode
-  renderQueryFieldControl: (field: DataTableQueryField<TQuery>) => ReactNode
+  renderQueryFieldControl: (
+    field: DataTableRenderedQueryField<TQuery>
+  ) => ReactNode
   onResetQuery: () => void
   onRetry: () => void
   onOpenInsert: () => void
@@ -308,6 +321,15 @@ export function DataTableHeader<TQuery extends object>({
               renderQueryFieldControl={renderQueryFieldControl}
             />
           ))}
+
+          {auditQueryField ? (
+            <QueryFieldItem
+              key={auditQueryField.key}
+              field={auditQueryField}
+              renderQueryFieldControl={renderQueryFieldControl}
+              compact
+            />
+          ) : null}
 
           {queryFields.map((field) => (
             <QueryFieldItem

@@ -80,13 +80,14 @@ export interface DataTableScopedDateRangeQueryField<
 export type DataTableBuiltInQueryField<TQuery> =
   | DataTableSearchQueryField<TQuery>
   | DataTableSelectQueryField<TQuery>
-  | DataTableDateRangeQueryField<TQuery>
-  | DataTableScopedDateRangeQueryField<TQuery>
 
 export type DataTableQueryField<TQuery> =
   | DataTableTextQueryField<TQuery>
   | DataTableSearchQueryField<TQuery>
   | DataTableSelectQueryField<TQuery>
+
+export type DataTableRenderedQueryField<TQuery> =
+  | DataTableQueryField<TQuery>
   | DataTableDateRangeQueryField<TQuery>
   | DataTableScopedDateRangeQueryField<TQuery>
 
@@ -140,6 +141,18 @@ export interface DataTableAuditColumnsConfig {
   updatedAtLabel?: ReactNode
   emptyText?: ReactNode
   formatDateTime?: (value: Date, column: DataTableAuditColumnKey) => ReactNode
+}
+
+export interface DataTableAuditQueryConfig<TQuery> {
+  columns?: readonly DataTableAuditColumnKey[]
+  rangeKey: keyof TQuery & string
+  fieldKey?: keyof TQuery & string
+  label?: ReactNode
+  createdAtLabel?: ReactNode
+  updatedAtLabel?: ReactNode
+  placeholder?: string
+  fieldPlaceholder?: string
+  rangePlaceholder?: string
 }
 
 export interface DataTableSelectionContext<T> {
@@ -281,6 +294,7 @@ export interface DataTableProps<T, TQuery extends object = object> {
   initialQuery?: TQuery
   builtInQueryFields?: readonly DataTableBuiltInQueryField<TQuery>[]
   queryFields?: readonly DataTableQueryField<TQuery>[]
+  auditQuery?: false | DataTableAuditQueryConfig<TQuery>
   queryTools?: boolean
   toolbarActions?: ReactNode
   insert?: false | DataTableInsertActionConfig

@@ -39,7 +39,7 @@ import type {
   DataTableBuiltInQueryField,
   DataTableColumn,
   DataTableProps,
-  DataTableQueryField,
+  DataTableRenderedQueryField,
   DataTableRowSelectionConfig,
   DataTableSortState,
 } from "./data-table.types"
@@ -63,9 +63,9 @@ export type {
   DataTableBulkUpdateConfig,
   DataTableBulkUpdateField,
   DataTableBulkUpdateSubmitContext,
+  DataTableAuditQueryConfig,
   DataTableBuiltInQueryField,
   DataTableColumn,
-  DataTableDateRangeQueryField,
   DataTableDeleteActionConfig,
   DataTableEditActionConfig,
   DataTableFetchParams,
@@ -80,7 +80,6 @@ export type {
   DataTableSearchQueryField,
   DataTableSelectOption,
   DataTableSelectionContext,
-  DataTableScopedDateRangeQueryField,
   DataTableSortDirection,
   DataTableSortState,
   DataTableTextQueryField,
@@ -100,9 +99,10 @@ function resolveAuditColumnKeys(
   auditColumns:
     | boolean
     | readonly DataTableAuditColumnKey[]
-    | DataTableAuditColumnsConfig
+    | DataTableAuditColumnsConfig,
+  fallbackColumns?: readonly DataTableAuditColumnKey[]
 ) {
-  if (auditColumns === false) return []
+  if (auditColumns === false) return [...(fallbackColumns ?? [])]
   if (auditColumns === true) return [...DEFAULT_AUDIT_COLUMNS]
   if (Array.isArray(auditColumns)) return [...auditColumns]
   if (isDataTableAuditColumnsConfig(auditColumns)) {
@@ -138,7 +138,7 @@ function isScopedDateRangeScopeOnlyChange<TQuery extends object>({
 }: {
   previousQuery: TQuery | null
   nextQuery: TQuery
-  fields: readonly DataTableQueryField<TQuery>[]
+  fields: readonly DataTableRenderedQueryField<TQuery>[]
 }) {
   if (!previousQuery) return false
 
@@ -202,6 +202,7 @@ export function DataTable<T, TQuery extends object = object>({
   initialQuery,
   builtInQueryFields = [],
   queryFields = [],
+  auditQuery = false,
   queryTools = true,
   toolbarActions,
   insert = false,
@@ -274,19 +275,6 @@ export function DataTable<T, TQuery extends object = object>({
 
   const totalPages = Math.max(1, Math.ceil(total / pageSize))
   const hasRows = rows.length > 0
-  const hasBuiltInQueryFields = builtInQueryFields.length > 0
-  const hasUserQueryFields = queryFields.length > 0
-  const hasAnyQueryFields = hasBuiltInQueryFields || hasUserQueryFields
-  const leadingBuiltInSearchField =
-    builtInQueryFields.find((field) => field.type === "search") ?? null
-  const trailingBuiltInQueryFields = leadingBuiltInSearchField
-    ? builtInQueryFields.filter((field) => field !== leadingBuiltInSearchField)
-    : builtInQueryFields
-  const allQueryFields = useMemo(
-    () => [...builtInQueryFields, ...queryFields],
-    [builtInQueryFields, queryFields]
-  )
-
   const resolvedEmptyText = localeText?.emptyText ?? emptyText ?? copy.emptyText
   const resolvedErrorText = localeText?.errorText ?? errorText ?? copy.errorText
   const resolvedLoadingText =
@@ -340,12 +328,85 @@ export function DataTable<T, TQuery extends object = object>({
     localeText?.updatedAtLabel ??
     (language === "zhCN" ? "更新时间" : "Updated At")
   const resolvedAuditEmptyText = localeText?.auditEmptyText ?? "-"
+  const auditQueryField = useMemo<DataTableRenderedQueryField<TQuery> | null>(
+    () => {
+      if (auditQuery === false) return null
+
+      const auditQueryColumns = [
+        ...(auditQuery.columns ?? DEFAULT_AUDIT_COLUMNS),
+      ]
+      if (auditQueryColumns.length === 0) return null
+
+      const [firstColumn] = auditQueryColumns
+      const getAuditQueryLabel = (column: DataTableAuditColumnKey) =>
+        column === "createdAt"
+          ? (auditQuery.createdAtLabel ?? resolvedCreatedAtLabel)
+          : (auditQuery.updatedAtLabel ?? resolvedUpdatedAtLabel)
+
+      if (auditQueryColumns.length === 1) {
+        return {
+          key: auditQuery.rangeKey,
+          type: "date-range",
+          label: auditQuery.label ?? getAuditQueryLabel(firstColumn),
+          placeholder:
+            auditQuery.placeholder ??
+            (typeof getAuditQueryLabel(firstColumn) === "string"
+              ? `选择${getAuditQueryLabel(firstColumn)}`
+              : undefined),
+        }
+      }
+
+      if (!auditQuery.fieldKey) return null
+
+      return {
+        key: auditQuery.rangeKey,
+        type: "scoped-date-range",
+        scopeKey: auditQuery.fieldKey,
+        label: auditQuery.label ?? resolvedCreatedAtLabel,
+        scopePlaceholder: auditQuery.fieldPlaceholder,
+        rangePlaceholder: auditQuery.rangePlaceholder ?? auditQuery.placeholder,
+        options: auditQueryColumns.map((column) => ({
+          label: String(getAuditQueryLabel(column)),
+          value: column,
+        })),
+      }
+    },
+    [
+      auditQuery,
+      resolvedCreatedAtLabel,
+      resolvedUpdatedAtLabel,
+    ]
+  )
+  const hasBuiltInQueryFields = builtInQueryFields.length > 0
+  const hasUserQueryFields = queryFields.length > 0
+  const hasAuditQueryField = auditQueryField !== null
+  const hasAnyQueryFields =
+    hasBuiltInQueryFields || hasUserQueryFields || hasAuditQueryField
+  const leadingBuiltInSearchField =
+    builtInQueryFields.find((field) => field.type === "search") ?? null
+  const trailingBuiltInQueryFields = leadingBuiltInSearchField
+    ? builtInQueryFields.filter((field) => field !== leadingBuiltInSearchField)
+    : builtInQueryFields
+  const allQueryFields = useMemo(
+    () => [
+      ...builtInQueryFields,
+      ...(auditQueryField ? [auditQueryField] : []),
+      ...queryFields,
+    ],
+    [auditQueryField, builtInQueryFields, queryFields]
+  )
   const auditColumnsConfig = isDataTableAuditColumnsConfig(auditColumns)
     ? auditColumns
     : undefined
   const auditColumnKeys = useMemo(
-    () => resolveAuditColumnKeys(auditColumns),
-    [auditColumns]
+    () =>
+      resolveAuditColumnKeys(
+        auditColumns,
+        auditQuery === false
+          ? undefined
+          : (auditQuery.columns ?? DEFAULT_AUDIT_COLUMNS)
+      ),
+    [auditColumns, auditQuery]
   )
 
   const bulkUpdateFields = bulkUpdate !== false ? bulkUpdate.fields : []
@@ -367,6 +428,7 @@ export function DataTable<T, TQuery extends object = object>({
             ? (auditColumnsConfig?.createdAtLabel ?? resolvedCreatedAtLabel)
             : (auditColumnsConfig?.updatedAtLabel ?? resolvedUpdatedAtLabel),
         width: 160,
+        sortable: true,
         renderCell: (row) => {
           const date = toAuditDate(getAuditRawValue(row, columnKey))
 
@@ -828,7 +890,7 @@ export function DataTable<T, TQuery extends object = object>({
     ? renderLoading()
     : resolvedLoadingText
 
-  const renderQueryFieldControl = (field: DataTableQueryField<TQuery>) => {
+  const renderQueryFieldControl = (field: DataTableRenderedQueryField<TQuery>) => {
     const value = draftQuery[field.key]
     const disabled = loading || field.disabled === true
     const setValue = (nextValue: TQuery[keyof TQuery & string]) => {
@@ -952,6 +1014,7 @@ export function DataTable<T, TQuery extends object = object>({
               }
               trailingBuiltInQueryFields={trailingBuiltInQueryFields}
               queryFields={queryFields}
+              auditQueryField={auditQueryField}
               queryTools={queryTools}
               loading={loading}
               insert={insert}

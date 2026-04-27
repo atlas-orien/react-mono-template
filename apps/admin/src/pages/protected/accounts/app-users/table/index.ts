@@ -4,7 +4,11 @@ import {
   appUserBuiltInQueryFields,
   appUserQueryFields,
 } from "./query-fields"
-import { appUserInitialQuery, appUserPageSizeOptions } from "../constants"
+import {
+  appUserAuditColumns,
+  appUserInitialQuery,
+  appUserPageSizeOptions,
+} from "../constants"
 import { useAppUserRowActions } from "./row-actions"
 import type { AppUserRow, AppUserTableQuery } from "../types"
 
@@ -28,6 +32,14 @@ export function useAppUsersTable(
     initialQuery: appUserInitialQuery,
     builtInQueryFields: appUserBuiltInQueryFields,
     queryFields: appUserQueryFields,
+    auditQuery: {
+      columns: appUserAuditColumns,
+      rangeKey: "timeRange",
+      fieldKey: appUserAuditColumns.length > 1 ? "timeField" : undefined,
+      label: "审计时间",
+      fieldPlaceholder: "时间字段",
+      rangePlaceholder: "选择时间范围",
+    },
     pageSizeOptions: appUserPageSizeOptions,
     rowActions,
     selection: false,

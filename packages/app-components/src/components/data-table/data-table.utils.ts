@@ -1,7 +1,7 @@
 import type {
   DataTableColumn,
   DateRangeValue,
-  DataTableQueryField,
+  DataTableRenderedQueryField,
   DataTableRowActionItem,
   DataTableRowActionsConfig,
 } from "./data-table.types"
@@ -113,7 +113,9 @@ export function getStickyColumnStyles({
   }
 }
 
-export function getQueryFieldLayoutStyle(field: DataTableQueryField<object>) {
+export function getQueryFieldLayoutStyle(
+  field: DataTableRenderedQueryField<object>
+) {
   if (field.type === "search") {
     return {
       flex: "0 1 360px",

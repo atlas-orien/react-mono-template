@@ -39,6 +39,7 @@ export default function AppUsersPage() {
           bulkUpdate={table.bulkUpdate}
           builtInQueryFields={table.builtInQueryFields}
           queryFields={table.queryFields}
+          auditQuery={table.auditQuery}
           pageSizeOptions={table.pageSizeOptions}
           rowActions={table.rowActions}
           compactColumns={table.compactColumns}

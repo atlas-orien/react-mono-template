@@ -52,6 +52,7 @@ interface CustomerRow {
   channel: string
   industry: string
   createdAt: Date
+  updatedAt: Date
   renewalAt: Date
   contractValue: number
   usageScore: number
@@ -60,11 +61,11 @@ interface CustomerRow {
 
 interface TableQuery {
   keyword: string
-  keywordField: "all" | "id" | "name" | "owner"
   status: "" | CustomerRow["status"]
   region: "" | CustomerRow["region"]
   owner: "" | CustomerRow["owner"]
-  createdAt?: DateRangeValue
+  auditField: "createdAt" | "updatedAt"
+  auditRange?: DateRangeValue
 }
 
 interface FeatureState {
@@ -75,6 +76,8 @@ interface FeatureState {
   rowActions: boolean
   keywordSearch: boolean
   advancedFilters: boolean
+  createdAtQuery: boolean
+  updatedAtQuery: boolean
   stickyLeft: boolean
   stickyRight: boolean
   denseColumns: boolean
@@ -101,6 +104,8 @@ const PRESET_FEATURES: Record<ScenarioPreset, FeatureState> = {
     rowActions: false,
     keywordSearch: true,
     advancedFilters: false,
+    createdAtQuery: false,
+    updatedAtQuery: false,
     stickyLeft: false,
     stickyRight: false,
     denseColumns: false,
@@ -118,6 +123,8 @@ const PRESET_FEATURES: Record<ScenarioPreset, FeatureState> = {
     rowActions: true,
     keywordSearch: true,
     advancedFilters: true,
+    createdAtQuery: false,
+    updatedAtQuery: false,
     stickyLeft: true,
     stickyRight: true,
     denseColumns: false,
@@ -135,6 +142,8 @@ const PRESET_FEATURES: Record<ScenarioPreset, FeatureState> = {
     rowActions: true,
     keywordSearch: true,
     advancedFilters: true,
+    createdAtQuery: true,
+    updatedAtQuery: true,
     stickyLeft: true,
     stickyRight: true,
     denseColumns: true,
@@ -176,7 +185,7 @@ const FIELD_PLAYBOOK = [
   {
     title: "查询区域",
     description:
-      "`builtInQueryFields` 适合搜索框和日期范围，`queryFields` 适合状态、归属人、区域这类业务筛选。",
+      "`builtInQueryFields` 只放主搜索等非时间内建查询；时间范围、状态、归属人、区域都放 `queryFields`。",
   },
   {
     title: "操作能力",
@@ -184,19 +193,19 @@ const FIELD_PLAYBOOK = [
       "`insert`、`bulkUpdate`、`bulkDelete`、`rowActions` 分别覆盖新增、批量处理、批量删除和单行操作。",
   },
   {
-    title: "宽表体验",
+    title: "时间字段",
     description:
-      "`fixedLeftColumns` 和 `fixedRightColumns` 用来冻结关键列。字段一多，就应该把标识列和操作列固定住。",
+      "`auditQuery` 用来同时启用标准 `createdAt` / `updatedAt` 的时间筛选和审计列展示。",
   },
 ]
 
 const INITIAL_QUERY: TableQuery = {
   keyword: "",
-  keywordField: "all",
   status: "",
   region: "",
   owner: "",
-  createdAt: undefined,
+  auditField: "createdAt",
+  auditRange: undefined,
 }
 
 export default function DataTableGuidePage() {
@@ -297,13 +306,6 @@ export default function DataTableGuidePage() {
         sortable: true,
         renderCell: (row) => `${row.usageScore} / 100`,
       },
-      {
-        key: "createdAt",
-        header: "创建时间",
-        width: 150,
-        sortable: true,
-        renderCell: (row) => formatDate(row.createdAt),
-      },
     ]
 
     if (!features.denseColumns) return baseColumns
@@ -370,13 +372,7 @@ export default function DataTableGuidePage() {
 
       const filteredRows = rows.filter((row) => {
         const keyword = query.keyword.trim().toLowerCase()
-        const searchMap = {
-          all: [row.id, row.name, row.owner, row.region],
-          id: [row.id],
-          name: [row.name],
-          owner: [row.owner],
-        } as const
-        const candidates = searchMap[query.keywordField || "all"]
+        const candidates = [row.id, row.name, row.owner, row.region]
         const keywordMatched =
           keyword.length === 0 ||
           candidates.some((value) => value.toLowerCase().includes(keyword))
@@ -387,18 +383,23 @@ export default function DataTableGuidePage() {
           query.region.length === 0 || row.region === query.region
         const ownerMatched =
           query.owner.length === 0 || row.owner === query.owner
-        const from = query.createdAt?.from
-        const to = query.createdAt?.to
-        const dateMatched =
-          (!from || row.createdAt >= startOfDay(from)) &&
-          (!to || row.createdAt <= endOfDay(to))
+        const auditField =
+          features.updatedAtQuery && !features.createdAtQuery
+            ? "updatedAt"
+            : query.auditField
+        const auditDate = resolveAuditDate(row, auditField)
+        const auditFrom = query.auditRange?.from
+        const auditTo = query.auditRange?.to
+        const auditDateMatched =
+          (!auditFrom || auditDate >= startOfDay(auditFrom)) &&
+          (!auditTo || auditDate <= endOfDay(auditTo))
 
         return (
           keywordMatched &&
           statusMatched &&
           regionMatched &&
           ownerMatched &&
-          dateMatched
+          auditDateMatched
         )
       })
 
@@ -425,7 +426,12 @@ export default function DataTableGuidePage() {
         total: sortedRows.length,
       }
     },
-    [features.showEmptyState, rows]
+    [
+      features.createdAtQuery,
+      features.showEmptyState,
+      features.updatedAtQuery,
+      rows,
+    ]
   )
 
   const builtInQueryFields = useMemo<
@@ -439,32 +445,18 @@ export default function DataTableGuidePage() {
         type: "search" as const,
         label: "关键词",
         placeholder: "搜客户名、客户 ID、负责人",
-        fieldKey: "keywordField" as const,
-        fieldPlaceholder: "搜索字段",
-        fieldOptions: [
-          { label: "全部", value: "all" },
-          { label: "客户 ID", value: "id" },
-          { label: "客户名", value: "name" },
-          { label: "负责人", value: "owner" },
-        ],
-      })
-    }
-
-    if (features.advancedFilters) {
-      fields.push({
-        key: "createdAt",
-        type: "date-range" as const,
-        label: "创建时间",
       })
     }
 
     return fields
-  }, [features.advancedFilters, features.keywordSearch])
+  }, [features.keywordSearch])
 
   const queryFields = useMemo<readonly DataTableQueryField<TableQuery>[]>(() => {
-    if (!features.advancedFilters) return []
+    const fields: DataTableQueryField<TableQuery>[] = []
 
-    return [
+    if (!features.advancedFilters) return fields
+
+    fields.push(
       {
         key: "status",
         type: "select" as const,
@@ -486,8 +478,21 @@ export default function DataTableGuidePage() {
         placeholder: "按负责人过滤",
         options: OWNERS.map((owner) => ({ label: owner, value: owner })),
       },
-    ]
-  }, [features.advancedFilters])
+    )
+
+    return fields
+  }, [
+    features.advancedFilters,
+  ])
+
+  const auditQueryColumns = useMemo(() => {
+    const columns: Array<"createdAt" | "updatedAt"> = []
+
+    if (features.createdAtQuery) columns.push("createdAt")
+    if (features.updatedAtQuery) columns.push("updatedAt")
+
+    return columns
+  }, [features.createdAtQuery, features.updatedAtQuery])
 
   const generatedSnippet = useMemo(
     () => buildSnippet({ features, preset }),
@@ -616,9 +621,21 @@ export default function DataTableGuidePage() {
                 )}
                 {renderFeatureChip(
                   "高级筛选",
-                  "queryFields + date-range",
+                  "queryFields",
                   features.advancedFilters,
                   (value) => setFeature("advancedFilters", value)
+                )}
+                {renderFeatureChip(
+                  "创建时间筛选",
+                  "auditQuery.createdAt",
+                  features.createdAtQuery,
+                  (value) => setFeature("createdAtQuery", value)
+                )}
+                {renderFeatureChip(
+                  "更新时间筛选",
+                  "auditQuery.updatedAt",
+                  features.updatedAtQuery,
+                  (value) => setFeature("updatedAtQuery", value)
                 )}
                 {renderFeatureChip(
                   "固定左列",
@@ -748,6 +765,9 @@ export default function DataTableGuidePage() {
                       {features.bulkUpdate ? <Badge>bulkUpdate</Badge> : null}
                       {features.bulkDelete ? <Badge>bulkDelete</Badge> : null}
                       {features.denseColumns ? <Badge>wide table</Badge> : null}
+                      {features.createdAtQuery ? <Badge>createdAt query</Badge> : null}
+                      {features.updatedAtQuery ? <Badge>updatedAt query</Badge> : null}
+                      {auditQueryColumns.length > 0 ? <Badge>audit columns</Badge> : null}
                     </div>
 
                     <div className="h-[620px] min-h-[620px] overflow-hidden rounded-2xl border border-(--app-border)">
@@ -791,6 +811,21 @@ export default function DataTableGuidePage() {
                         initialSort={{ columnKey: "createdAt", direction: "desc" }}
                         builtInQueryFields={builtInQueryFields}
                         queryFields={queryFields}
+                        auditQuery={
+                          auditQueryColumns.length > 0
+                            ? {
+                                columns: auditQueryColumns,
+                                rangeKey: "auditRange",
+                                fieldKey:
+                                  auditQueryColumns.length > 1
+                                    ? "auditField"
+                                    : undefined,
+                                label: "审计时间",
+                                fieldPlaceholder: "时间字段",
+                                rangePlaceholder: "选择时间范围",
+                              }
+                            : false
+                        }
                         insert={
                           features.insert
                             ? {
@@ -1132,6 +1167,8 @@ export default function DataTableGuidePage() {
               <div>客户 ID：{auditDialogRow.id}</div>
               <div>当前状态：{auditDialogRow.status}</div>
               <div>负责人：{auditDialogRow.owner}</div>
+              <div>创建时间：{formatDate(auditDialogRow.createdAt)}</div>
+              <div>更新时间：{formatDate(auditDialogRow.updatedAt)}</div>
             </div>
           ) : null}
           <DialogFooter>
@@ -1204,6 +1241,12 @@ function buildSnippet({
 
   if (features.advancedFilters) {
     lines.push(`  queryFields={queryFields}`)
+  }
+
+  if (features.createdAtQuery || features.updatedAtQuery) {
+    lines.push(
+      `  auditQuery={{ columns: auditQueryColumns, rangeKey: "auditRange", fieldKey: "auditField" }}`
+    )
   }
 
   if (features.insert) {
@@ -1298,6 +1341,7 @@ function createCustomerRows() {
   return Array.from({ length: 56 }, (_, index) => {
     const idSeed = index + 1001
     const createdAt = new Date(2026, 0, 1 + index, 9 + (index % 8), 0, 0)
+    const updatedAt = addDays(createdAt, 2 + (index % 9))
 
     return {
       id: `C-${idSeed}`,
@@ -1309,6 +1353,7 @@ function createCustomerRows() {
       channel: CHANNELS[index % CHANNELS.length],
       industry: INDUSTRIES[index % INDUSTRIES.length],
       createdAt,
+      updatedAt,
       renewalAt: addDays(createdAt, 90),
       contractValue: 18000 + index * 1600,
       usageScore: 62 + (index % 31),
@@ -1330,6 +1375,7 @@ function createInsertedCustomer(draft: { name: string; region: string }): Custom
     channel: "Direct",
     industry: "Retail",
     createdAt: baseDate,
+    updatedAt: baseDate,
     renewalAt: addDays(baseDate, 90),
     contractValue: 28000,
     usageScore: 88,
@@ -1363,6 +1409,8 @@ function resolveSortValue(row: CustomerRow, columnKey: string) {
       return row.usageScore
     case "createdAt":
       return row.createdAt.getTime()
+    case "updatedAt":
+      return row.updatedAt.getTime()
     case "renewalAt":
       return row.renewalAt.getTime()
     case "lastActiveAt":
@@ -1370,6 +1418,13 @@ function resolveSortValue(row: CustomerRow, columnKey: string) {
     default:
       return row.id
   }
+}
+
+function resolveAuditDate(
+  row: CustomerRow,
+  field: TableQuery["auditField"] = "createdAt"
+) {
+  return field === "updatedAt" ? row.updatedAt : row.createdAt
 }
 
 function compareValues(left: string | number, right: string | number) {
