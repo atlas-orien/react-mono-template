@@ -18,6 +18,9 @@ const messages = {
         defaultName: "Member",
         defaultId: "member@example.com",
         logout: "Log out",
+        actions: {
+          profile: "Profile",
+        },
       },
     },
   },

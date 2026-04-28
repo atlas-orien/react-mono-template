@@ -1,4 +1,5 @@
 import { type ReactNode, useMemo } from "react"
+import { UserRound } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 import { useLocation, useNavigate } from "react-router"
@@ -71,8 +72,16 @@ export function WebAppShell({ children }: WebAppShellProps) {
   const currentItem = webNavigationSections
     .flatMap((section) => section.items)
     .find((item) =>
-      item.matcher ? item.matcher(location.pathname) : location.pathname === item.path
+      item.matcher
+        ? item.matcher(location.pathname)
+        : location.pathname === item.path
     )
+  const topBarTitle =
+    location.pathname === "/" || location.pathname.startsWith("/profile")
+      ? t("profile.title")
+      : currentItem
+        ? t(currentItem.labelKey ?? currentItem.label, currentItem.label)
+        : t("web.shell.brand.title", "Web")
 
   const handleLogout = () => {
     localStorage.removeItem("token")
@@ -93,17 +102,20 @@ export function WebAppShell({ children }: WebAppShellProps) {
       brandTitle={t("web.shell.brand.title", "Web")}
       brandDescription={t("web.shell.brand.description", "Member workspace")}
       sections={sections}
-      mobileNavigation={{
-        label: t("web.shell.navigation.mobileLabel", "Primary navigation"),
-        items: mobileNavigationItems,
-      }}
+      mobileNavigation={
+        mobileNavigationItems.length
+          ? {
+              label: t(
+                "web.shell.navigation.mobileLabel",
+                "Primary navigation"
+              ),
+              items: mobileNavigationItems,
+            }
+          : undefined
+      }
       header={
         <TopBar
-          title={
-            currentItem
-              ? t(currentItem.labelKey ?? currentItem.label, currentItem.label)
-              : t("web.shell.brand.title", "Web")
-          }
+          title={topBarTitle}
           meta={t("web.shell.topbar.meta", "Personal workspace")}
           trailing={[
             <LanguageSwitch key="lang" />,
@@ -125,6 +137,13 @@ export function WebAppShell({ children }: WebAppShellProps) {
           label: t("web.shell.account.logout", "Log out"),
           onSelect: handleLogout,
         },
+        actions: [
+          {
+            icon: <UserRound />,
+            label: t("web.shell.account.actions.profile", "Profile"),
+            onSelect: () => navigate("/profile"),
+          },
+        ],
       }}
     >
       {children}

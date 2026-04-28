@@ -1,5 +1,4 @@
 import type { ReactNode } from "react"
-import { UserRound } from "lucide-react"
 
 export interface WebNavigationItemConfig {
   id: string
@@ -17,21 +16,4 @@ export interface WebNavigationSectionConfig {
   items: WebNavigationItemConfig[]
 }
 
-export const webNavigationSections: WebNavigationSectionConfig[] = [
-  {
-    id: "workspace",
-    label: "Workspace",
-    labelKey: "web.shell.navigation.workspace",
-    items: [
-      {
-        id: "profile",
-        label: "Profile",
-        labelKey: "web.shell.navigation.profile",
-        path: "/profile",
-        icon: <UserRound />,
-        matcher: (pathname) =>
-          pathname === "/" || pathname.startsWith("/profile"),
-      },
-    ],
-  },
-]
+export const webNavigationSections: WebNavigationSectionConfig[] = []

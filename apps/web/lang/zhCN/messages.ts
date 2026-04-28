@@ -18,6 +18,9 @@ const messages = {
         defaultName: "用户",
         defaultId: "member@example.com",
         logout: "退出登录",
+        actions: {
+          profile: "个人资料",
+        },
       },
     },
   },
