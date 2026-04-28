@@ -4,7 +4,7 @@
     "types": ["vitest/globals"],
     "paths": {
       "react-router": ["../../apps/admin/node_modules/react-router"],
-      "@workspace/app-components/*": ["./src/*"],
+      "@workspace/app-kit/*": ["./src/*"],
       "@workspace/services": ["../services/src/index.ts"],
       "@workspace/services/*": ["../services/src/*"],
       "@workspace/locales": ["../locales/src/index.ts"],

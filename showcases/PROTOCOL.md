@@ -15,7 +15,7 @@
 
 - primitive 能力：`@workspace/ui-core`
 - 稳定基础协议：`@workspace/ui-components`
-- 共享复合协议：`@workspace/app-components`
+- 共享应用协议：`@workspace/app-kit`
 - 展示站点私有内容：对应 `showcases/*`
 
 如果展示代码已经稳定到足以成为共享规范，应优先回收到对应 packages，而不是长期堆在 showcase 里。
@@ -25,7 +25,7 @@
 AI 在 showcase 中开发内容时，必须按以下顺序：
 
 1. 先判断展示目标属于哪一层。
-2. 优先展示 `ui-components` 与 `app-components` 的合法消费方式。
+2. 优先展示 `ui-components` 与 `@workspace/app-kit` 的合法消费方式。
 3. 只有在确实属于 showcase 私有表达时，才新增本地实现。
 4. 如果展示中暴露出共享层缺口，应优先回到对应 package 补能力。
 

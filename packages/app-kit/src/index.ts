@@ -32,6 +32,13 @@ export {
   PageLoading,
   RouteErrorBoundary,
 } from "./components/feedback"
+export {
+  AuthProfilePage,
+  ProfileAvatarSection,
+  ProfileEmailSection,
+  ProfileNameSection,
+  ProfilePasswordSection,
+} from "./pages/profile"
 export type {
   AppNoticeProps,
   AppNoticeVariant,
@@ -39,6 +46,11 @@ export type {
   PageErrorStateProps,
   PageLoadingProps,
 } from "./components/feedback"
+export type {
+  AuthProfileLabels,
+  AuthProfileModel,
+  AuthProfilePageProps,
+} from "./pages/profile"
 export { LanguageSwitch, ThemeToggle } from "./components/preferences"
 export type {
   LanguageSwitchProps,

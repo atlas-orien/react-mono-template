@@ -1,12 +1,12 @@
-# @workspace/app-components 协议
+# @workspace/app-kit 协议
 
-`app-components` 不是杂物层，也不是 `ui-components` 的失败收容站。
+`@workspace/app-kit` 不是杂物层，也不是 `ui-components` 的失败收容站。
 
-它的职责是承载“共享复合组件”和“共享场景装配协议”。
+它的职责是承载“共享应用能力”：可复用页面、应用壳层、页面级复合组件和场景装配协议。
 
 ## 1. 宪章
 
-- `app-components` 是复合装配层。
+- `@workspace/app-kit` 是应用级共享层，不只是组件层。
 - 本包允许比 `ui-components` 更灵活，但不能没有边界。
 - 本包可以使用 `ui-core`，但不能把 `ui-core` 的原始控制面直接泄露给最终 app。
 - 本包的目标不是追求自由，而是把高价值场景沉淀成可复用框架件。
@@ -19,14 +19,22 @@
 - admin sidebar
 - top bar
 - date-time picker
-- 其他明确服务于页面结构、列表页、后台场景、业务装配的共享组件
+- profile 等跨 app 可复用页面
+- 其他明确服务于页面结构、列表页、后台场景、业务装配的共享能力
 
-这些组件的共同点：
+这些能力的共同点：
 
 - 比基础组件复杂
 - 带场景语义
 - 适合多个 app 共享
 - 需要内部装配多个下层组件
+
+## 2.1 目录语义
+
+- `src/components/*`：共享应用组件、壳层、复合控件。
+- `src/pages/*`：共享页面。页面可以直接被 app 路由引用，但不得在包内依赖某个 app 的 store、route 或私有 API 聚合层。
+- `src/pages/<page>/index.ts` 是页面公共入口。
+- 页面若需要真实业务状态，应通过显式 props、controller hook 返回值或 app 侧适配器接入；不要在共享页面中偷偷绑定某一个 app 的 Redux、路由约定或 API 聚合。
 
 ## 3. 本包不适合承载什么
 
@@ -34,6 +42,7 @@
 - 纯基础 UI
 - 应该进入 `ui-components/stable` 的简单稳定组件
 - 单个 app 私有的一次性页面结构
+- 强绑定某个 app 私有权限、store、菜单或业务流程的页面
 - 主题 token 与通用设计变量
 
 ## 4. API 原则
@@ -49,11 +58,11 @@
 - 优先组合 `ui-components` 提供的稳定协议组件。
 - 必要时允许直接使用 `ui-core`。
 - 但只要使用了 `ui-core`，就必须在本包重新定义清晰的场景协议。
-- app 应消费的是 `app-components` 的语义 API，而不是它内部依赖了什么 primitive。
+- app 应消费的是 `@workspace/app-kit` 的语义 API，而不是它内部依赖了什么 primitive。
 
 ## 6. 语言与文案规则
 
-- `app-components` 内禁止直接写死任何用户可见文案。
+- `@workspace/app-kit` 内禁止直接写死任何用户可见文案。
 - 所有语言相关内容必须统一沉淀到 `packages/locales/lang/*/components.ts`。
 - 组件内部只能消费 `@workspace/locales` 暴露的 copy getter，或消费业务层已翻译完成的文案 props。
 - 禁止在组件源码里直接写中文、英文按钮文案、placeholder、label、empty text、dialog 文案。
@@ -71,19 +80,19 @@
 2. 它是不是简单、稳定、通用协议？
    是：去 `ui-components`
 
-3. 它是不是复合装配、页面语义、后台场景协议？
-   是：来 `app-components`
+3. 它是不是复合装配、页面语义、后台场景协议或跨 app 可复用页面？
+   是：来 `@workspace/app-kit`
 
 4. 它是不是只给某一个 app 用？
    是：留在对应 app 内
 
 5. 改完后运行：
-   `pnpm -C packages/app-components rules`
-   `pnpm -C packages/app-components typecheck`
+   `pnpm -C packages/app-kit rules`
+   `pnpm -C packages/app-kit typecheck`
 
 ## 8. 局部协议
 
-若某个复合组件已经成为框架核心件，必须在组件目录下补充局部 `PROTOCOL.md`。
+若某个复合组件或共享页面已经成为框架核心件，必须在对应目录下补充局部 `PROTOCOL.md`。
 
 当前重点样例：
 
@@ -115,5 +124,5 @@
 - 没有把基础组件错误塞进本包。
 - 没有对外泄露 `ui-core` 原始控制面。
 - 如属于核心框架件，局部协议已同步。
-- `pnpm -C packages/app-components rules` 通过。
-- `pnpm -C packages/app-components typecheck` 通过。
+- `pnpm -C packages/app-kit rules` 通过。
+- `pnpm -C packages/app-kit typecheck` 通过。

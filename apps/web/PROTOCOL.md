@@ -14,7 +14,7 @@
 
 AI 在 `web` 中开发页面时，必须按以下顺序查找能力：
 
-1. `@workspace/app-components`
+1. `@workspace/app-kit`
 2. `@workspace/ui-components`
 3. `@workspace/services`
 4. `web` 本地实现
@@ -37,14 +37,14 @@ AI 在 `web` 中开发页面时，必须按以下顺序查找能力：
 
 ## 4. 强制边界
 
-- 共享 UI 优先来自 `ui-components` / `app-components`
+- 共享页面、壳层和 UI 优先来自 `@workspace/app-kit` / `ui-components`
 - API 请求必须通过应用聚合层
 - 通用错误模型与 query client 必须复用共享服务层
 - 主题与 i18n 初始化统一放在应用入口
 
 ## 5. 页面层禁止事项
 
-- 禁止直接复制共享组件内部实现
+- 禁止直接复制共享页面、壳层或组件的内部实现
 - 禁止在页面里拼一套新的共享 UI 模式
 - 禁止因为赶进度绕过现有分层
 - 禁止让 `web` 内部长出第二套共享组件系统

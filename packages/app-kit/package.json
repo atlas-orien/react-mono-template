@@ -1,5 +1,5 @@
 {
-  "name": "@workspace/app-components",
+  "name": "@workspace/app-kit",
   "version": "0.0.0",
   "type": "module",
   "private": true,
@@ -46,6 +46,7 @@
     "./tooltip": "./src/components/tooltip/index.ts",
     "./file-upload": "./src/components/file-upload/index.ts",
     "./avatar-photo-editor": "./src/components/file-upload/index.ts",
+    "./profile": "./src/pages/profile/index.ts",
     "./mobile-bottom-nav": "./src/components/app-shell/index.ts",
     "./sidebar-shell": "./src/components/app-shell/index.ts",
     "./copyable-text": "./src/components/copyable-text/index.ts",

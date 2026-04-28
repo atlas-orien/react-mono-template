@@ -206,9 +206,9 @@ importers:
       '@tanstack/react-query':
         specifier: 'catalog:'
         version: 5.95.2(react@19.2.4)
-      '@workspace/app-components':
+      '@workspace/app-kit':
         specifier: workspace:*
-        version: link:../../packages/app-components
+        version: link:../../packages/app-kit
       '@workspace/locales':
         specifier: workspace:*
         version: link:../../packages/locales
@@ -336,9 +336,9 @@ importers:
       '@tanstack/react-query':
         specifier: 'catalog:'
         version: 5.95.2(react@19.2.4)
-      '@workspace/app-components':
+      '@workspace/app-kit':
         specifier: workspace:*
-        version: link:../../packages/app-components
+        version: link:../../packages/app-kit
       '@workspace/locales':
         specifier: workspace:*
         version: link:../../packages/locales
@@ -484,7 +484,7 @@ importers:
         specifier: 'catalog:'
         version: 4.1.1(@types/node@25.5.0)(jsdom@29.0.1(@noble/hashes@1.8.0))(msw@2.12.14(@types/node@25.5.0)(typescript@5.9.3))(vite@8.0.2(@types/node@25.5.0)(esbuild@0.27.3)(jiti@2.6.1))
 
-  packages/app-components:
+  packages/app-kit:
     dependencies:
       '@workspace/locales':
         specifier: workspace:*
@@ -761,9 +761,9 @@ importers:
       '@reduxjs/toolkit':
         specifier: 'catalog:'
         version: 2.11.2(react-redux@9.2.0(@types/react@19.2.14)(react@19.2.4)(redux@5.0.1))(react@19.2.4)
-      '@workspace/app-components':
+      '@workspace/app-kit':
         specifier: workspace:*
-        version: link:../../packages/app-components
+        version: link:../../packages/app-kit
       '@workspace/locales':
         specifier: workspace:*
         version: link:../../packages/locales

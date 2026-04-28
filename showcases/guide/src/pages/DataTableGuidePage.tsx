@@ -16,7 +16,7 @@ import {
   type DataTableFetchResult,
   type DataTableQueryField,
   type DataTableSortState,
-} from "@workspace/app-components"
+} from "@workspace/app-kit"
 import {
   Badge,
   Button,

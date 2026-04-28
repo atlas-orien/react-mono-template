@@ -1,4 +1,4 @@
-import type { DataTableAuditColumnKey } from "@workspace/app-components"
+import type { DataTableAuditColumnKey } from "@workspace/app-kit"
 import type { AppUserTableQuery } from "./types"
 
 export const appUserAuditColumns = [

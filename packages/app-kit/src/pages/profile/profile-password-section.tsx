@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { RectangleEllipsis } from "lucide-react"
-import { useTranslation } from "react-i18next"
 import { Button } from "@workspace/ui-components/stable/button"
 import {
   Field,
@@ -9,14 +8,17 @@ import {
   FieldLabel,
 } from "@workspace/ui-components/stable/field"
 import { Input } from "@workspace/ui-components/stable/input"
-import type { ProfilePageModel } from "../types"
+import type { AuthProfileLabels, AuthProfileModel } from "./types"
 
-export interface ProfilePasswordFormProps {
-  profile: ProfilePageModel
+export interface ProfilePasswordSectionProps {
+  profile: AuthProfileModel
+  labels: AuthProfileLabels
 }
 
-export function ProfilePasswordForm({ profile }: ProfilePasswordFormProps) {
-  const { t } = useTranslation()
+export function ProfilePasswordSection({
+  profile,
+  labels,
+}: ProfilePasswordSectionProps) {
   const [expanded, setExpanded] = useState(false)
   const canChangePassword =
     profile.currentPassword.trim().length > 0 &&
@@ -32,10 +34,10 @@ export function ProfilePasswordForm({ profile }: ProfilePasswordFormProps) {
           </span>
           <div className="min-w-0 space-y-1">
             <h2 className="text-sm font-semibold">
-              {t("profile.sections.security")}
+              {labels.passwordSection}
             </h2>
             <p className="text-sm text-(--app-muted-text)">
-              {t("profile.password.configured")}
+              {labels.passwordConfigured}
             </p>
           </div>
         </div>
@@ -45,9 +47,7 @@ export function ProfilePasswordForm({ profile }: ProfilePasswordFormProps) {
           variant="default"
           onClick={() => setExpanded((current) => !current)}
         >
-          {expanded
-            ? t("profile.actions.hidePassword")
-            : t("profile.actions.changePassword")}
+          {expanded ? labels.hidePassword : labels.changePassword}
         </Button>
       </div>
 
@@ -55,39 +55,37 @@ export function ProfilePasswordForm({ profile }: ProfilePasswordFormProps) {
         <div className="mt-6 max-w-xl pl-9">
           <FieldGroup>
             <Field>
-              <FieldLabel>{t("profile.fields.currentPassword")}</FieldLabel>
+              <FieldLabel>{labels.currentPassword}</FieldLabel>
               <Input
                 type="password"
                 value={profile.currentPassword}
                 onValueChange={profile.setCurrentPassword}
-                placeholder={t("profile.placeholders.currentPassword")}
+                placeholder={labels.currentPasswordPlaceholder}
                 disabled={profile.passwordSaving}
               />
             </Field>
 
             <Field>
-              <FieldLabel>{t("profile.fields.newPassword")}</FieldLabel>
+              <FieldLabel>{labels.newPassword}</FieldLabel>
               <Input
                 type="password"
                 value={profile.newPassword}
                 onValueChange={profile.setNewPassword}
-                placeholder={t("profile.placeholders.newPassword")}
+                placeholder={labels.newPasswordPlaceholder}
                 disabled={profile.passwordSaving}
               />
             </Field>
 
             <Field>
-              <FieldLabel>{t("profile.fields.confirmPassword")}</FieldLabel>
+              <FieldLabel>{labels.confirmPassword}</FieldLabel>
               <Input
                 type="password"
                 value={profile.confirmPassword}
                 onValueChange={profile.setConfirmPassword}
-                placeholder={t("profile.placeholders.confirmPassword")}
+                placeholder={labels.confirmPasswordPlaceholder}
                 disabled={profile.passwordSaving}
               />
-              <FieldDescription>
-                {t("profile.help.newPassword")}
-              </FieldDescription>
+              <FieldDescription>{labels.newPasswordHelp}</FieldDescription>
             </Field>
           </FieldGroup>
 
@@ -99,8 +97,8 @@ export function ProfilePasswordForm({ profile }: ProfilePasswordFormProps) {
               disabled={profile.passwordSaving || !canChangePassword}
             >
               {profile.passwordSaving
-                ? t("profile.actions.changingPassword")
-                : t("profile.actions.updatePassword")}
+                ? labels.changingPassword
+                : labels.updatePassword}
             </Button>
             {profile.passwordStatus ? (
               <span className="text-sm text-(--app-muted-text)">

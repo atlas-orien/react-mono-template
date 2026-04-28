@@ -1,5 +1,5 @@
 import { Outlet } from "react-router"
-import { LanguageSwitch, ThemeToggle } from "@workspace/app-components"
+import { LanguageSwitch, ThemeToggle } from "@workspace/app-kit"
 
 export default function AuthLayout() {
   return (

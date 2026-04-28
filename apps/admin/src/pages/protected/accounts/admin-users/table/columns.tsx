@@ -1,6 +1,6 @@
-import { CopyableText } from "@workspace/app-components"
+import { CopyableText } from "@workspace/app-kit"
 import { Badge } from "@workspace/ui-components/stable/badge"
-import type { DataTableColumn } from "@workspace/app-components"
+import type { DataTableColumn } from "@workspace/app-kit"
 import type { TFunction } from "i18next"
 import { mapApiStatusToLabel } from "./status"
 import type { AdminUserRow } from "../types"

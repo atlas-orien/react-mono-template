@@ -6,7 +6,7 @@ import {
   toLocations,
 } from "./ast-helpers"
 
-describe("app-components public entry primitive boundaries", () => {
+describe("app public entry primitive boundaries", () => {
   it("does not reference ui-core from public entry files", () => {
     const files = findPublicEntryFiles()
     const findings = [

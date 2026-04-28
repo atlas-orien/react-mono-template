@@ -170,9 +170,9 @@ AI 在使用 mock 时必须明确汇报：
   应用优先按分类路径导入，例如 `@workspace/ui-components/stable/button`。
   若需要通知/消息能力，应通过 `@workspace/ui-components/stable/toast` 使用，而不是直接暴露第三方库名。
 
-- `packages/app-components`
-  应用级复合组件层。
-  放页面装配、布局语义、业务组合类组件，不要求稳定通用格式。
+- `packages/app-kit`
+  应用级共享层。
+  放共享页面、应用壳层、页面装配、布局语义、业务组合类组件，不要求稳定通用格式。
 
 - `packages/mock`
   本地 mock 能力层。
@@ -190,7 +190,7 @@ AI 在使用 mock 时必须明确汇报：
 - 主题变量和主题模式：`packages/ui-theme`
 - primitive 原语和基础行为：`packages/ui-core`
 - 共享产品组件：`packages/ui-components`
-- 共享复合组件：`packages/app-components`
+- 共享应用能力、共享页面、共享复合组件：`packages/app-kit`
 - 本地 mock 能力：`packages/mock`
 
 如果一个需求会同时影响多层，AI 必须先按分层拆解，再分别实现。
@@ -204,18 +204,18 @@ internal/*
   -> 只承载工程配置，不承载业务运行时代码
 
 apps/*
-  -> @workspace/app-components
+  -> @workspace/app-kit
   -> @workspace/ui-components
   -> @workspace/services
   -> @workspace/ui-theme
 
 showcases/*
-  -> @workspace/app-components
+  -> @workspace/app-kit
   -> @workspace/ui-components
   -> @workspace/services
   -> @workspace/ui-theme
 
-@workspace/app-components
+@workspace/app-kit
   -> @workspace/ui-components
   -> @workspace/ui-core
   -> @workspace/locales
@@ -247,7 +247,7 @@ showcases/*
 - app 不应复制共享复合组件实现
 - app 不应直接承接本应进入共享层的服务逻辑
 - `ui-components` 是 app 使用共享基础 UI 的默认入口
-- `app-components` 是 app 使用共享复合组件的入口
+- `@workspace/app-kit` 是 app 使用共享页面、应用壳层和复合装配能力的入口
 - app 使用 `ui-components` 时，应优先使用 `stable/*` 或 `labs/*` 分类子路径
 - `ui-core` 不是业务页面默认直连层
 - `services` 不能依赖 UI
@@ -300,8 +300,8 @@ showcases/*
 - 产品级共享组件层：
   [packages/ui-components/PROTOCOL.md](../packages/ui-components/PROTOCOL.md)
 
-- 应用级复合组件层：
-  [packages/app-components/PROTOCOL.md](../packages/app-components/PROTOCOL.md)
+- 应用级共享层：
+  [packages/app-kit/PROTOCOL.md](../packages/app-kit/PROTOCOL.md)
 
 - 本地 mock 能力层：
   [packages/mock/PROTOCOL.md](../packages/mock/PROTOCOL.md)
@@ -339,8 +339,8 @@ showcases/*
   必读 `packages/ui-components/PROTOCOL.md`
   同时应参考 `showcases/guide/PROTOCOL.md` 中的合法展示方式
 
-- 新增或改造共享复合组件：
-  必读 `packages/app-components/PROTOCOL.md`
+- 新增或改造共享页面、应用壳层或共享复合组件：
+  必读 `packages/app-kit/PROTOCOL.md`
 
 - 新增或改造本地 mock 能力：
   必读 `packages/mock/PROTOCOL.md`
@@ -356,7 +356,7 @@ AI 在动手前必须先判断改动属于哪一层：
 - 共享主题 token：放 `packages/ui-theme`
 - primitive 原语能力：放 `packages/ui-core`
 - 共享产品组件：放 `packages/ui-components`
-- 共享复合组件：放 `packages/app-components`
+- 共享页面、应用壳层、共享复合组件：放 `packages/app-kit`
 - mock 接口与本地模拟能力：放 `packages/mock`
 
 禁止跳过分层判断直接写代码。

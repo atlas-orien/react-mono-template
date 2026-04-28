@@ -15,7 +15,7 @@
 
 - primitive 能力：`@workspace/ui-core`
 - 稳定基础协议：`@workspace/ui-components`
-- 共享复合协议：`@workspace/app-components`
+- 共享应用协议：`@workspace/app-kit`
 - 单个 app 私有实现：对应 `apps/*`
 
 如果一段代码未来可能被第二个 app 复用，就不应先写死在某个 app 里。
@@ -25,7 +25,7 @@
 AI 在 app 中开发功能时，必须按以下顺序：
 
 1. 先判断需求属于哪一层。
-2. 优先复用 `ui-components` 与 `app-components`。
+2. 优先复用 `ui-components` 与 `@workspace/app-kit`。
 3. 只有在确实属于 app 私有时，才在 app 内新增实现。
 4. 若现有共享层能力不足，应优先回到对应包补能力，而不是在 app 里硬绕过去。
 
@@ -33,7 +33,7 @@ AI 在 app 中开发功能时，必须按以下顺序：
 
 - 禁止在多个 app 中复制同一套 UI 或服务实现。
 - 禁止在 app 页面里直接散落 primitive 级实现，除非协议明确允许。
-- 禁止把共享复合组件内部结构复制到页面中。
+- 禁止把共享页面、壳层或复合组件的内部结构复制到页面中。
 - 禁止 app 私自演化出第二套共享组件体系。
 
 ## 5. 本目录下 app 的角色

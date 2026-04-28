@@ -1,7 +1,7 @@
 import type {
   DataTableFetchResult,
   DataTableSortState,
-} from "@workspace/app-components"
+} from "@workspace/app-kit"
 import { useTranslation } from "react-i18next"
 import { buildAppUserColumns } from "./columns"
 import {

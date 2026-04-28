@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react"
-import { DataTable, MetricCards } from "@workspace/app-components"
+import { DataTable, MetricCards } from "@workspace/app-kit"
 import { useAdminUsersData } from "./admin-users-data"
 import { useCreateAdminUserInsertAction } from "./dialogs/create-admin-user-dialog"
 import { EditAdminUserRolesDialog } from "./dialogs/edit-admin-user-roles-dialog"

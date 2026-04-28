@@ -5,7 +5,7 @@ import {
   toFileExports,
 } from "./ast-helpers"
 
-describe("app-components public prop protocols", () => {
+describe("app public prop protocols", () => {
   it("does not expose Core* references from exported public props", () => {
     const matches = findExportedPropMemberMatches(
       findPublicSourceFiles(),

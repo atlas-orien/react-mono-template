@@ -5,8 +5,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "react-router": ["./node_modules/react-router"],
-      "@workspace/app-components": ["../../packages/app-components/src/index.ts"],
-      "@workspace/app-components/*": ["../../packages/app-components/src/*"],
+      "@workspace/app-kit": ["../../packages/app-kit/src/index.ts"],
       "@workspace/ui-components": ["../../packages/ui-components/src/index.ts"],
       "@workspace/ui-components/stable/*": ["../../packages/ui-components/src/components/stable/*"],
       "@workspace/ui-components/*": ["../../packages/ui-components/src/*"],

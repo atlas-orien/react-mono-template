@@ -2,7 +2,7 @@ import type { AppUserStatus as ApiAppUserStatus } from "@/api"
 import type {
   DataTableAuditColumnKey,
   DateRangeValue,
-} from "@workspace/app-components"
+} from "@workspace/app-kit"
 
 export type AppUserStatusFilter = ApiAppUserStatus
 export type AppUserTimeField = DataTableAuditColumnKey

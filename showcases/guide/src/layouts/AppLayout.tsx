@@ -11,12 +11,12 @@ import {
   Palette,
   TableProperties,
 } from "lucide-react"
-import { LanguageSwitch, ThemeToggle } from "@workspace/app-components"
+import { LanguageSwitch, ThemeToggle } from "@workspace/app-kit"
 import {
   SidebarShell,
   type SidebarShellSection,
-} from "@workspace/app-components/sidebar-shell"
-import { TopBar } from "@workspace/app-components/top-bar"
+} from "@workspace/app-kit/sidebar-shell"
+import { TopBar } from "@workspace/app-kit/top-bar"
 import { Badge } from "@workspace/ui-components/stable/badge"
 
 const navItems = [

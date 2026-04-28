@@ -14,11 +14,8 @@ export function createWorkspaceAliases(appDir: string) {
       ),
     },
     {
-      find: /^@workspace\/app-components$/,
-      replacement: path.resolve(
-        appDir,
-        "../../packages/app-components/src/index.ts"
-      ),
+      find: /^@workspace\/app-kit$/,
+      replacement: path.resolve(appDir, "../../packages/app-kit/src/index.ts"),
     },
     {
       find: /^@workspace\/services$/,

@@ -57,7 +57,7 @@ const messages = {
     },
   },
   profile: {
-    title: "公开资料",
+    title: "个人资料",
     sections: {
       account: "账号信息",
       email: "邮箱",

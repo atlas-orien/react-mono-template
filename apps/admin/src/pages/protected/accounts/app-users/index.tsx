@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react"
-import { DataTable, MetricCards } from "@workspace/app-components"
+import { DataTable, MetricCards } from "@workspace/app-kit"
 import { appUserAuditColumns } from "./constants"
 import { useAppUsersData } from "./app-users-data"
 import { EditAppUserRolesDialog } from "./dialogs/edit-app-user-roles-dialog"

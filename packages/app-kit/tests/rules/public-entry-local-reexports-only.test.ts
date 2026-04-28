@@ -5,7 +5,7 @@ import {
   toLocations,
 } from "./ast-helpers"
 
-describe("app-components public entry protocols", () => {
+describe("app public entry protocols", () => {
   it("only re-exports local modules from public entry files", () => {
     const findings = findExportFindings(findPublicEntryFiles(), (node) => {
       const moduleSpecifier = node.moduleSpecifier?.getText().slice(1, -1)

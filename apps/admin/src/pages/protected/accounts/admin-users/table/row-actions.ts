@@ -1,6 +1,6 @@
 import { createElement, useMemo, useRef } from "react"
 import { useTranslation } from "react-i18next"
-import type { DataTableRowActionsConfig } from "@workspace/app-components"
+import type { DataTableRowActionsConfig } from "@workspace/app-kit"
 import { toast } from "@workspace/ui-components"
 import { deleteAdminUserApi, updateAdminUserApi } from "@/api"
 import {

@@ -6,7 +6,7 @@ import {
   toFiles,
 } from "./ast-helpers"
 
-describe("app-components public wrapper boundaries", () => {
+describe("app public wrapper boundaries", () => {
   it("does not expose transparent ui-core passthrough wrappers", () => {
     const matches = findSourceFilesMatching(findPublicSourceFiles(), (sourceFile) => {
       let importsCoreAlias = false

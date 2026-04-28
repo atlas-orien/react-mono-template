@@ -15,7 +15,7 @@
 ## 2. admin 在整个框架中的位置
 
 - 后台页面、后台路由、后台权限流程：`apps/admin`
-- 共享后台复合装配：`@workspace/app-components`
+- 共享后台页面、壳层与复合装配：`@workspace/app-kit`
 - 稳定基础交互组件：`@workspace/ui-components`
 - primitive 原语能力：`@workspace/ui-core`
 - 通用服务、请求、query、i18n：`@workspace/services`
@@ -36,14 +36,14 @@ AI 在 `admin` 中写代码时，默认任务应理解为：
 
 AI 在 `admin` 中写页面时，默认顺序必须是：
 
-1. 先找 `@workspace/app-components`
+1. 先找 `@workspace/app-kit`
 2. 再找 `@workspace/ui-components`
 3. 再找 `@workspace/services`
 4. 最后才写 `admin` 本地实现
 
 不得默认从 `ui-core` 直接起手写页面。
 
-如果某个需求需要大量直接操作 primitive，AI 必须先重新判断该能力是否应该进入 `ui-components` 或 `app-components`。
+如果某个需求需要大量直接操作 primitive，AI 必须先重新判断该能力是否应该进入 `ui-components` 或 `@workspace/app-kit`。
 
 ## 4. 本地目录职责
 
@@ -80,9 +80,9 @@ AI 在 `admin` 中写页面时，默认顺序必须是：
 
 ### 列表页
 
-- 列表页优先使用 `@workspace/app-components` 的 `DataTable`。
+- 列表页优先使用 `@workspace/app-kit` 的 `DataTable`。
 - 不要在页面里重写一套 query header、bulk action、row action、分页排序骨架。
-- 如 `DataTable` 缺能力，应先判断是否属于稳定后台模式；若是，优先补到 `app-components`，不要先在 `admin` 私搭旁路。
+- 如 `DataTable` 缺能力，应先判断是否属于稳定后台模式；若是，优先补到 `app`，不要先在 `admin` 私搭旁路。
 
 #### DataTable 的定位
 
@@ -233,7 +233,7 @@ const fetchData = async ({ page, pageSize, query, sort, signal }) => {
 AI 在 `admin` 动手前，至少先回答下面 5 个问题：
 
 1. 这是后台业务页面，还是共享后台模式？
-2. 现有 `app-components` / `ui-components` 是否已经有合法入口？
+2. 现有 `app` / `ui-components` 是否已经有合法入口？
 3. 这段实现是一次性页面逻辑，还是第二个页面也会复用？
 4. 这次改动会不会把共享问题留在 `admin` 本地？
 5. 改完后，其他 AI 再看这段代码时，能不能学到正确边界？
@@ -258,7 +258,7 @@ AI 在 `admin` 动手前，至少先回答下面 5 个问题：
 
 - primitive 行为：去 `ui-core`
 - 简单稳定组件：去 `ui-components`
-- 后台复合装配：去 `app-components`
+- 后台复合装配：去 `app`
 - 通用服务能力：去 `services`
 
 ## 9. 禁止事项
@@ -267,7 +267,7 @@ AI 在 `admin` 动手前，至少先回答下面 5 个问题：
 - 禁止在页面里直接散落 primitive 写法
 - 禁止把共享问题留在 `admin` 本地临时修补后不回收
 - 禁止把 demo 风格代码整块搬进生产后台
-- 禁止直接复制 `app-components` 或 `ui-components` 内部实现到页面
+- 禁止直接复制 `app` 或 `ui-components` 内部实现到页面
 - 禁止因为赶进度绕过 `api/`、`navigation/`、`store/` 等本地职责边界
 - 禁止把权限码、菜单码、路由匹配规则散落在多个无关文件中重复维护
 - 禁止在 `navigation/menu-config.tsx` 中省略稳定 `id`，或用 `label`、`href`、`#` 之类占位值充当导航身份标识
@@ -275,7 +275,7 @@ AI 在 `admin` 动手前，至少先回答下面 5 个问题：
 ## 10. admin 对整个框架的意义
 
 - `admin` 是商用主战场。
-- `admin` 中沉淀出来的稳定后台模式，应优先回收到 `app-components`。
+- `admin` 中沉淀出来的稳定后台模式，应优先回收到 `app`。
 - `admin` 页面写法本身也应成为 AI 的参考样例。
 - `admin` 的价值不是证明 AI 能把页面拼出来，而是证明 AI 能按协议稳定开发后台。
 

@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next"
-import { AppNotice } from "@workspace/app-components"
+import { AppNotice } from "@workspace/app-kit"
 
 export function RoleCreationNote() {
   const { t } = useTranslation()

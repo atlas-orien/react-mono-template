@@ -139,7 +139,7 @@
 - 请求文件优先用 `<page>-data.ts`
 - 纯逻辑放 `logic.ts`
 - 页面 UI 组件放 `components/`
-- 不要把可复用后台模式藏在页面本地；若第二个页面复用，应考虑上移到 `app-components`
+- 不要把可复用后台模式藏在页面本地；若第二个页面复用，应考虑上移到 `@workspace/app-kit`
 
 ---
 

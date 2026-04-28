@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
-import type { AvatarUploadResult } from "@workspace/app-components"
+import type { AvatarUploadResult } from "@workspace/app-kit/file-upload"
+import type { AuthProfileModel } from "@workspace/app-kit/profile"
 import { meApi, updateEmailApi, updatePasswordApi, updateProfileApi } from "@/api"
 import type { RootState } from "@/store"
 import { updateUser } from "@/store/authSlice"
-import type { ProfilePageModel } from "./types"
 
 function getInitial(name: string) {
   return name.trim().charAt(0).toUpperCase() || "U"
 }
 
-export function useProfilePage(): ProfilePageModel {
+export function useProfilePage(): AuthProfileModel {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const user = useSelector((state: RootState) => state.auth.user)

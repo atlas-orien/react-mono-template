@@ -139,9 +139,9 @@ https://github.com/atlas-form/react-mono-template.git
   应优先按分类路径导入，例如 `@workspace/ui-components/stable/button`。
   通知能力也应通过产品语义入口使用，例如 `@workspace/ui-components/stable/toast`。
 
-- `packages/app-components`
-  给业务页面直接使用的复合组件。
-  这里放页面装配、布局语义、业务组合类组件，不要求固定通用格式。
+- `packages/app-kit`
+  给业务 app 直接使用的共享应用能力。
+  这里放共享页面、应用壳层、页面装配、布局语义、业务组合类组件，不要求固定通用格式。
 
 - `packages/ui-core`
   更底层的 primitive 基础组件能力，一般不是业务页面直接改的第一选择。

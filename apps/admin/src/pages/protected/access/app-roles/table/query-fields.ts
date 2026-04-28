@@ -1,4 +1,4 @@
-import type { DataTableBuiltInQueryField } from "@workspace/app-components"
+import type { DataTableBuiltInQueryField } from "@workspace/app-kit"
 import type { TFunction } from "i18next"
 import type { RoleTableQuery } from "../types"
 

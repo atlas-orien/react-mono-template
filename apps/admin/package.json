@@ -14,7 +14,7 @@
     "test:watch": "vitest --passWithNoTests"
   },
   "dependencies": {
-    "@workspace/app-components": "workspace:*",
+    "@workspace/app-kit": "workspace:*",
     "@workspace/locales": "workspace:*",
     "@workspace/mock": "workspace:*",
     "@workspace/ui-components": "workspace:*",

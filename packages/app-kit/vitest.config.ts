@@ -31,11 +31,11 @@ export default defineConfig({
         replacement: `${path.resolve(__dirname, "../ui-core/src/lib")}/$1.ts`,
       },
       {
-        find: /^@workspace\/app-components$/,
+        find: /^@workspace\/app-kit$/,
         replacement: path.resolve(__dirname, "./src/index.ts"),
       },
       {
-        find: /^@workspace\/app-components\/(.*)$/,
+        find: /^@workspace\/app-kit\/(.*)$/,
         replacement: `${path.resolve(__dirname, "./src")}/$1`,
       },
       {

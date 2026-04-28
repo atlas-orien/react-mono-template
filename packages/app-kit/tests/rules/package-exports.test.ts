@@ -3,7 +3,7 @@ import path from "node:path"
 import { describe, expect, it } from "vitest"
 import { readPackageJson } from "./ast-helpers"
 
-describe("app-components package exports", () => {
+describe("app package exports", () => {
   it("uses the public export naming convention", () => {
     const exportsMap = readPackageJson().exports ?? {}
     const exportKeys = Object.keys(exportsMap).sort()
@@ -15,7 +15,7 @@ describe("app-components package exports", () => {
     expect(invalidKeys).toEqual([])
   })
 
-  it("points subpath exports to existing public component index files", () => {
+  it("points subpath exports to existing public app index files", () => {
     const exportsMap = readPackageJson().exports ?? {}
 
     const invalidEntries = Object.entries(exportsMap)
@@ -26,12 +26,13 @@ describe("app-components package exports", () => {
         }
 
         const normalizedValue = value.replaceAll("\\", "/")
-        const isComponentIndex =
-          normalizedValue.startsWith("./src/components/") &&
+        const isPublicAppIndex =
+          (normalizedValue.startsWith("./src/components/") ||
+            normalizedValue.startsWith("./src/pages/")) &&
           normalizedValue.endsWith("/index.ts")
         const absolutePath = path.resolve(import.meta.dirname, "../../", value)
 
-        return isComponentIndex && existsSync(absolutePath)
+        return isPublicAppIndex && existsSync(absolutePath)
           ? []
           : [`${key} -> ${value}`]
       })

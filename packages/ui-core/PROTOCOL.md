@@ -32,7 +32,7 @@
 - 禁止写业务语义组件。
 - 禁止为了某个 app 的临时需求直接改 primitive 行为。
 - 禁止把产品层视觉决策下沉到只能服务某个 app 的实现里。
-- 禁止依赖 `ui-components`、`app-components` 或 `apps/*`。
+- 禁止依赖 `ui-components`、`app` 或 `apps/*`。
 
 ## 5. AI 默认判断规则
 
@@ -95,9 +95,9 @@ AI 在 `ui-core` 新增组件时，必须按以下顺序：
 ## 9. 与上层的关系
 
 - `ui-components` 可以消费 `ui-core`，但必须收紧 API。
-- `app-components` 可以消费 `ui-core`，但不得把 primitive 控制面原样泄露给 app。
+- `@workspace/app-kit` 可以消费 `ui-core`，但不得把 primitive 控制面原样泄露给 app。
 - `apps/*` 默认不应直接散落使用 `ui-core`。
-- 当 app 确有例外需求时，应先在本地或 `app-components` 做一层协议化封装。
+- 当 app 确有例外需求时，应先在本地或 `@workspace/app-kit` 做一层协议化封装。
 
 ## 10. 样式原则
 

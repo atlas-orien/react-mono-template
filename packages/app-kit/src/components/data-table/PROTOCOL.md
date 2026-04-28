@@ -1,6 +1,6 @@
 # DataTable protocol
 
-本协议用于约束 `@workspace/app-components` 中 `DataTable` 的设计边界、真实 API 和 AI 默认接入方式。
+本协议用于约束 `@workspace/app-kit` 中 `DataTable` 的设计边界、真实 API 和 AI 默认接入方式。
 
 当任务涉及以下任一内容时，必须阅读本文件，并以源码为准：
 
@@ -556,7 +556,7 @@ AI 不应默认：
 3. 不使用源码不存在的 props
 4. 时间查询和审计时间列按源码能力接入
 5. 至少在一个真实 app 页面完成验证
-6. `pnpm -C packages/app-components typecheck` 通过
+6. `pnpm -C packages/app-kit typecheck` 通过
 
 如果只是视觉调整，也必须检查：
 

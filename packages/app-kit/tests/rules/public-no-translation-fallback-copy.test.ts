@@ -5,7 +5,7 @@ import {
   toFiles,
 } from "./ast-helpers"
 
-describe("app-components public i18n protocols", () => {
+describe("app public i18n protocols", () => {
   it("does not embed translation fallback copy in public source files", () => {
     const matches = findSourceFilesMatching(findPublicSourceFiles(), (_, sourceText) =>
       /\bt\(\s*["'`][^"'`]+["'`]\s*,\s*["'`][^"'`]+["'`]/.test(sourceText)

@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query"
 import type {
   DataTableFetchResult,
   DataTableSortState,
-} from "@workspace/app-components"
+} from "@workspace/app-kit"
 import { listRolesApi } from "@/api"
 import { rolesQueryKey } from "./constants"
 import {

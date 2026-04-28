@@ -6,7 +6,7 @@ import {
   MessageSquareMore,
 } from "lucide-react"
 import type { TFunction } from "i18next"
-import type { NotificationDropdownItem } from "@workspace/app-components"
+import type { NotificationDropdownItem } from "@workspace/app-kit"
 
 function avatarClassName(tone: "lime" | "cyan" | "violet") {
   if (tone === "lime") {

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
-import type { DataTableInsertActionConfig } from "@workspace/app-components"
+import type { DataTableInsertActionConfig } from "@workspace/app-kit"
 import { Input, toast } from "@workspace/ui-components"
 import { createAppRoleApi } from "@/api"
 

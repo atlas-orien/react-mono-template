@@ -6,7 +6,7 @@
 
 - 各层组件应该怎么被合法使用
 - 哪些能力属于 `ui-components`
-- 哪些能力属于 `app-components`
+- 哪些能力属于 `@workspace/app-kit`
 - 页面应如何按框架边界装配
 
 ## 1. 宪章
@@ -19,7 +19,7 @@
 ## 2. 使用原则
 
 - 展示基础稳定组件时，优先从 `@workspace/ui-components` 导入。
-- 展示复合场景组件时，优先从 `@workspace/app-components` 导入。
+- 展示共享页面、壳层或复合场景组件时，优先从 `@workspace/app-kit` 导入。
 - 不得为了演示方便直接越层使用 `ui-core`，除非该页面明确就是在讲 primitive。
 
 ## 3. guide 的责任

@@ -1,5 +1,5 @@
-import { CopyableText } from "@workspace/app-components"
-import type { DataTableColumn } from "@workspace/app-components"
+import { CopyableText } from "@workspace/app-kit"
+import type { DataTableColumn } from "@workspace/app-kit"
 import type { TFunction } from "i18next"
 import type { RoleRow } from "../types"
 

@@ -6,7 +6,7 @@ import {
   toLocations,
 } from "./ast-helpers"
 
-describe("app-components public prop derivation", () => {
+describe("app public prop derivation", () => {
   it("does not derive public props from React.ComponentProps<typeof Core*>", () => {
     const findings = findTypeAliasFindings(findPublicSourceFiles(), (node) => {
       if (!node.name.text.endsWith("Props")) {

@@ -4,7 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query"
 import type {
   DataTableFetchResult,
   DataTableSortState,
-} from "@workspace/app-components"
+} from "@workspace/app-kit"
 import {
   listAppUserMetricsApi,
   listAppUsersApi,

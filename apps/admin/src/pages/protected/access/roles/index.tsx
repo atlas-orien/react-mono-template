@@ -1,4 +1,4 @@
-import { DataTable } from "@workspace/app-components"
+import { DataTable } from "@workspace/app-kit"
 import { RoleCreationNote } from "./components/role-creation-note"
 import { useRolesData } from "./roles-data"
 import { useCreateRoleInsertAction } from "./dialogs/create-role-dialog"

@@ -1,5 +1,5 @@
 import { ShieldCheck, ShieldOff, SquareUserRound, Users } from "lucide-react"
-import type { MetricCardsItem } from "@workspace/app-components"
+import type { MetricCardsItem } from "@workspace/app-kit"
 import type { TFunction } from "i18next"
 import type { AdminUserRow } from "../types"
 

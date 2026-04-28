@@ -10,8 +10,8 @@ import {
   SidebarShell,
   ThemeToggle,
   WorkspaceTabs,
-} from "@workspace/app-components"
-import { TopBar } from "@workspace/app-components/top-bar"
+} from "@workspace/app-kit"
+import { TopBar } from "@workspace/app-kit/top-bar"
 import { logout } from "@/store/authSlice"
 import { resetAccess } from "@/store/accessSlice"
 import type { RootState } from "@/store"

@@ -31,7 +31,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@workspace/app-components"
+} from "@workspace/app-kit"
 import { DemoBlock, DemoGrid, GuidePage, GuideSection } from "@/components/guide/GuideScaffold"
 
 export default function FeedbackGuidePage() {

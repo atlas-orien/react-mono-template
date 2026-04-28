@@ -12,7 +12,7 @@ describe("ui-core dependency boundaries", () => {
 
       return (
         moduleSpecifier.startsWith("@workspace/ui-components") ||
-        moduleSpecifier.startsWith("@workspace/app-components")
+        moduleSpecifier.startsWith("@workspace/app-kit")
       )
     })
 

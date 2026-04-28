@@ -6,7 +6,7 @@
 @custom-variant dark (&:is(.dark *));
 @source "../**/*.{ts,tsx}";
 @source "../../../ui-components/src/**/*.{ts,tsx}";
-@source "../../../app-components/src/**/*.{ts,tsx}";
+@source "../../../app-kit/src/**/*.{ts,tsx}";
 
 @theme inline {
   --color-select-ring: var(--select-ring);

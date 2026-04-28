@@ -6,7 +6,7 @@ import {
   toLocations,
 } from "./ast-helpers"
 
-describe("app-components public prop aliases", () => {
+describe("app public prop aliases", () => {
   it("does not export Core*Props aliases from public component sources", () => {
     const findings = findTypeAliasFindings(findPublicSourceFiles(), (node) => {
       if (!node.name.text.endsWith("Props")) {

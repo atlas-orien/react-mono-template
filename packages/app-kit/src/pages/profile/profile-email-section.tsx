@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { Mail } from "lucide-react"
-import { useTranslation } from "react-i18next"
 import { Button } from "@workspace/ui-components/stable/button"
 import {
   Field,
@@ -9,14 +8,17 @@ import {
   FieldLabel,
 } from "@workspace/ui-components/stable/field"
 import { Input } from "@workspace/ui-components/stable/input"
-import type { ProfilePageModel } from "../types"
+import type { AuthProfileLabels, AuthProfileModel } from "./types"
 
-export interface ProfileEmailFormProps {
-  profile: ProfilePageModel
+export interface ProfileEmailSectionProps {
+  profile: AuthProfileModel
+  labels: AuthProfileLabels
 }
 
-export function ProfileEmailForm({ profile }: ProfileEmailFormProps) {
-  const { t } = useTranslation()
+export function ProfileEmailSection({
+  profile,
+  labels,
+}: ProfileEmailSectionProps) {
   const [expanded, setExpanded] = useState(false)
   const canSaveEmail =
     profile.emailInput.trim().length > 0 &&
@@ -30,13 +32,9 @@ export function ProfileEmailForm({ profile }: ProfileEmailFormProps) {
             <Mail className="size-5" />
           </span>
           <div className="min-w-0 space-y-1">
-            <h2 className="text-sm font-semibold">
-              {t("profile.sections.email")}
-            </h2>
+            <h2 className="text-sm font-semibold">{labels.emailSection}</h2>
             <p className="truncate text-sm text-(--app-muted-text)">
-              {profile.hasEmail
-                ? t("profile.email.configured")
-                : t("profile.email.notSet")}
+              {profile.hasEmail ? profile.email : labels.emailNotSet}
             </p>
           </div>
         </div>
@@ -47,10 +45,10 @@ export function ProfileEmailForm({ profile }: ProfileEmailFormProps) {
           onClick={() => setExpanded((current) => !current)}
         >
           {expanded
-            ? t("profile.actions.hideEmail")
+            ? labels.hideEmail
             : profile.hasEmail
-              ? t("profile.actions.changeEmail")
-              : t("profile.actions.setEmail")}
+              ? labels.changeEmail
+              : labels.setEmail}
         </Button>
       </div>
 
@@ -58,18 +56,16 @@ export function ProfileEmailForm({ profile }: ProfileEmailFormProps) {
         <div className="mt-6 max-w-xl pl-9">
           <FieldGroup>
             <Field>
-              <FieldLabel>{t("profile.fields.email")}</FieldLabel>
+              <FieldLabel>{labels.email}</FieldLabel>
               <Input
                 type="email"
                 value={profile.emailInput}
                 onValueChange={profile.setEmailInput}
-                placeholder={t("profile.placeholders.email")}
+                placeholder={labels.emailPlaceholder}
                 disabled={profile.emailSaving}
               />
               <FieldDescription>
-                {profile.hasEmail
-                  ? profile.email
-                  : t("profile.help.emailNotSet")}
+                {profile.hasEmail ? profile.email : labels.emailNotSetHelp}
               </FieldDescription>
             </Field>
           </FieldGroup>
@@ -82,10 +78,10 @@ export function ProfileEmailForm({ profile }: ProfileEmailFormProps) {
               disabled={profile.emailSaving || !canSaveEmail}
             >
               {profile.emailSaving
-                ? t("profile.actions.savingEmail")
+                ? labels.savingEmail
                 : profile.hasEmail
-                  ? t("profile.actions.updateEmail")
-                  : t("profile.actions.setEmail")}
+                  ? labels.updateEmail
+                  : labels.setEmail}
             </Button>
             {profile.emailStatus ? (
               <span className="text-sm text-(--app-muted-text)">

@@ -10,7 +10,7 @@ import {
   SidebarShell,
   ThemeToggle,
   TopBar,
-} from "@workspace/app-components"
+} from "@workspace/app-kit"
 import type { RootState } from "@/store"
 import { logout } from "@/store/authSlice"
 import { webNavigationSections } from "@/navigation"

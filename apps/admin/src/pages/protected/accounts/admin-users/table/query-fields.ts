@@ -1,7 +1,7 @@
 import type {
   DataTableBuiltInQueryField,
   DataTableQueryField,
-} from "@workspace/app-components"
+} from "@workspace/app-kit"
 import type { TFunction } from "i18next"
 import type { AdminUserTableQuery } from "../types"
 

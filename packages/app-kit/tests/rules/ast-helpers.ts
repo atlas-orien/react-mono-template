@@ -42,7 +42,11 @@ export function findPublicSourceFiles(): string[] {
   for (const entryFile of findPublicEntryFiles()) {
     files.add(entryFile)
 
-    if (entryFile.endsWith("/index.ts") && entryFile.includes("/src/components/")) {
+    if (
+      entryFile.endsWith("/index.ts") &&
+      (entryFile.includes("/src/components/") ||
+        entryFile.includes("/src/pages/"))
+    ) {
       for (const file of walk(path.dirname(entryFile))) {
         if (isSourceFile(file)) {
           files.add(file)

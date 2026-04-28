@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import type { DataTableRowActionsConfig } from "@workspace/app-components"
+import type { DataTableRowActionsConfig } from "@workspace/app-kit"
 import { toast } from "@workspace/ui-components"
 import { deleteRoleApi } from "@/api"
 import type { RoleRow } from "../types"
