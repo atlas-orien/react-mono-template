@@ -15,6 +15,7 @@ export { MobileBottomNav } from "./mobile-bottom-nav"
 export type {
   MobileBottomNavItem,
   MobileBottomNavProps,
+  MobileBottomNavSubItem,
 } from "./mobile-bottom-nav"
 export { SidebarShell } from "./sidebar-shell"
 export type {

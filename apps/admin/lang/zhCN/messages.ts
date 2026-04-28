@@ -17,6 +17,9 @@ const messages = {
         title: "Admin",
         description: "Enterprise",
       },
+      navigation: {
+        mobileLabel: "主导航",
+      },
       notifications: {
         label: "通知",
         title: "通知",

@@ -17,6 +17,9 @@ const messages = {
         title: "Admin",
         description: "Enterprise",
       },
+      navigation: {
+        mobileLabel: "Primary navigation",
+      },
       notifications: {
         label: "Notifications",
         title: "Notifications",

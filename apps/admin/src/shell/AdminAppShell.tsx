@@ -1,10 +1,11 @@
-import { useEffect, type ReactNode } from "react"
+import { useEffect, useMemo, type ReactNode } from "react"
 import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router"
 import {
   CopyableText,
   LanguageSwitch,
+  type MobileBottomNavItem,
   NotificationDropdown,
   SidebarShell,
   ThemeToggle,
@@ -39,6 +40,27 @@ export function AdminAppShell({ children }: AdminAppShellProps) {
     sections,
   } = useAdminNavigation()
   const notifications = getAdminNotifications(t)
+  const mobileNavigationItems = useMemo<MobileBottomNavItem[]>(
+    () =>
+      sections.flatMap((section) =>
+        section.items.map((item) => ({
+          key: item.key,
+          label: item.label,
+          href: item.href,
+          active: item.active,
+          icon: item.icon,
+          onSelect: item.onSelect,
+          subItems: item.subItems?.map((subItem) => ({
+            key: subItem.key,
+            label: subItem.label,
+            href: subItem.href,
+            active: subItem.active,
+            onSelect: subItem.onSelect,
+          })),
+        }))
+      ),
+    [sections]
+  )
   const workspaceTabs = useWorkspaceTabs({
     currentPath: currentItem?.path ?? null,
     defaultPath,
@@ -70,6 +92,10 @@ export function AdminAppShell({ children }: AdminAppShellProps) {
       brandTitle={t("admin.shell.brand.title", "Admin")}
       brandDescription={t("admin.shell.brand.description", "Enterprise")}
       sections={sections}
+      mobileNavigation={{
+        label: t("admin.shell.navigation.mobileLabel", "Primary navigation"),
+        items: mobileNavigationItems,
+      }}
       header={
         <>
           <TopBar

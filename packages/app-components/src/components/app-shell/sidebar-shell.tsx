@@ -163,8 +163,8 @@ export function SidebarShell({
           <SidebarInset>
             <div className="flex h-svh min-h-0 min-w-0 flex-col overflow-hidden">
               {header}
-              <div className="flex min-h-0 min-w-0 flex-1 overflow-hidden p-3 pb-[calc(4.25rem+env(safe-area-inset-bottom))] md:pb-3">
-                <div className="flex min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto pr-1">
+              <div className="flex min-h-0 min-w-0 flex-1 overflow-hidden p-0 pb-[calc(4.25rem+env(safe-area-inset-bottom))] md:p-3">
+                <div className="flex min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto md:pr-1">
                   {children}
                 </div>
               </div>
