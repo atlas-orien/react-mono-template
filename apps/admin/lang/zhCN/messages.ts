@@ -290,8 +290,9 @@ const messages = {
           remarkPlaceholder: "输入备注",
         },
         rolesDialog: {
-          title: "编辑角色{{id}}",
-          description: "这里仅修改 user_roles 关系，不会修改后台账号资料。",
+          title: "编辑角色{{name}}",
+          displayId: "ID {{id}}",
+          description: "这里只修改用户角色，不会影响用户信息。",
           loading: "角色加载中。",
           empty: "暂无可配置角色。",
           selected: "已选择",
@@ -383,8 +384,9 @@ const messages = {
           remarkPlaceholder: "输入备注",
         },
         rolesDialog: {
-          title: "编辑角色{{id}}",
-          description: "这里仅修改 app_user_roles 关系，不会修改 App 用户资料。",
+          title: "编辑角色{{name}}",
+          displayId: "ID {{id}}",
+          description: "这里只修改用户角色，不会影响用户信息。",
           loading: "角色加载中。",
           empty: "暂无可配置角色。",
           selected: "已选择",

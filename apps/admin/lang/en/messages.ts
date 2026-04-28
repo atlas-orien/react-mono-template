@@ -295,9 +295,9 @@ const messages = {
           remarkPlaceholder: "Enter remark",
         },
         rolesDialog: {
-          title: "Edit roles{{id}}",
-          description:
-            "Only the user_roles relationship is changed here. Admin account details are not modified.",
+          title: "Edit roles{{name}}",
+          displayId: "ID {{id}}",
+          description: "Only user roles are changed here. User information is not affected.",
           loading: "Loading roles.",
           empty: "No configurable roles.",
           selected: "Selected",
@@ -389,9 +389,9 @@ const messages = {
           remarkPlaceholder: "Enter remark",
         },
         rolesDialog: {
-          title: "Edit roles{{id}}",
-          description:
-            "Only the app_user_roles relationship is changed here. App user details are not modified.",
+          title: "Edit roles{{name}}",
+          displayId: "ID {{id}}",
+          description: "Only user roles are changed here. User information is not affected.",
           loading: "Loading roles.",
           empty: "No configurable roles.",
           selected: "Selected",

@@ -39,6 +39,9 @@ export function EditAppUserRolesDialog({
   const { t } = useTranslation()
   const queryClient = useQueryClient()
   const userId = row?.user_id ?? ""
+  const displayName =
+    row?.display_name?.trim() ||
+    t("admin.accounts.appUsers.data.fallbackDisplayName")
 
   const rolesQuery = useQuery({
     queryKey: userRoleOptionsQueryKey(userId),
@@ -65,11 +68,20 @@ export function EditAppUserRolesDialog({
         <DialogHeader>
           <DialogTitle>
             {t("admin.accounts.appUsers.rolesDialog.title", {
-              id: row ? ` ${row.display_id}` : "",
+              name: row ? ` ${displayName}` : "",
             })}
           </DialogTitle>
           <DialogDescription>
-            {t("admin.accounts.appUsers.rolesDialog.description")}
+            {row ? (
+              <span className="mb-1 block font-mono text-xs">
+                {t("admin.accounts.appUsers.rolesDialog.displayId", {
+                  id: row.display_id,
+                })}
+              </span>
+            ) : null}
+            <span className="block">
+              {t("admin.accounts.appUsers.rolesDialog.description")}
+            </span>
           </DialogDescription>
         </DialogHeader>
 
