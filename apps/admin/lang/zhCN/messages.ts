@@ -298,6 +298,248 @@ const messages = {
           success: "用户角色已更新",
         },
       },
+      appUsers: {
+        data: {
+          fallbackDisplayName: "未设置显示名称",
+        },
+        metrics: {
+          all: {
+            label: "App 用户总数",
+            tail: "服务端返回的 App 用户总量。",
+          },
+          enabled: {
+            label: "启用账号",
+            tail: "具备正常 App 权限访问能力的账号。",
+          },
+          disabled: {
+            label: "停用账号",
+            tail: "已被禁用，需要人工恢复或复核。",
+          },
+          multiRole: {
+            label: "多角色账号",
+            tail: "同时挂载多个角色的重点账号。",
+          },
+        },
+        table: {
+          columns: {
+            id: "ID",
+            displayName: "显示名称",
+            remark: "备注",
+            status: "状态",
+            roles: "角色",
+            roleCount: "角色数",
+          },
+          empty: {
+            remark: "无备注",
+            roles: "未分配角色",
+          },
+          status: {
+            enabled: "启用",
+            disabled: "停用",
+          },
+          query: {
+            keyword: {
+              label: "关键字",
+              placeholder: "搜索显示名称、ID、备注或角色",
+            },
+            status: {
+              label: "状态",
+              placeholder: "状态",
+            },
+          },
+          actions: {
+            edit: {
+              label: "编辑",
+              title: "编辑 App 用户 {{id}}",
+              description: "当前可编辑备注，保存后会同步到服务端。",
+              success: "App 用户已更新",
+            },
+            delete: {
+              label: "删除",
+              title: "删除 App 用户 {{id}}",
+              description:
+                "确认删除 App 用户 {{name}}（{{id}}）？删除后该账号将无法使用 App 权限。",
+              confirm: "删除",
+              success: "App 用户已删除",
+            },
+            toggle: {
+              enable: "启用",
+              disable: "停用",
+              enabledSuccess: "App 用户已启用",
+              disabledSuccess: "App 用户已停用",
+            },
+            editRoles: "编辑角色",
+          },
+        },
+        edit: {
+          fields: {
+            id: "ID",
+            displayName: "显示名称",
+            remark: "备注",
+          },
+          remarkPlaceholder: "输入备注",
+        },
+        rolesDialog: {
+          title: "编辑角色{{id}}",
+          description: "这里仅修改 app_user_roles 关系，不会修改 App 用户资料。",
+          loading: "角色加载中。",
+          empty: "暂无可配置角色。",
+          selected: "已选择",
+          cancel: "取消",
+          reset: "重置",
+          save: "保存角色",
+          success: "用户角色已更新",
+        },
+      },
+    },
+    access: {
+      roles: {
+        table: {
+          columns: {
+            id: "ID",
+            name: "角色名",
+            code: "编码",
+          },
+          query: {
+            keyword: {
+              label: "关键字",
+              placeholder: "搜索角色名称、ID 或编码",
+            },
+          },
+          actions: {
+            delete: {
+              label: "删除",
+              title: "删除角色 {{name}}",
+              description:
+                "确认删除角色 {{name}}（{{code}}）？删除前请确认该角色没有仍在使用的用户或权限关联。",
+              confirm: "删除",
+              success: "角色已删除",
+            },
+          },
+        },
+        create: {
+          label: "新增角色",
+          title: "创建角色",
+          description: "编码只是角色的唯一编号。创建后请到角色授权页面配置权限。",
+          fields: {
+            name: {
+              label: "角色名",
+              placeholder: "输入角色名",
+            },
+            code: {
+              label: "编码",
+              placeholder: "输入唯一角色编码，例如 ops_manager",
+            },
+          },
+          errors: {
+            nameRequired: "请输入角色名。",
+            codeRequired: "请输入角色编码。",
+          },
+          success: "角色已创建",
+        },
+        note: {
+          title: "角色创建说明",
+          line1:
+            "这里用于创建角色，例如“运营人员”或“客服主管”。编码只是这个角色的唯一编号，方便系统保存和区分角色。",
+          line2:
+            "创建后，角色默认没有权限；需要到“角色授权”页面勾选权限后，这个角色才会生效。",
+        },
+      },
+      appRoles: {
+        table: {
+          columns: {
+            id: "ID",
+            name: "角色名",
+            code: "编码",
+          },
+          query: {
+            keyword: {
+              label: "关键字",
+              placeholder: "搜索角色名称、ID 或编码",
+            },
+          },
+          actions: {
+            delete: {
+              label: "删除",
+              title: "删除 App 角色 {{name}}",
+              description:
+                "确认删除 App 角色 {{name}}（{{code}}）？删除前请确认该角色没有仍在使用的用户或权限关联。",
+              confirm: "删除",
+              success: "App 角色已删除",
+            },
+          },
+        },
+        create: {
+          label: "新增 App 角色",
+          title: "创建 App 角色",
+          description:
+            "编码只是 App 角色的唯一编号。创建后请到 App 角色授权页面配置权限。",
+          fields: {
+            name: {
+              label: "角色名",
+              placeholder: "输入角色名",
+            },
+            code: {
+              label: "编码",
+              placeholder: "输入唯一角色编码，例如 ops_manager",
+            },
+          },
+          errors: {
+            nameRequired: "请输入角色名。",
+            codeRequired: "请输入角色编码。",
+          },
+          success: "App 角色已创建",
+        },
+        note: {
+          title: "App 角色创建说明",
+          line1:
+            "这里用于创建 App 角色，例如“会员”或“内容作者”。编码只是这个角色的唯一编号，方便系统保存和区分角色。",
+          line2:
+            "创建后，角色默认没有权限；需要到“App 角色授权”页面勾选权限后，这个角色才会生效。",
+        },
+      },
+      rolePermissions: {
+        empty: {
+          title: "暂无可授权角色",
+          description: "创建权限角色后，可以在这里配置该角色的权限覆盖集。",
+        },
+        editor: {
+          codePrefix: "编码：",
+          descriptionSuffix: "。服务端返回完整权限树，并标记当前角色已授权节点。",
+          reset: "重置勾选",
+          save: "保存角色授权",
+          searchPlaceholder: "搜索权限名称",
+          loading: "权限树加载中。",
+          empty: "没有匹配到权限项。",
+          success: "角色授权已保存",
+        },
+        summary: {
+          group: "分组",
+          action: "操作",
+          selected: "已选",
+        },
+      },
+      appRolePermissions: {
+        empty: {
+          title: "暂无可授权角色",
+          description: "创建 App 角色后，可以在这里配置该角色的权限覆盖集。",
+        },
+        editor: {
+          codePrefix: "编码：",
+          descriptionSuffix: "。服务端返回完整权限树，并标记当前角色已授权节点。",
+          reset: "重置勾选",
+          save: "保存 App 角色授权",
+          searchPlaceholder: "搜索权限名称",
+          loading: "权限树加载中。",
+          empty: "没有匹配到权限项。",
+          success: "App 角色授权已保存",
+        },
+        summary: {
+          group: "分组",
+          action: "操作",
+          selected: "已选",
+        },
+      },
     },
   },
   login: {

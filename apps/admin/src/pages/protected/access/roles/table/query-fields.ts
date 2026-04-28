@@ -1,11 +1,16 @@
 import type { DataTableBuiltInQueryField } from "@workspace/app-components"
+import type { TFunction } from "i18next"
 import type { RoleTableQuery } from "../types"
 
-export const roleBuiltInQueryFields: DataTableBuiltInQueryField<RoleTableQuery>[] = [
-  {
-    key: "keyword",
-    type: "search",
-    label: "关键字",
-    placeholder: "搜索角色名称、ID 或编码",
-  },
-]
+export function buildRoleBuiltInQueryFields(
+  t: TFunction
+): DataTableBuiltInQueryField<RoleTableQuery>[] {
+  return [
+    {
+      key: "keyword",
+      type: "search",
+      label: t("admin.access.roles.table.query.keyword.label"),
+      placeholder: t("admin.access.roles.table.query.keyword.placeholder"),
+    },
+  ]
+}

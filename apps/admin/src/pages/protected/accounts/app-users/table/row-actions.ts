@@ -1,4 +1,5 @@
 import { createElement, useMemo, useRef } from "react"
+import { useTranslation } from "react-i18next"
 import type { DataTableRowActionsConfig } from "@workspace/app-components"
 import { toast } from "@workspace/ui-components"
 import { deleteAppUserApi, updateAppUserApi } from "@/api"
@@ -12,6 +13,7 @@ export function useAppUserRowActions(
   invalidateAppUsers: () => Promise<unknown>,
   onEditRoles: (row: AppUserRow) => void
 ): DataTableRowActionsConfig<AppUserRow> {
+  const { t } = useTranslation()
   const editDialogHandlesRef = useRef(
     new Map<string, EditAppUserDialogContentHandle | null>()
   )
@@ -32,9 +34,14 @@ export function useAppUserRowActions(
     return {
       columnWidth: 118,
       edit: {
-        label: "编辑",
-        title: (row) => `编辑 App 用户 ${row.display_id}`,
-        description: "当前可编辑备注，保存后会同步到服务端。",
+        label: t("admin.accounts.appUsers.table.actions.edit.label"),
+        title: (row) =>
+          t("admin.accounts.appUsers.table.actions.edit.title", {
+            id: row.display_id,
+          }),
+        description: t(
+          "admin.accounts.appUsers.table.actions.edit.description"
+        ),
         renderContent: ({ row }) =>
           createElement(EditAppUserDialogContent, {
             row,
@@ -51,25 +58,38 @@ export function useAppUserRowActions(
             status: row.status,
           })
           await invalidateAppUsers()
-          toast.success("App 用户已更新")
+          toast.success(t("admin.accounts.appUsers.table.actions.edit.success"))
         },
       },
       delete: {
-        label: "删除",
-        title: (row) => `删除 App 用户 ${row.display_id}`,
+        label: t("admin.accounts.appUsers.table.actions.delete.label"),
+        title: (row) =>
+          t("admin.accounts.appUsers.table.actions.delete.title", {
+            id: row.display_id,
+          }),
         description: (row) =>
-          `确认删除 App 用户 ${row.display_name}（${row.display_id}）？删除后该账号将无法使用 App 权限。`,
-        confirmLabel: "删除",
+          t("admin.accounts.appUsers.table.actions.delete.description", {
+            id: row.display_id,
+            name: row.display_name,
+          }),
+        confirmLabel: t(
+          "admin.accounts.appUsers.table.actions.delete.confirm"
+        ),
         onConfirm: async (row) => {
           await deleteAppUserApi(row.user_id)
           await invalidateAppUsers()
-          toast.success("App 用户已删除")
+          toast.success(
+            t("admin.accounts.appUsers.table.actions.delete.success")
+          )
         },
       },
       moreItems: [
         {
           key: "toggle-status",
-          label: (row) => (row.status === "enabled" ? "停用" : "启用"),
+          label: (row) =>
+            row.status === "enabled"
+              ? t("admin.accounts.appUsers.table.actions.toggle.disable")
+              : t("admin.accounts.appUsers.table.actions.toggle.enable"),
           onClick: async (row) => {
             const nextStatus = row.status === "enabled" ? "disabled" : "enabled"
 
@@ -79,16 +99,22 @@ export function useAppUserRowActions(
             })
             await invalidateAppUsers()
             toast.success(
-              nextStatus === "enabled" ? "App 用户已启用" : "App 用户已停用"
+              nextStatus === "enabled"
+                ? t(
+                    "admin.accounts.appUsers.table.actions.toggle.enabledSuccess"
+                  )
+                : t(
+                    "admin.accounts.appUsers.table.actions.toggle.disabledSuccess"
+                  )
             )
           },
         },
         {
           key: "assign-role",
-          label: "编辑角色",
+          label: t("admin.accounts.appUsers.table.actions.editRoles"),
           onClick: onEditRoles,
         },
       ],
     }
-  }, [invalidateAppUsers, onEditRoles])
+  }, [invalidateAppUsers, onEditRoles, t])
 }

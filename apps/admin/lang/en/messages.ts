@@ -304,6 +304,254 @@ const messages = {
           success: "User roles updated",
         },
       },
+      appUsers: {
+        data: {
+          fallbackDisplayName: "Display name not set",
+        },
+        metrics: {
+          all: {
+            label: "App Users",
+            tail: "Total App users returned by the server.",
+          },
+          enabled: {
+            label: "Enabled",
+            tail: "Accounts with active App access.",
+          },
+          disabled: {
+            label: "Disabled",
+            tail: "Accounts disabled pending review or restoration.",
+          },
+          multiRole: {
+            label: "Multi-role",
+            tail: "Accounts assigned to more than one role.",
+          },
+        },
+        table: {
+          columns: {
+            id: "ID",
+            displayName: "Display Name",
+            remark: "Remark",
+            status: "Status",
+            roles: "Roles",
+            roleCount: "Role Count",
+          },
+          empty: {
+            remark: "No remark",
+            roles: "No roles assigned",
+          },
+          status: {
+            enabled: "Enabled",
+            disabled: "Disabled",
+          },
+          query: {
+            keyword: {
+              label: "Keyword",
+              placeholder: "Search display name, ID, remark, or role",
+            },
+            status: {
+              label: "Status",
+              placeholder: "Status",
+            },
+          },
+          actions: {
+            edit: {
+              label: "Edit",
+              title: "Edit App user {{id}}",
+              description: "Only the remark can be edited here.",
+              success: "App user updated",
+            },
+            delete: {
+              label: "Delete",
+              title: "Delete App user {{id}}",
+              description:
+                "Delete App user {{name}} ({{id}})? This account will no longer be able to use App permissions.",
+              confirm: "Delete",
+              success: "App user deleted",
+            },
+            toggle: {
+              enable: "Enable",
+              disable: "Disable",
+              enabledSuccess: "App user enabled",
+              disabledSuccess: "App user disabled",
+            },
+            editRoles: "Edit roles",
+          },
+        },
+        edit: {
+          fields: {
+            id: "ID",
+            displayName: "Display Name",
+            remark: "Remark",
+          },
+          remarkPlaceholder: "Enter remark",
+        },
+        rolesDialog: {
+          title: "Edit roles{{id}}",
+          description:
+            "Only the app_user_roles relationship is changed here. App user details are not modified.",
+          loading: "Loading roles.",
+          empty: "No configurable roles.",
+          selected: "Selected",
+          cancel: "Cancel",
+          reset: "Reset",
+          save: "Save Roles",
+          success: "User roles updated",
+        },
+      },
+    },
+    access: {
+      roles: {
+        table: {
+          columns: {
+            id: "ID",
+            name: "Role Name",
+            code: "Code",
+          },
+          query: {
+            keyword: {
+              label: "Keyword",
+              placeholder: "Search role name, ID, or code",
+            },
+          },
+          actions: {
+            delete: {
+              label: "Delete",
+              title: "Delete role {{name}}",
+              description:
+                "Delete role {{name}} ({{code}})? Make sure no users or permissions are still linked to it.",
+              confirm: "Delete",
+              success: "Role deleted",
+            },
+          },
+        },
+        create: {
+          label: "New Role",
+          title: "Create Role",
+          description:
+            "The code is the unique role identifier. Configure permissions on the Role Permissions page after creating it.",
+          fields: {
+            name: {
+              label: "Role Name",
+              placeholder: "Enter role name",
+            },
+            code: {
+              label: "Code",
+              placeholder: "Enter a unique code, for example ops_manager",
+            },
+          },
+          errors: {
+            nameRequired: "Enter a role name.",
+            codeRequired: "Enter a role code.",
+          },
+          success: "Role created",
+        },
+        note: {
+          title: "Role Creation Notes",
+          line1:
+            "Create roles such as Operations or Support Lead. The code is a unique identifier used by the system to store and distinguish roles.",
+          line2:
+            "New roles have no permissions by default. Grant permissions on the Role Permissions page before the role takes effect.",
+        },
+      },
+      appRoles: {
+        table: {
+          columns: {
+            id: "ID",
+            name: "Role Name",
+            code: "Code",
+          },
+          query: {
+            keyword: {
+              label: "Keyword",
+              placeholder: "Search role name, ID, or code",
+            },
+          },
+          actions: {
+            delete: {
+              label: "Delete",
+              title: "Delete App role {{name}}",
+              description:
+                "Delete App role {{name}} ({{code}})? Make sure no users or permissions are still linked to it.",
+              confirm: "Delete",
+              success: "App role deleted",
+            },
+          },
+        },
+        create: {
+          label: "New App Role",
+          title: "Create App Role",
+          description:
+            "The code is the unique App role identifier. Configure permissions on the App Role Permissions page after creating it.",
+          fields: {
+            name: {
+              label: "Role Name",
+              placeholder: "Enter role name",
+            },
+            code: {
+              label: "Code",
+              placeholder: "Enter a unique code, for example ops_manager",
+            },
+          },
+          errors: {
+            nameRequired: "Enter a role name.",
+            codeRequired: "Enter a role code.",
+          },
+          success: "App role created",
+        },
+        note: {
+          title: "App Role Creation Notes",
+          line1:
+            "Create App roles such as Member or Content Author. The code is a unique identifier used by the system to store and distinguish roles.",
+          line2:
+            "New roles have no permissions by default. Grant permissions on the App Role Permissions page before the role takes effect.",
+        },
+      },
+      rolePermissions: {
+        empty: {
+          title: "No Roles Available",
+          description:
+            "Create permission roles, then configure their permission coverage here.",
+        },
+        editor: {
+          codePrefix: "Code: ",
+          descriptionSuffix:
+            ". The server returns the full permission tree and marks the nodes already granted to this role.",
+          reset: "Reset Selection",
+          save: "Save Role Permissions",
+          searchPlaceholder: "Search permissions",
+          loading: "Loading permission tree.",
+          empty: "No matching permissions.",
+          success: "Role permissions saved",
+        },
+        summary: {
+          group: "Groups",
+          action: "Actions",
+          selected: "Selected",
+        },
+      },
+      appRolePermissions: {
+        empty: {
+          title: "No Roles Available",
+          description:
+            "Create App roles, then configure their permission coverage here.",
+        },
+        editor: {
+          codePrefix: "Code: ",
+          descriptionSuffix:
+            ". The server returns the full permission tree and marks the nodes already granted to this role.",
+          reset: "Reset Selection",
+          save: "Save App Role Permissions",
+          searchPlaceholder: "Search permissions",
+          loading: "Loading permission tree.",
+          empty: "No matching permissions.",
+          success: "App role permissions saved",
+        },
+        summary: {
+          group: "Groups",
+          action: "Actions",
+          selected: "Selected",
+        },
+      },
     },
   },
   login: {

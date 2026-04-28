@@ -2,10 +2,11 @@ import type {
   DataTableFetchResult,
   DataTableSortState,
 } from "@workspace/app-components"
-import { appUserColumns } from "./columns"
+import { useTranslation } from "react-i18next"
+import { buildAppUserColumns } from "./columns"
 import {
-  appUserBuiltInQueryFields,
-  appUserQueryFields,
+  buildAppUserBuiltInQueryFields,
+  buildAppUserQueryFields,
 } from "./query-fields"
 import {
   appUserInitialQuery,
@@ -25,10 +26,11 @@ export function useAppUsersTable(
   invalidateAppUsers: () => Promise<unknown>,
   onEditRoles: (row: AppUserRow) => void
 ) {
+  const { t } = useTranslation()
   const rowActions = useAppUserRowActions(invalidateAppUsers, onEditRoles)
 
   return {
-    columns: appUserColumns,
+    columns: buildAppUserColumns(t),
     fetchData,
     getRowId: (row: AppUserRow) => row.user_id,
     initialPageSize: 10,
@@ -38,8 +40,8 @@ export function useAppUsersTable(
     },
     initialQuery: appUserInitialQuery,
     query: {
-      builtInFields: appUserBuiltInQueryFields,
-      fields: appUserQueryFields,
+      builtInFields: buildAppUserBuiltInQueryFields(t),
+      fields: buildAppUserQueryFields(t),
       audit: true,
     },
     pageSizeOptions: appUserPageSizeOptions,

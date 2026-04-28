@@ -4,7 +4,7 @@ import type {
   DateRangeValue,
 } from "@workspace/app-components"
 
-export type AppUserStatusLabel = "启用" | "停用"
+export type AppUserStatusFilter = ApiAppUserStatus
 export type AppUserTimeField = DataTableAuditColumnKey
 
 export interface AppUserRow {
@@ -20,7 +20,7 @@ export interface AppUserRow {
 
 export interface AppUserTableQuery {
   keyword: string
-  status: "" | AppUserStatusLabel
+  status: "" | AppUserStatusFilter
   auditField?: AppUserTimeField
   auditRange: DateRangeValue | undefined
 }

@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from "react"
+import { useTranslation } from "react-i18next"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import type {
   DataTableFetchResult,
@@ -19,12 +20,13 @@ import type {
 } from "./types"
 
 function mapAppUserRow(
-  appUser: Awaited<ReturnType<typeof listAppUsersApi>>["items"][number]
+  appUser: Awaited<ReturnType<typeof listAppUsersApi>>["items"][number],
+  fallbackDisplayName: string
 ): AppUserRow {
   return {
     user_id: appUser.userId,
     display_id: appUser.displayId?.trim() || appUser.userId,
-    display_name: appUser.displayName?.trim() || "未设置显示名称",
+    display_name: appUser.displayName?.trim() || fallbackDisplayName,
     remark: appUser.remark ?? null,
     status: appUser.status,
     createdAt: appUser.createdAt ?? null,
@@ -110,16 +112,25 @@ function buildAppUserListParams(
 }
 
 export function useAppUsersData() {
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
 
-  const loadAppUserPage = useCallback(async (params: ListAppUsersRequest) => {
-    const response = await listAppUsersApi(params)
+  const loadAppUserPage = useCallback(
+    async (params: ListAppUsersRequest) => {
+      const response = await listAppUsersApi(params)
+      const fallbackDisplayName = t(
+        "admin.accounts.appUsers.data.fallbackDisplayName"
+      )
 
-    return {
-      items: response.items.map(mapAppUserRow),
-      total: response.total,
-    }
-  }, [])
+      return {
+        items: response.items.map((item) =>
+          mapAppUserRow(item, fallbackDisplayName)
+        ),
+        total: response.total,
+      }
+    },
+    [t]
+  )
 
   const appUserMetricsQuery = useQuery({
     queryKey: appUserMetricsQueryKey,
@@ -127,8 +138,8 @@ export function useAppUsersData() {
   })
 
   const metricCards = useMemo(
-    () => buildAppUserMetricCards(appUserMetricsQuery.data),
-    [appUserMetricsQuery.data]
+    () => buildAppUserMetricCards(appUserMetricsQuery.data, t),
+    [appUserMetricsQuery.data, t]
   )
 
   const fetchData = useCallback(

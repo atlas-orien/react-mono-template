@@ -1,14 +1,16 @@
 import type { AppUserStatus as ApiAppUserStatus } from "@/api"
-import type { AppUserStatusLabel } from "../types"
+import type { TFunction } from "i18next"
+import type { AppUserStatusFilter } from "../types"
 
 export function mapApiStatusToLabel(
-  status: ApiAppUserStatus
-): AppUserStatusLabel {
-  return status === "enabled" ? "启用" : "停用"
+  status: ApiAppUserStatus,
+  t: TFunction
+): string {
+  return t(`admin.accounts.appUsers.table.status.${status}`)
 }
 
 export function mapStatusLabelToApiStatus(
-  status: AppUserStatusLabel
+  status: AppUserStatusFilter
 ): ApiAppUserStatus {
-  return status === "启用" ? "enabled" : "disabled"
+  return status
 }

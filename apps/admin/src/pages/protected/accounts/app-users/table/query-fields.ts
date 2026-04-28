@@ -2,32 +2,48 @@ import type {
   DataTableBuiltInQueryField,
   DataTableQueryField,
 } from "@workspace/app-components"
+import type { TFunction } from "i18next"
 import type { AppUserTableQuery } from "../types"
 
-export const statusOptions = [
-  { label: "启用", value: "启用" },
-  { label: "停用", value: "停用" },
-] as const
+export function buildAppUserStatusOptions(t: TFunction) {
+  return [
+    {
+      label: t("admin.accounts.appUsers.table.status.enabled"),
+      value: "enabled",
+    },
+    {
+      label: t("admin.accounts.appUsers.table.status.disabled"),
+      value: "disabled",
+    },
+  ] as const
+}
 
-export const appUserBuiltInQueryFields: DataTableBuiltInQueryField<AppUserTableQuery>[] =
-  [
+export function buildAppUserBuiltInQueryFields(
+  t: TFunction
+): DataTableBuiltInQueryField<AppUserTableQuery>[] {
+  return [
     {
       key: "keyword",
       type: "search",
-      label: "关键字",
-      placeholder: "搜索显示名称、ID、备注或角色",
+      label: t("admin.accounts.appUsers.table.query.keyword.label"),
+      placeholder: t("admin.accounts.appUsers.table.query.keyword.placeholder"),
     },
   ]
+}
 
-export const appUserQueryFields: DataTableQueryField<AppUserTableQuery>[] = [
-  {
-    key: "status",
-    type: "select",
-    label: "状态",
-    placeholder: "状态",
-    options: statusOptions.map((option) => ({
-      label: option.label,
-      value: option.value,
-    })),
-  },
-]
+export function buildAppUserQueryFields(
+  t: TFunction
+): DataTableQueryField<AppUserTableQuery>[] {
+  return [
+    {
+      key: "status",
+      type: "select",
+      label: t("admin.accounts.appUsers.table.query.status.label"),
+      placeholder: t("admin.accounts.appUsers.table.query.status.placeholder"),
+      options: buildAppUserStatusOptions(t).map((option) => ({
+        label: option.label,
+        value: option.value,
+      })),
+    },
+  ]
+}
