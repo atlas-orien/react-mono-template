@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 import type { AvatarUploadResult } from "@workspace/app-components"
-import { meApi, updatePasswordApi, updateProfileApi } from "@/api"
+import { meApi, updateEmailApi, updatePasswordApi, updateProfileApi } from "@/api"
 import type { RootState } from "@/store"
 import { updateUser } from "@/store/authSlice"
 import type { ProfilePageModel } from "./types"
@@ -17,19 +17,28 @@ export function useProfilePage(): ProfilePageModel {
   const user = useSelector((state: RootState) => state.auth.user)
   const displayName = user?.name || t("profile.fallback.name")
   const displayId = user?.display_id || user?.id || t("profile.fallback.id")
-  const email = user?.email || t("profile.fallback.email")
+  const email = user?.email ?? ""
+  const displayEmail = email || t("profile.fallback.email")
+  const hasEmail = Boolean(email)
   const [name, setName] = useState(displayName)
+  const [emailInput, setEmailInput] = useState(email)
   const [currentPassword, setCurrentPassword] = useState("")
   const [newPassword, setNewPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [saving, setSaving] = useState(false)
+  const [emailSaving, setEmailSaving] = useState(false)
   const [passwordSaving, setPasswordSaving] = useState(false)
   const [status, setStatus] = useState("")
+  const [emailStatus, setEmailStatus] = useState("")
   const [passwordStatus, setPasswordStatus] = useState("")
 
   useEffect(() => {
     setName(displayName)
   }, [displayName])
+
+  useEffect(() => {
+    setEmailInput(email)
+  }, [email])
 
   const refreshMe = async () => {
     const nextUser = await meApi()
@@ -50,6 +59,20 @@ export function useProfilePage(): ProfilePageModel {
       setStatus(resolveError(error))
     } finally {
       setSaving(false)
+    }
+  }
+
+  const saveEmail = async () => {
+    setEmailSaving(true)
+    setEmailStatus("")
+    try {
+      await updateEmailApi({ email: emailInput.trim() || null })
+      await refreshMe()
+      setEmailStatus(t("profile.status.emailSaved"))
+    } catch (error) {
+      setEmailStatus(resolveError(error))
+    } finally {
+      setEmailSaving(false)
     }
   }
 
@@ -110,21 +133,27 @@ export function useProfilePage(): ProfilePageModel {
     userAvatar: user?.avatar,
     displayName,
     displayId,
-    email,
+    email: displayEmail,
+    hasEmail,
     avatarFallback: getInitial(displayName),
     name,
+    emailInput,
     currentPassword,
     newPassword,
     confirmPassword,
     saving,
+    emailSaving,
     passwordSaving,
     status,
+    emailStatus,
     passwordStatus,
     setName,
+    setEmailInput,
     setCurrentPassword,
     setNewPassword,
     setConfirmPassword,
     saveProfile,
+    saveEmail,
     changePassword,
     uploadAvatar,
     removeAvatar,

@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next"
 import { ProfileAvatar } from "./components/profile-avatar"
+import { ProfileEmailForm } from "./components/profile-email-form"
 import { ProfileForm } from "./components/profile-form"
 import { ProfilePasswordForm } from "./components/profile-password-form"
 import { useProfilePage } from "./use-profile-page"
@@ -20,6 +21,7 @@ export default function ProfilePage() {
         <div className="grid gap-10 py-6 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-start">
           <div className="space-y-8">
             <ProfileForm profile={profile} />
+            <ProfileEmailForm profile={profile} />
             <ProfilePasswordForm profile={profile} />
           </div>
           <ProfileAvatar profile={profile} />

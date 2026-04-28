@@ -63,6 +63,7 @@ const messages = {
     title: "Public profile",
     sections: {
       account: "Account details",
+      email: "Email",
       security: "Password",
     },
     fields: {
@@ -75,12 +76,14 @@ const messages = {
     },
     placeholders: {
       name: "Enter your display name",
+      email: "Enter email address",
       currentPassword: "Enter current password",
       newPassword: "Enter new password",
       confirmPassword: "Enter new password again",
     },
     help: {
       name: "Your name may appear around this app where you contribute or are mentioned.",
+      emailNotSet: "Set an email address for account recovery and notifications.",
       password: "Use at least 8 characters for your new password.",
       newPassword: "The new password must be at least 8 characters.",
     },
@@ -101,9 +104,18 @@ const messages = {
     password: {
       configured: "Configured",
     },
+    email: {
+      configured: "Configured",
+      notSet: "Not set. Add an email address.",
+    },
     actions: {
       save: "Save profile",
       saving: "Saving...",
+      setEmail: "Set email",
+      changeEmail: "Change email",
+      hideEmail: "Hide",
+      updateEmail: "Update email",
+      savingEmail: "Saving...",
       changePassword: "Change password",
       hidePassword: "Hide",
       updatePassword: "Update password",
@@ -114,6 +126,7 @@ const messages = {
       failed: "Profile update failed.",
       avatarSaved: "Profile picture updated.",
       avatarRemoved: "Profile picture removed.",
+      emailSaved: "Email updated.",
       passwordChanged: "Password changed.",
       passwordMismatch: "New passwords do not match.",
     },

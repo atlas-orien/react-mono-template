@@ -42,11 +42,6 @@ export function ProfileForm({ profile }: ProfileFormProps) {
             {t("profile.fields.id")}
           </dt>
           <dd className="min-w-0 truncate font-medium">{profile.displayId}</dd>
-
-          <dt className="font-medium text-(--app-muted-text)">
-            {t("profile.fields.email")}
-          </dt>
-          <dd className="min-w-0 truncate font-medium">{profile.email}</dd>
         </dl>
       </section>
 
