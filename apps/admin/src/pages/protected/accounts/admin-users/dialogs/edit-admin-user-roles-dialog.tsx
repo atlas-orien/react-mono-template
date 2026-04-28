@@ -4,7 +4,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import type { QueryClient } from "@tanstack/react-query"
 import type { TFunction } from "i18next"
 import { toast } from "@workspace/ui-components"
-import { Badge } from "@workspace/ui-components/stable/badge"
 import { Button } from "@workspace/ui-components/stable/button"
 import { Checkbox } from "@workspace/ui-components/stable/checkbox"
 import {
@@ -75,17 +74,8 @@ export function EditAdminUserRolesDialog({
         </DialogHeader>
 
         <div className="grid gap-4 py-2">
-          {row ? (
-            <div className="grid gap-1">
-              <span className="text-sm font-medium">{row.display_name}</span>
-              <span className="font-mono text-xs text-muted-foreground">
-                {row.user_id}
-              </span>
-            </div>
-          ) : null}
-
           {rolesQuery.isFetching ? (
-            <div className="max-h-80 overflow-auto rounded-(--ui-radius-md) border border-(--app-border)">
+            <div className="max-h-80 overflow-auto">
               <div className="px-3 py-4 text-sm text-muted-foreground">
                 {t("admin.accounts.adminUsers.rolesDialog.loading")}
               </div>
@@ -102,7 +92,7 @@ export function EditAdminUserRolesDialog({
               userId={userId}
             />
           ) : (
-            <div className="max-h-80 overflow-auto rounded-(--ui-radius-md) border border-(--app-border)">
+            <div className="max-h-80 overflow-auto">
               <div className="px-3 py-4 text-sm text-muted-foreground">
                 {t("admin.accounts.adminUsers.rolesDialog.empty")}
               </div>
@@ -183,14 +173,14 @@ function EditAdminUserRolesForm({
 
   return (
     <>
-      <div className="max-h-80 overflow-auto rounded-(--ui-radius-md) border border-(--app-border)">
+      <div className="grid max-h-80 grid-cols-2 gap-2 overflow-auto">
         {roleOptions.map((role) => {
           const checked = selectedRoleIds.includes(role.id)
 
           return (
             <label
               key={role.id}
-              className="flex cursor-pointer items-start gap-3 border-b border-(--app-border) p-3 last:border-b-0"
+              className="flex min-w-0 cursor-pointer items-start gap-2.5 rounded-lg px-1 py-2 transition-colors hover:bg-(--app-muted-bg)"
             >
               <Checkbox
                 checked={checked}
@@ -198,15 +188,8 @@ function EditAdminUserRolesForm({
                 onCheckedChange={(value) => toggleRole(role, value === true)}
               />
               <span className="grid min-w-0 flex-1 gap-1">
-                <span className="flex min-w-0 items-center gap-2">
-                  <span className="truncate text-sm font-medium">
-                    {role.name}
-                  </span>
-                  {checked ? (
-                    <Badge variant="outline">
-                      {t("admin.accounts.adminUsers.rolesDialog.selected")}
-                    </Badge>
-                  ) : null}
+                <span className="truncate text-sm font-medium">
+                  {role.name}
                 </span>
                 <span className="font-mono text-xs text-muted-foreground">
                   {role.code}

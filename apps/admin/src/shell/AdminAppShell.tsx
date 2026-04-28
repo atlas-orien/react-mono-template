@@ -122,11 +122,13 @@ export function AdminAppShell({ children }: AdminAppShellProps) {
               <ThemeToggle key="theme" />,
             ]}
           />
-          <WorkspaceTabs
-            clearLabel={t("admin.shell.workspaceTabs.clear", "Clear history")}
-            items={workspaceTabs.items}
-            onClear={workspaceTabs.clear}
-          />
+          <div className="hidden md:block">
+            <WorkspaceTabs
+              clearLabel={t("admin.shell.workspaceTabs.clear", "Clear history")}
+              items={workspaceTabs.items}
+              onClear={workspaceTabs.clear}
+            />
+          </div>
         </>
       }
       footerAccount={{
