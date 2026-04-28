@@ -7,14 +7,19 @@ export interface ProfilePageModel {
   email: string
   avatarFallback: string
   name: string
-  bio: string
-  url: string
+  currentPassword: string
+  newPassword: string
+  confirmPassword: string
   saving: boolean
+  passwordSaving: boolean
   status: string
+  passwordStatus: string
   setName: (value: string) => void
-  setBio: (value: string) => void
-  setUrl: (value: string) => void
+  setCurrentPassword: (value: string) => void
+  setNewPassword: (value: string) => void
+  setConfirmPassword: (value: string) => void
   saveProfile: () => Promise<void>
+  changePassword: () => Promise<void>
   uploadAvatar: (result: AvatarUploadResult) => Promise<void>
   removeAvatar: () => Promise<void>
 }

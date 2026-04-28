@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 import type { AvatarUploadResult } from "@workspace/app-components"
-import { meApi, updateProfileApi } from "@/api"
+import { meApi, updatePasswordApi, updateProfileApi } from "@/api"
 import type { RootState } from "@/store"
 import { updateUser } from "@/store/authSlice"
 import type { ProfilePageModel } from "./types"
@@ -19,10 +19,13 @@ export function useProfilePage(): ProfilePageModel {
   const displayId = user?.display_id || user?.id || t("profile.fallback.id")
   const email = user?.email || t("profile.fallback.email")
   const [name, setName] = useState(displayName)
-  const [bio, setBio] = useState("")
-  const [url, setUrl] = useState("")
+  const [currentPassword, setCurrentPassword] = useState("")
+  const [newPassword, setNewPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
   const [saving, setSaving] = useState(false)
+  const [passwordSaving, setPasswordSaving] = useState(false)
   const [status, setStatus] = useState("")
+  const [passwordStatus, setPasswordStatus] = useState("")
 
   useEffect(() => {
     setName(displayName)
@@ -47,6 +50,30 @@ export function useProfilePage(): ProfilePageModel {
       setStatus(resolveError(error))
     } finally {
       setSaving(false)
+    }
+  }
+
+  const changePassword = async () => {
+    setPasswordSaving(true)
+    setPasswordStatus("")
+    try {
+      if (newPassword !== confirmPassword) {
+        setPasswordStatus(t("profile.status.passwordMismatch"))
+        return
+      }
+
+      await updatePasswordApi({
+        oldPassword: currentPassword,
+        newPassword,
+      })
+      setCurrentPassword("")
+      setNewPassword("")
+      setConfirmPassword("")
+      setPasswordStatus(t("profile.status.passwordChanged"))
+    } catch (error) {
+      setPasswordStatus(resolveError(error))
+    } finally {
+      setPasswordSaving(false)
     }
   }
 
@@ -86,14 +113,19 @@ export function useProfilePage(): ProfilePageModel {
     email,
     avatarFallback: getInitial(displayName),
     name,
-    bio,
-    url,
+    currentPassword,
+    newPassword,
+    confirmPassword,
     saving,
+    passwordSaving,
     status,
+    passwordStatus,
     setName,
-    setBio,
-    setUrl,
+    setCurrentPassword,
+    setNewPassword,
+    setConfirmPassword,
     saveProfile,
+    changePassword,
     uploadAvatar,
     removeAvatar,
   }

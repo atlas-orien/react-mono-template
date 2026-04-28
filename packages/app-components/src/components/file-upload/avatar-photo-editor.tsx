@@ -1,6 +1,16 @@
 import { useState, type ReactNode } from "react"
 import { Camera } from "lucide-react"
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@workspace/ui-core/components/alert-dialog"
+import {
   Avatar,
   AvatarFallback,
   AvatarImage,
@@ -19,6 +29,10 @@ export interface AvatarPhotoEditorLabels {
   upload: ReactNode
   uploading: ReactNode
   remove: ReactNode
+  removeConfirmTitle: ReactNode
+  removeConfirmDescription: ReactNode
+  removeConfirmCancel: ReactNode
+  removeConfirmAction: ReactNode
 }
 
 export interface AvatarPhotoEditorProps {
@@ -41,6 +55,7 @@ export function AvatarPhotoEditor({
   onRemove,
 }: AvatarPhotoEditorProps) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [removeConfirmOpen, setRemoveConfirmOpen] = useState(false)
 
   return (
     <div className="relative w-fit">
@@ -90,7 +105,7 @@ export function AvatarPhotoEditor({
                 disabled={disabled || !value}
                 onSelect={() => {
                   setMenuOpen(false)
-                  void onRemove()
+                  setRemoveConfirmOpen(true)
                 }}
               >
                 {labels.remove}
@@ -99,6 +114,29 @@ export function AvatarPhotoEditor({
           </DropdownMenu>
         )}
       />
+
+      <AlertDialog
+        open={removeConfirmOpen}
+        onOpenChange={setRemoveConfirmOpen}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{labels.removeConfirmTitle}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {labels.removeConfirmDescription}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{labels.removeConfirmCancel}</AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              onClick={() => void onRemove()}
+            >
+              {labels.removeConfirmAction}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

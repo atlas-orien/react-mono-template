@@ -63,26 +63,26 @@ const messages = {
     title: "Public profile",
     sections: {
       account: "Account details",
+      security: "Password",
     },
     fields: {
       id: "ID",
       email: "Email",
       name: "Name",
-      publicEmail: "Public email",
-      bio: "Bio",
-      url: "URL",
+      currentPassword: "Current password",
+      newPassword: "New password",
+      confirmPassword: "Confirm password",
     },
     placeholders: {
       name: "Enter your display name",
-      email: "Select a verified email to display",
-      bio: "Tell us a little bit about yourself",
-      url: "https://example.com",
+      currentPassword: "Enter current password",
+      newPassword: "Enter new password",
+      confirmPassword: "Enter new password again",
     },
     help: {
       name: "Your name may appear around this app where you contribute or are mentioned.",
-      email:
-        "Email visibility is managed by your account verification settings.",
-      bio: "Bio editing is not connected yet. This field is reserved for profile expansion.",
+      password: "Use at least 8 characters for your new password.",
+      newPassword: "The new password must be at least 8 characters.",
     },
     avatar: {
       title: "Profile picture",
@@ -90,16 +90,27 @@ const messages = {
       upload: "Upload a photo...",
       uploading: "Uploading...",
       remove: "Remove photo",
+      removeConfirm: {
+        title: "Remove profile picture?",
+        description:
+          "Your current profile picture will be removed from your account.",
+        cancel: "Cancel",
+        action: "Remove photo",
+      },
     },
     actions: {
       save: "Save profile",
       saving: "Saving...",
+      changePassword: "Change password",
+      changingPassword: "Changing...",
     },
     status: {
       saved: "Profile saved.",
       failed: "Profile update failed.",
       avatarSaved: "Profile picture updated.",
       avatarRemoved: "Profile picture removed.",
+      passwordChanged: "Password changed.",
+      passwordMismatch: "New passwords do not match.",
     },
     fallback: {
       id: "Unknown ID",

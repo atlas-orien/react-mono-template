@@ -23,6 +23,12 @@ export function ProfileAvatar({ profile }: ProfileAvatarProps) {
             upload: t("profile.avatar.upload"),
             uploading: t("profile.avatar.uploading"),
             remove: t("profile.avatar.remove"),
+            removeConfirmTitle: t("profile.avatar.removeConfirm.title"),
+            removeConfirmDescription: t(
+              "profile.avatar.removeConfirm.description"
+            ),
+            removeConfirmCancel: t("profile.avatar.removeConfirm.cancel"),
+            removeConfirmAction: t("profile.avatar.removeConfirm.action"),
           }}
           onUploaded={profile.uploadAvatar}
           onRemove={profile.removeAvatar}
