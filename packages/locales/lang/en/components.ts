@@ -36,6 +36,21 @@ const components = {
     copyLabel: "Copy",
     copiedLabel: "Copied",
   },
+  avatarUpload: {
+    select: "Upload Avatar",
+    uploading: "Uploading...",
+    errors: {
+      imageOnly: "Please choose an image file.",
+    },
+    crop: {
+      title: "Adjust Avatar",
+      description: "Drag and zoom. The circle is the visible avatar area.",
+      zoom: "Zoom",
+      cancel: "Cancel",
+      confirm: "Save",
+      confirming: "Uploading...",
+    },
+  },
   dataTable: {
     emptyText: "No data available.",
     errorText: "Failed to load data.",

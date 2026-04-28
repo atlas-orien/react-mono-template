@@ -1,6 +1,7 @@
 const messages = {
   admin: {
     navigation: {
+      platform: "平台",
       dashboard: "控制台",
       accountManagement: "账号管理",
       adminUsers: "后台账号",
@@ -14,8 +15,8 @@ const messages = {
     shell: {
       brand: {
         eyebrow: "Workspace",
-        title: "Admin",
-        description: "Enterprise",
+        title: "管理后台",
+        description: "企业版",
       },
       navigation: {
         mobileLabel: "主导航",
@@ -291,7 +292,7 @@ const messages = {
         },
         rolesDialog: {
           title: "编辑角色{{name}}",
-          displayId: "ID {{id}}",
+          id: "ID {{id}}",
           description: "这里只修改用户角色，不会影响用户信息。",
           loading: "角色加载中。",
           empty: "暂无可配置角色。",
@@ -385,7 +386,7 @@ const messages = {
         },
         rolesDialog: {
           title: "编辑角色{{name}}",
-          displayId: "ID {{id}}",
+          id: "ID {{id}}",
           description: "这里只修改用户角色，不会影响用户信息。",
           loading: "角色加载中。",
           empty: "暂无可配置角色。",

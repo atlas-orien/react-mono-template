@@ -19,6 +19,7 @@
     "lucide-react": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
+    "react-easy-crop": "catalog:",
     "react-router": "catalog:",
     "react-day-picker": "catalog:",
     "react-i18next": "catalog:"
@@ -43,6 +44,7 @@
     "./language-switch": "./src/components/preferences/index.ts",
     "./theme-toggle": "./src/components/preferences/index.ts",
     "./tooltip": "./src/components/tooltip/index.ts",
+    "./file-upload": "./src/components/file-upload/index.ts",
     "./mobile-bottom-nav": "./src/components/app-shell/index.ts",
     "./sidebar-shell": "./src/components/app-shell/index.ts",
     "./copyable-text": "./src/components/copyable-text/index.ts",

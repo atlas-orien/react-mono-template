@@ -71,17 +71,15 @@ export function EditAdminUserRolesDialog({
               name: row ? ` ${displayName}` : "",
             })}
           </DialogTitle>
+          {row ? (
+            <div className="font-mono text-xs text-muted-foreground">
+              {t("admin.accounts.adminUsers.rolesDialog.id", {
+                id: row.display_id,
+              })}
+            </div>
+          ) : null}
           <DialogDescription>
-            {row ? (
-              <span className="mb-1 block font-mono text-xs">
-                {t("admin.accounts.adminUsers.rolesDialog.displayId", {
-                  id: row.display_id,
-                })}
-              </span>
-            ) : null}
-            <span className="block">
-              {t("admin.accounts.adminUsers.rolesDialog.description")}
-            </span>
+            {t("admin.accounts.adminUsers.rolesDialog.description")}
           </DialogDescription>
         </DialogHeader>
 

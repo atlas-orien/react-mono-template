@@ -27,6 +27,7 @@ export interface NavigationItemConfig {
 export interface NavigationSectionConfig {
   id: string
   label: string
+  labelKey?: string
   items: NavigationItemConfig[]
 }
 
@@ -34,6 +35,7 @@ export const navigationSections: NavigationSectionConfig[] = [
   {
     id: "platform",
     label: "Platform",
+    labelKey: "admin.navigation.platform",
     items: [
       {
         id: "dashboard",

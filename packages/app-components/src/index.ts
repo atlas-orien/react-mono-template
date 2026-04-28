@@ -63,6 +63,12 @@ export { MultipleDatePicker } from "./components/date-time-picker"
 export { TimePicker } from "./components/date-time-picker"
 export { CopyableText } from "./components/copyable-text"
 export { DataTable } from "./components/data-table"
+export {
+  AvatarUploadField,
+  ImageCropperModal,
+  createCroppedImageFile,
+  createImage,
+} from "./components/file-upload"
 export { MetricCards } from "./components/metric-cards"
 export type { CopyableTextProps } from "./components/copyable-text"
 export type {
@@ -100,6 +106,12 @@ export type {
   MetricCardsProps,
   MetricCardsVariant,
 } from "./components/metric-cards"
+export type {
+  AvatarUploadFieldProps,
+  AvatarUploadResult,
+  AvatarUploadTriggerState,
+  ImageCropperModalProps,
+} from "./components/file-upload"
 export type {
   DatePickerProps,
   DateTimePickerProps,

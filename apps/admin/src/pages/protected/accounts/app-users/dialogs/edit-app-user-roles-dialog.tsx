@@ -71,17 +71,15 @@ export function EditAppUserRolesDialog({
               name: row ? ` ${displayName}` : "",
             })}
           </DialogTitle>
+          {row ? (
+            <div className="font-mono text-xs text-muted-foreground">
+              {t("admin.accounts.appUsers.rolesDialog.id", {
+                id: row.display_id,
+              })}
+            </div>
+          ) : null}
           <DialogDescription>
-            {row ? (
-              <span className="mb-1 block font-mono text-xs">
-                {t("admin.accounts.appUsers.rolesDialog.displayId", {
-                  id: row.display_id,
-                })}
-              </span>
-            ) : null}
-            <span className="block">
-              {t("admin.accounts.appUsers.rolesDialog.description")}
-            </span>
+            {t("admin.accounts.appUsers.rolesDialog.description")}
           </DialogDescription>
         </DialogHeader>
 

@@ -2,8 +2,9 @@ import { createPortal } from "react-dom"
 import Cropper from "react-easy-crop"
 import type { Area, Point } from "react-easy-crop"
 import "react-easy-crop/react-easy-crop.css"
+import { Button, Slider } from "@workspace/ui-components"
 
-interface ImageCropperModalProps {
+export interface ImageCropperModalProps {
   open: boolean
   imageUrl: string
   crop: Point
@@ -16,15 +17,15 @@ interface ImageCropperModalProps {
   onCropComplete: (areaPixels: Area) => void
   onCancel: () => void
   onConfirm: () => void
-  title?: string
-  description?: string
-  zoomLabel?: string
-  cancelLabel?: string
-  confirmLabel?: string
-  confirmingLabel?: string
+  title: string
+  description: string
+  zoomLabel: string
+  cancelLabel: string
+  confirmLabel: string
+  confirmingLabel: string
 }
 
-export default function ImageCropperModal({
+export function ImageCropperModal({
   open,
   imageUrl,
   crop,
@@ -37,22 +38,24 @@ export default function ImageCropperModal({
   onCropComplete,
   onCancel,
   onConfirm,
-  title = "Adjust Image",
-  description = "Drag and zoom. The circle is the visible area.",
-  zoomLabel = "Zoom",
-  cancelLabel = "Cancel",
-  confirmLabel = "Save",
-  confirmingLabel = "Uploading...",
+  title,
+  description,
+  zoomLabel,
+  cancelLabel,
+  confirmLabel,
+  confirmingLabel,
 }: ImageCropperModalProps) {
-  if (!open || typeof document === "undefined") return null
+  if (!open || typeof document === "undefined") {
+    return null
+  }
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-xl rounded-2xl border border-(--app-border) bg-(--app-surface) p-6 shadow-(--ui-shadow-soft)">
-        <h3 className="text-lg font-semibold text-(--app-text)">{title}</h3>
-        <p className="mt-2 text-sm text-(--app-muted-text)">{description}</p>
+    <div className="fixed inset-0 z-[2100] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+      <div className="w-full max-w-xl rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5 text-[var(--surface-foreground)] shadow-[0_24px_80px_rgba(0,0,0,0.55)]">
+        <h3 className="text-lg font-semibold text-foreground">{title}</h3>
+        <p className="mt-2 text-sm text-muted-foreground">{description}</p>
 
-        <div className="relative mt-5 h-80 overflow-hidden rounded-xl border border-(--app-border) bg-black/20">
+        <div className="relative mt-5 h-80 overflow-hidden rounded-lg border border-[var(--border)] bg-black/20">
           <Cropper
             image={imageUrl}
             crop={crop}
@@ -79,37 +82,36 @@ export default function ImageCropperModal({
         </div>
 
         <div className="mt-5 space-y-2">
-          <label className="text-sm font-medium text-(--app-text)">
+          <label className="text-sm font-medium text-foreground">
             {zoomLabel}
           </label>
-          <input
-            type="range"
+          <Slider
             min={minZoom}
             max={maxZoom}
             step={0.01}
-            value={zoom}
-            onChange={(e) => onZoomChange(Number(e.target.value))}
-            className="w-full accent-(--primary)"
+            value={[zoom]}
+            onValueChange={(value) => onZoomChange(value[0] ?? zoom)}
+            disabled={confirming}
           />
         </div>
 
         <div className="mt-6 flex justify-end gap-3">
-          <button
+          <Button
             type="button"
+            variant="outline"
             onClick={onCancel}
             disabled={confirming}
-            className="inline-flex h-10 items-center justify-center rounded-lg border border-(--app-border) px-4 text-sm font-medium text-(--app-text) transition hover:bg-(--app-active-bg) disabled:cursor-not-allowed disabled:opacity-60"
           >
             {cancelLabel}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
+            variant="primary"
             onClick={onConfirm}
             disabled={confirming}
-            className="inline-flex h-10 items-center justify-center rounded-lg bg-(--primary) px-4 text-sm font-medium text-(--primary-foreground) transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {confirming ? confirmingLabel : confirmLabel}
-          </button>
+          </Button>
         </div>
       </div>
     </div>,

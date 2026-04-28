@@ -1,6 +1,7 @@
 const messages = {
   admin: {
     navigation: {
+      platform: "Platform",
       dashboard: "Dashboard",
       accountManagement: "Accounts",
       adminUsers: "Admin Users",
@@ -296,7 +297,7 @@ const messages = {
         },
         rolesDialog: {
           title: "Edit roles{{name}}",
-          displayId: "ID {{id}}",
+          id: "ID {{id}}",
           description: "Only user roles are changed here. User information is not affected.",
           loading: "Loading roles.",
           empty: "No configurable roles.",
@@ -390,7 +391,7 @@ const messages = {
         },
         rolesDialog: {
           title: "Edit roles{{name}}",
-          displayId: "ID {{id}}",
+          id: "ID {{id}}",
           description: "Only user roles are changed here. User information is not affected.",
           loading: "Loading roles.",
           empty: "No configurable roles.",

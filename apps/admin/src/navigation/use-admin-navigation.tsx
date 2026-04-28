@@ -176,7 +176,7 @@ export function useAdminNavigation() {
     () =>
       visibleSections.map((section) => ({
         key: section.id,
-        label: section.label,
+        label: translateNavigationLabel(t, section),
         items: section.items.map((item) => {
           return {
             key: item.id,

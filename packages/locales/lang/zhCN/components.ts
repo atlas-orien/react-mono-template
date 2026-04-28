@@ -36,6 +36,21 @@ const components = {
     copyLabel: "复制",
     copiedLabel: "已复制",
   },
+  avatarUpload: {
+    select: "上传头像",
+    uploading: "上传中...",
+    errors: {
+      imageOnly: "请选择图片文件。",
+    },
+    crop: {
+      title: "调整头像",
+      description: "拖动并缩放图片，圆形区域就是最终头像显示区域。",
+      zoom: "缩放",
+      cancel: "取消",
+      confirm: "保存",
+      confirming: "上传中...",
+    },
+  },
   dataTable: {
     emptyText: "暂无数据",
     errorText: "数据加载失败",
