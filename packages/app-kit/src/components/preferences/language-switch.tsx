@@ -32,9 +32,8 @@ export function LanguageSwitch({ className }: LanguageSwitchProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        mode="primitive"
         className={cn(
-          "inline-flex size-9 items-center justify-center rounded-full border border-transparent bg-transparent text-[var(--info)] shadow-none transition-colors outline-none hover:bg-[var(--surface-hover)] hover:text-[var(--info)] focus-visible:border-[var(--ring)] focus-visible:ring-2 focus-visible:ring-[var(--ring)]/40 data-[state=open]:bg-[var(--surface-hover)]",
+          "inline-flex size-9 items-center justify-center rounded-full border border-transparent bg-transparent text-[var(--info)] shadow-none transition-colors hover:bg-[var(--surface-hover)] hover:text-[var(--info)] data-[state=open]:bg-[var(--surface-hover)]",
           className
         )}
         aria-label={label}

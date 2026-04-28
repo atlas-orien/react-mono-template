@@ -217,6 +217,18 @@ const fetchData = async ({ page, pageSize, query, sort, signal }) => {
 - 菜单显隐应由权限数据和本地菜单映射共同决定，不要把权限判断散落到每个页面按钮里。
 - 后台默认入口跳转应在壳层或导航逻辑统一处理，不要让多个页面各自写一遍“无权限时去哪”。
 
+### 路由与认证布局
+
+`admin` 是后台系统，未登录用户不应看到后台壳层、菜单或任何业务信息。
+
+默认规则：
+
+- 未登录状态只挂载认证路由，例如 login。
+- 已登录并完成权限恢复后才挂载后台 app layout / shell 与 protected routes。
+- `admin` 可以使用 `isAuthenticated ? protectedRoutes : publicRoutes` 的整棵路由切换模式。
+- 不要为了和 `web` 保持形式一致，把后台 app shell 暴露给未登录用户。
+- 公开可浏览页面不应默认放在 `admin`；如果确实需要公开后台入口，必须单独评估其布局和信息暴露边界。
+
 ### 表单与详情页
 
 - 简单表单与基础交互优先使用 `ui-components`。

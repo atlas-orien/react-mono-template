@@ -11,6 +11,7 @@ import {
   ThemeToggle,
   TopBar,
 } from "@workspace/app-kit"
+import { Button } from "@workspace/ui-components/stable/button"
 import type { RootState } from "@/store"
 import { logout } from "@/store/authSlice"
 import { webNavigationSections } from "@/navigation"
@@ -77,7 +78,7 @@ export function WebAppShell({ children }: WebAppShellProps) {
         : location.pathname === item.path
     )
   const topBarTitle =
-    location.pathname === "/" || location.pathname.startsWith("/profile")
+    location.pathname.startsWith("/profile")
       ? t("pages:profile.title")
       : currentItem
         ? t(currentItem.labelKey ?? currentItem.label, currentItem.label)
@@ -95,6 +96,21 @@ export function WebAppShell({ children }: WebAppShellProps) {
     user?.display_id ||
     user?.email ||
     t("web.shell.account.defaultId", "member@example.com")
+
+  const trailing = [
+    <LanguageSwitch key="lang" />,
+    <ThemeToggle key="theme" />,
+    user ? null : (
+      <Button key="login" variant="outline" size="sm" onClick={() => navigate("/login")}>
+        {t("web.shell.account.login", "Sign in")}
+      </Button>
+    ),
+    user ? null : (
+      <Button key="register" size="sm" onClick={() => navigate("/register")}>
+        {t("web.shell.account.register", "Register")}
+      </Button>
+    ),
+  ].filter(Boolean) as ReactNode[]
 
   return (
     <SidebarShell
@@ -117,34 +133,35 @@ export function WebAppShell({ children }: WebAppShellProps) {
         <TopBar
           title={topBarTitle}
           meta={t("web.shell.topbar.meta", "Personal workspace")}
-          trailing={[
-            <LanguageSwitch key="lang" />,
-            <ThemeToggle key="theme" />,
-          ]}
+          trailing={trailing}
         />
       }
-      footerAccount={{
-        avatarAlt: displayName,
-        avatarSrc: user?.avatar,
-        avatarFallback: displayName.charAt(0).toUpperCase(),
-        displayName,
-        displayId: (
-          <CopyableText value={displayId} textClassName="block truncate">
-            {displayId}
-          </CopyableText>
-        ),
-        logout: {
-          label: t("web.shell.account.logout", "Log out"),
-          onSelect: handleLogout,
-        },
-        actions: [
-          {
-            icon: <UserRound />,
-            label: t("web.shell.account.actions.profile", "Profile"),
-            onSelect: () => navigate("/profile"),
-          },
-        ],
-      }}
+      footerAccount={
+        user
+          ? {
+              avatarAlt: displayName,
+              avatarSrc: user.avatar,
+              avatarFallback: displayName.charAt(0).toUpperCase(),
+              displayName,
+              displayId: (
+                <CopyableText value={displayId} textClassName="block truncate">
+                  {displayId}
+                </CopyableText>
+              ),
+              logout: {
+                label: t("web.shell.account.logout", "Log out"),
+                onSelect: handleLogout,
+              },
+              actions: [
+                {
+                  icon: <UserRound />,
+                  label: t("web.shell.account.actions.profile", "Profile"),
+                  onSelect: () => navigate("/profile"),
+                },
+              ],
+            }
+          : undefined
+      }
     >
       {children}
     </SidebarShell>

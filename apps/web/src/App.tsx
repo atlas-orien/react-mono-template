@@ -8,7 +8,6 @@ import {
   addAuthProfileUserUpdatedListener,
 } from "@workspace/app-kit"
 import { loginSuccess, updateUser } from "@/store/authSlice"
-import type { RootState } from "@/store"
 import { publicRoutes } from "@/routes/publicRoutes"
 import { protectedRoutes } from "@/routes/protectedRoutes"
 import { ToastProvider } from "@workspace/ui-components/stable/toast"
@@ -17,9 +16,9 @@ import { toRequestError } from "@workspace/services/errors/request-error"
 import { clearRequestErrorMessage } from "./store/requestErrorSlice"
 
 export default function App() {
-  const isLogin = useSelector((state: RootState) => state.auth.isLogin)
   const requestErrorMessage = useSelector(
-    (state: RootState) => state.requestError.message
+    (state: { requestError: { message: string | null } }) =>
+      state.requestError.message
   )
   const dispatch = useDispatch()
   const token = localStorage.getItem("token")
@@ -58,13 +57,14 @@ export default function App() {
     if (!isRestored) return null
 
     return createBrowserRouter([
-      isLogin ? protectedRoutes : publicRoutes,
+      publicRoutes,
+      protectedRoutes,
       {
         path: "*",
-        element: <Navigate to={isLogin ? "/profile" : "/login"} replace />,
+        element: <Navigate to="/home" replace />,
       },
     ])
-  }, [isLogin, isRestored])
+  }, [isRestored])
 
   if (!router) return <PageLoading fullscreen />
 

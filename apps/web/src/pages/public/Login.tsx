@@ -42,7 +42,7 @@ export default function LoginPage() {
     },
   })
 
-  const from = location.state?.from?.pathname ?? "/profile"
+  const from = location.state?.from?.pathname ?? "/home"
 
   const handleLogin = handleSubmit(async (values) => {
     try {

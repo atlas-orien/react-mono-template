@@ -9,6 +9,7 @@ const messages = {
       navigation: {
         mobileLabel: "Primary navigation",
         workspace: "Workspace",
+        home: "Home",
         profile: "Profile",
       },
       topbar: {
@@ -17,11 +18,44 @@ const messages = {
       account: {
         defaultName: "Member",
         defaultId: "member@example.com",
+        login: "Sign in",
+        register: "Register",
         logout: "Log out",
         actions: {
           profile: "Profile",
         },
       },
+    },
+  },
+  home: {
+    welcome: "Welcome back",
+    publicWelcome: "Welcome",
+    publicTitle: "Web workspace",
+    publicSubtitle: "Public app pages use the same layout before and after sign-in.",
+    fallbackName: "Member",
+    actions: {
+      profile: "Edit profile",
+      login: "Sign in",
+    },
+    account: {
+      title: "Account ready",
+      description:
+        "Your signed-in workspace is active. Private app data stays behind authentication.",
+    },
+    publicAccount: {
+      title: "Public access",
+      description:
+        "You can browse shared pages here. Private account data is only available after sign-in.",
+    },
+    profile: {
+      title: "Profile settings",
+      description:
+        "Update your display name, avatar, email, and password from your profile page.",
+    },
+    publicProfile: {
+      title: "Personal features",
+      description:
+        "Sign in to manage your profile, avatar, email, and password.",
     },
   },
   login: {

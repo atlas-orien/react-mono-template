@@ -26,6 +26,8 @@ export type DropdownMenuTriggerProps = React.ComponentProps<
   typeof DropdownMenuPrimitive.Trigger
 > & {
   mode?: BaseMode
+  classNameMode?: DropdownMenuClassNameMode
+  classResolver?: DropdownMenuClassResolver
 }
 
 export type DropdownMenuContentProps = React.ComponentProps<

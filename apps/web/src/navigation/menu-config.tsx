@@ -1,4 +1,5 @@
 import type { ReactNode } from "react"
+import { House } from "lucide-react"
 
 export interface WebNavigationItemConfig {
   id: string
@@ -16,4 +17,20 @@ export interface WebNavigationSectionConfig {
   items: WebNavigationItemConfig[]
 }
 
-export const webNavigationSections: WebNavigationSectionConfig[] = []
+export const webNavigationSections: WebNavigationSectionConfig[] = [
+  {
+    id: "workspace",
+    label: "Workspace",
+    labelKey: "web.shell.navigation.workspace",
+    items: [
+      {
+        id: "home",
+        label: "Home",
+        labelKey: "web.shell.navigation.home",
+        path: "/home",
+        icon: <House />,
+        matcher: (pathname) => pathname === "/" || pathname === "/home",
+      },
+    ],
+  },
+]

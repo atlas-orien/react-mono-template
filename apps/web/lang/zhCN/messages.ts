@@ -9,6 +9,7 @@ const messages = {
       navigation: {
         mobileLabel: "主导航",
         workspace: "工作区",
+        home: "首页",
         profile: "个人资料",
       },
       topbar: {
@@ -17,11 +18,40 @@ const messages = {
       account: {
         defaultName: "用户",
         defaultId: "member@example.com",
+        login: "登录",
+        register: "注册",
         logout: "退出登录",
         actions: {
           profile: "个人资料",
         },
       },
+    },
+  },
+  home: {
+    welcome: "欢迎回来",
+    publicWelcome: "欢迎",
+    publicTitle: "Web 工作区",
+    publicSubtitle: "公开页面在登录前后使用同一套应用布局。",
+    fallbackName: "用户",
+    actions: {
+      profile: "编辑个人资料",
+      login: "登录",
+    },
+    account: {
+      title: "账号已就绪",
+      description: "当前工作区已登录，应用内的私有信息会保留在登录状态之后。",
+    },
+    publicAccount: {
+      title: "公开访问",
+      description: "你可以浏览共享页面，账号私有信息只会在登录后展示。",
+    },
+    profile: {
+      title: "个人资料设置",
+      description: "你可以在个人资料页面修改显示名称、头像、邮箱和密码。",
+    },
+    publicProfile: {
+      title: "个人功能",
+      description: "登录后可以管理个人资料、头像、邮箱和密码。",
     },
   },
   login: {

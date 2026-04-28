@@ -73,15 +73,27 @@ function DropdownMenuPortal({
 
 function DropdownMenuTrigger({
   mode = DEFAULT_MODE,
+  className,
+  classNameMode = "merge",
+  classResolver,
   ...props
 }: DropdownMenuTriggerProps) {
+  const defaultClassName =
+    "outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
+
   if (mode === "primitive") {
-    return <DropdownMenuPrimitive.Trigger {...props} />
+    return <DropdownMenuPrimitive.Trigger className={className} {...props} />
   }
 
   return (
     <DropdownMenuPrimitive.Trigger
       data-slot="dropdown-menu-trigger"
+      className={resolveStyledDropdownMenuClassName({
+        className,
+        defaultClassName,
+        classNameMode,
+        classResolver,
+      })}
       {...props}
     />
   )
