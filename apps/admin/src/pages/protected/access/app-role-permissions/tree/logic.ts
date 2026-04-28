@@ -1,13 +1,18 @@
 import type { TreeNode } from "@workspace/ui-components"
 import type { RolePermissionTreeNode } from "@/api"
+import type { TFunction } from "i18next"
+import {
+  getPermissionLabel,
+  getPermissionSearchText,
+} from "../../permission-label"
 import type { PermissionSummaryType } from "../types"
 
-export function toTreeNode(node: RolePermissionTreeNode): TreeNode {
+export function toTreeNode(node: RolePermissionTreeNode, t: TFunction): TreeNode {
   return {
     id: String(node.id),
-    label: node.name,
-    searchText: node.name,
-    children: node.children.map((child) => toTreeNode(child)),
+    label: getPermissionLabel(t, node),
+    searchText: getPermissionSearchText(t, node),
+    children: node.children.map((child) => toTreeNode(child, t)),
   }
 }
 

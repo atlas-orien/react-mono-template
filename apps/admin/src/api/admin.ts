@@ -103,6 +103,7 @@ export interface UpdateUserRolesRequest {
 
 export interface RolePermissionTreeNode {
   id: number
+  code?: string | null
   name: string
   kind: PermissionKind
   checked: boolean

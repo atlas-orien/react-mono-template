@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react"
+import { useTranslation } from "react-i18next"
 import type { RolePermissionTreeNode } from "@/api"
 import { emptyPermissionTree } from "./constants"
 import { useAppRolePermissionsData } from "./app-role-permissions-data"
@@ -11,6 +12,7 @@ import {
 import type { SelectedPermissionIdsByRole } from "./types"
 
 export function useAppRolePermissionsPage() {
+  const { t } = useTranslation()
   const [activeRoleId, setActiveRoleId] = useState("")
   const [searchValue, setSearchValue] = useState("")
   const [selectedPermissionIdsByRole, setSelectedPermissionIdsByRole] =
@@ -64,8 +66,8 @@ export function useAppRolePermissionsPage() {
     [flatPermissions, selectedPermissionIds]
   )
   const resourceTree = useMemo(
-    () => permissionTree.map((node) => toTreeNode(node)),
-    [permissionTree]
+    () => permissionTree.map((node) => toTreeNode(node, t)),
+    [permissionTree, t]
   )
   const defaultExpandedIds = useMemo(
     () => permissionTree.map((node) => String(node.id)),
