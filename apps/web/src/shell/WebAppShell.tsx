@@ -1,5 +1,5 @@
 import { type ReactNode, useMemo } from "react"
-import { UserRound } from "lucide-react"
+import { LogIn, UserPlus, UserRound } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 import { useLocation, useNavigate } from "react-router"
@@ -88,14 +88,14 @@ export function WebAppShell({ children }: WebAppShellProps) {
     localStorage.removeItem("token")
     localStorage.removeItem("refreshToken")
     dispatch(logout())
-    navigate("/login", { replace: true })
+    navigate("/home", { replace: true })
   }
 
-  const displayName = user?.name || t("web.shell.account.defaultName", "Member")
-  const displayId =
-    user?.display_id ||
-    user?.email ||
-    t("web.shell.account.defaultId", "member@example.com")
+  const isGuest = !user
+  const displayName = user?.name || t("web.shell.account.guestName", "Guest")
+  const displayId = user
+    ? user.display_id || user.email || t("web.shell.account.defaultId")
+    : t("web.shell.account.guestId", "Not signed in")
 
   const trailing = [
     <LanguageSwitch key="lang" />,
@@ -137,30 +137,47 @@ export function WebAppShell({ children }: WebAppShellProps) {
         />
       }
       footerAccount={
-        user
-          ? {
-              avatarAlt: displayName,
-              avatarSrc: user.avatar,
-              avatarFallback: displayName.charAt(0).toUpperCase(),
-              displayName,
-              displayId: (
-                <CopyableText value={displayId} textClassName="block truncate">
-                  {displayId}
-                </CopyableText>
-              ),
-              logout: {
+        {
+          avatarAlt: displayName,
+          avatarSrc: user?.avatar,
+          avatarFallback: isGuest
+            ? t("web.shell.account.guestFallback", "G")
+            : displayName.charAt(0).toUpperCase(),
+          displayName,
+          displayId: user ? (
+            <CopyableText value={displayId} textClassName="block truncate">
+              {displayId}
+            </CopyableText>
+          ) : (
+            <span className="block truncate">{displayId}</span>
+          ),
+          logout: user
+            ? {
                 label: t("web.shell.account.logout", "Log out"),
                 onSelect: handleLogout,
-              },
-              actions: [
+              }
+            : undefined,
+          actions: user
+            ? [
                 {
                   icon: <UserRound />,
                   label: t("web.shell.account.actions.profile", "Profile"),
                   onSelect: () => navigate("/profile"),
                 },
+              ]
+            : [
+                {
+                  icon: <LogIn />,
+                  label: t("web.shell.account.login", "Sign in"),
+                  onSelect: () => navigate("/login"),
+                },
+                {
+                  icon: <UserPlus />,
+                  label: t("web.shell.account.register", "Register"),
+                  onSelect: () => navigate("/register"),
+                },
               ],
-            }
-          : undefined
+        }
       }
     >
       {children}

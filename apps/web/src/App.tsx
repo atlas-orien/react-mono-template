@@ -8,8 +8,8 @@ import {
   addAuthProfileUserUpdatedListener,
 } from "@workspace/app-kit"
 import { loginSuccess, updateUser } from "@/store/authSlice"
-import { publicRoutes } from "@/routes/publicRoutes"
-import { protectedRoutes } from "@/routes/protectedRoutes"
+import { appRoutes } from "@/routes/appRoutes"
+import { authRoutes } from "@/routes/authRoutes"
 import { ToastProvider } from "@workspace/ui-components/stable/toast"
 import { meApi } from "./api"
 import { toRequestError } from "@workspace/services/errors/request-error"
@@ -57,8 +57,8 @@ export default function App() {
     if (!isRestored) return null
 
     return createBrowserRouter([
-      publicRoutes,
-      protectedRoutes,
+      authRoutes,
+      appRoutes,
       {
         path: "*",
         element: <Navigate to="/home" replace />,

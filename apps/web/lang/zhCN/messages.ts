@@ -18,6 +18,9 @@ const messages = {
       account: {
         defaultName: "用户",
         defaultId: "member@example.com",
+        guestName: "未登录",
+        guestId: "游客访问",
+        guestFallback: "未",
         login: "登录",
         register: "注册",
         logout: "退出登录",

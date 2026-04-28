@@ -18,6 +18,9 @@ const messages = {
       account: {
         defaultName: "Member",
         defaultId: "member@example.com",
+        guestName: "Guest",
+        guestId: "Not signed in",
+        guestFallback: "G",
         login: "Sign in",
         register: "Register",
         logout: "Log out",

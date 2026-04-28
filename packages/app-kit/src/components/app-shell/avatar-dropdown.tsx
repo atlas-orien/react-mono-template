@@ -190,17 +190,19 @@ export function AvatarDropdown({
           </>
         ) : null}
 
-        <div className="p-1">
-          <DropdownMenuItem
-            mode="primitive"
-            className={itemClassName()}
-            onSelect={handleAction(logout)}
-            disabled={logout?.disabled}
-          >
-            <LogOut className="size-5 shrink-0 text-muted-foreground" />
-            <span>{logout?.label ?? logoutLabel}</span>
-          </DropdownMenuItem>
-        </div>
+        {logout ? (
+          <div className="p-1">
+            <DropdownMenuItem
+              mode="primitive"
+              className={itemClassName()}
+              onSelect={handleAction(logout)}
+              disabled={logout.disabled}
+            >
+              <LogOut className="size-5 shrink-0 text-muted-foreground" />
+              <span>{logout.label ?? logoutLabel}</span>
+            </DropdownMenuItem>
+          </div>
+        ) : null}
       </DropdownMenuContent>
     </DropdownMenu>
   )
