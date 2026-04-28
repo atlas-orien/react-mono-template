@@ -39,15 +39,21 @@ export function CategoryBarChart({
           tickLine={false}
           axisLine={false}
           tickMargin={10}
+          tick={{ fill: "var(--foreground)" }}
         />
-        <YAxis tickLine={false} axisLine={false} tickMargin={10} width={36} />
+        <YAxis
+          tickLine={false}
+          axisLine={false}
+          tickMargin={10}
+          width={36}
+        />
         <CoreChartTooltip content={<CoreChartTooltipContent />} />
         <Bar dataKey={valueKey} fill={`var(--color-${valueKey})`} radius={6}>
           <LabelList
             dataKey={valueKey}
             position="top"
             offset={8}
-            className="fill-(--app-muted-text)"
+            fill="var(--foreground)"
             fontSize={12}
           />
         </Bar>
