@@ -1,4 +1,5 @@
 import type { ReactNode } from "react"
+import type { UserInfo } from "@workspace/services/api/auth"
 import type { AvatarUploadResult } from "../../components/file-upload"
 
 export interface AuthProfileModel {
@@ -75,6 +76,11 @@ export interface AuthProfileLabels {
 }
 
 export interface AuthProfilePageProps {
+  initialUser?: UserInfo | null
+  onUserChange?: (user: UserInfo) => void
+}
+
+export interface AuthProfileViewProps {
   profile: AuthProfileModel
   labels: AuthProfileLabels
 }

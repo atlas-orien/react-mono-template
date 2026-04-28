@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next"
-import type { AuthProfileLabels } from "@workspace/app-kit/profile"
+import type { AuthProfileLabels } from "./types"
 
-export function useProfileLabels(): AuthProfileLabels {
-  const { t } = useTranslation()
+export function useAuthProfileLabels(): AuthProfileLabels {
+  const { t } = useTranslation("pages")
 
   return {
     title: t("profile.title"),

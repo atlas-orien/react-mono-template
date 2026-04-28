@@ -1,27 +1,35 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { useDispatch, useSelector } from "react-redux"
-import type { AvatarUploadResult } from "@workspace/app-kit/file-upload"
-import type { AuthProfileModel } from "@workspace/app-kit/profile"
-import { meApi, updateEmailApi, updatePasswordApi, updateProfileApi } from "@/api"
-import type { RootState } from "@/store"
-import { updateUser } from "@/store/authSlice"
+import {
+  meApi,
+  updateEmailApi,
+  updatePasswordApi,
+  updateProfileApi,
+  type UserInfo,
+} from "@workspace/services/api/auth"
+import type { AvatarUploadResult } from "../../components/file-upload"
+import { dispatchAuthProfileUserUpdated } from "./auth-profile-events"
+import type { AuthProfileModel } from "./types"
 
 function getInitial(name: string) {
   return name.trim().charAt(0).toUpperCase() || "U"
 }
 
-export function useProfilePage(): AuthProfileModel {
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
-  const user = useSelector((state: RootState) => state.auth.user)
-  const displayName = user?.name || t("profile.fallback.name")
-  const displayId = user?.display_id || user?.id || t("profile.fallback.id")
-  const email = user?.email ?? ""
-  const displayEmail = email || t("profile.fallback.email")
-  const hasEmail = Boolean(email)
-  const [name, setName] = useState(displayName)
-  const [emailInput, setEmailInput] = useState(email)
+export interface UseAuthProfilePageOptions {
+  initialUser?: UserInfo | null
+  onUserChange?: (user: UserInfo) => void
+}
+
+export function useAuthProfilePage({
+  initialUser = null,
+  onUserChange,
+}: UseAuthProfilePageOptions = {}) {
+  const { t } = useTranslation("pages")
+  const [user, setUser] = useState<UserInfo | null>(initialUser)
+  const [loading, setLoading] = useState(!initialUser)
+  const [loadError, setLoadError] = useState("")
+  const [name, setName] = useState(initialUser?.name ?? "")
+  const [emailInput, setEmailInput] = useState(initialUser?.email ?? "")
   const [currentPassword, setCurrentPassword] = useState("")
   const [newPassword, setNewPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
@@ -31,6 +39,55 @@ export function useProfilePage(): AuthProfileModel {
   const [status, setStatus] = useState("")
   const [emailStatus, setEmailStatus] = useState("")
   const [passwordStatus, setPasswordStatus] = useState("")
+
+  const applyUser = useCallback(
+    (nextUser: UserInfo) => {
+      setUser(nextUser)
+      onUserChange?.(nextUser)
+      dispatchAuthProfileUserUpdated(nextUser)
+    },
+    [onUserChange]
+  )
+
+  useEffect(() => {
+    if (!initialUser) return
+    setUser(initialUser)
+  }, [initialUser])
+
+  useEffect(() => {
+    let active = true
+
+    async function loadProfile() {
+      setLoading(true)
+      setLoadError("")
+      try {
+        const nextUser = await meApi()
+        if (active) {
+          applyUser(nextUser)
+        }
+      } catch (error) {
+        if (active) {
+          setLoadError(resolveError(error, t("profile.status.failed")))
+        }
+      } finally {
+        if (active) {
+          setLoading(false)
+        }
+      }
+    }
+
+    void loadProfile()
+
+    return () => {
+      active = false
+    }
+  }, [applyUser, t])
+
+  const displayName = user?.name || t("profile.fallback.name")
+  const displayId = user?.display_id || user?.id || t("profile.fallback.id")
+  const email = user?.email ?? ""
+  const displayEmail = email || t("profile.fallback.email")
+  const hasEmail = Boolean(email)
 
   useEffect(() => {
     setName(displayName)
@@ -42,11 +99,11 @@ export function useProfilePage(): AuthProfileModel {
 
   const refreshMe = async () => {
     const nextUser = await meApi()
-    dispatch(updateUser(nextUser))
+    applyUser(nextUser)
   }
 
-  const resolveError = (error: unknown) =>
-    error instanceof Error ? error.message : t("profile.status.failed")
+  const resolveProfileError = (error: unknown) =>
+    resolveError(error, t("profile.status.failed"))
 
   const saveProfile = async () => {
     setSaving(true)
@@ -56,7 +113,7 @@ export function useProfilePage(): AuthProfileModel {
       await refreshMe()
       setStatus(t("profile.status.saved"))
     } catch (error) {
-      setStatus(resolveError(error))
+      setStatus(resolveProfileError(error))
     } finally {
       setSaving(false)
     }
@@ -70,7 +127,7 @@ export function useProfilePage(): AuthProfileModel {
       await refreshMe()
       setEmailStatus(t("profile.status.emailSaved"))
     } catch (error) {
-      setEmailStatus(resolveError(error))
+      setEmailStatus(resolveProfileError(error))
     } finally {
       setEmailSaving(false)
     }
@@ -94,7 +151,7 @@ export function useProfilePage(): AuthProfileModel {
       setConfirmPassword("")
       setPasswordStatus(t("profile.status.passwordChanged"))
     } catch (error) {
-      setPasswordStatus(resolveError(error))
+      setPasswordStatus(resolveProfileError(error))
     } finally {
       setPasswordSaving(false)
     }
@@ -108,7 +165,7 @@ export function useProfilePage(): AuthProfileModel {
       await refreshMe()
       setStatus(t("profile.status.avatarSaved"))
     } catch (error) {
-      setStatus(resolveError(error))
+      setStatus(resolveProfileError(error))
       throw error
     } finally {
       setSaving(false)
@@ -123,13 +180,13 @@ export function useProfilePage(): AuthProfileModel {
       await refreshMe()
       setStatus(t("profile.status.avatarRemoved"))
     } catch (error) {
-      setStatus(resolveError(error))
+      setStatus(resolveProfileError(error))
     } finally {
       setSaving(false)
     }
   }
 
-  return {
+  const profile: AuthProfileModel = {
     userAvatar: user?.avatar,
     displayName,
     displayId,
@@ -158,4 +215,14 @@ export function useProfilePage(): AuthProfileModel {
     uploadAvatar,
     removeAvatar,
   }
+
+  return {
+    profile,
+    loading,
+    loadError,
+  }
+}
+
+function resolveError(error: unknown, fallback: string) {
+  return error instanceof Error ? error.message : fallback
 }

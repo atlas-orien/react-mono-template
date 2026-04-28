@@ -4,6 +4,7 @@ export const supportedLanguages = ["en", "zhCN"] as const
 export const localeNamespaces = [
   "common",
   "messages",
+  "pages",
   "components",
   "errors",
 ] as const

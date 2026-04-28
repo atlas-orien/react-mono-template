@@ -78,7 +78,7 @@ export function WebAppShell({ children }: WebAppShellProps) {
     )
   const topBarTitle =
     location.pathname === "/" || location.pathname.startsWith("/profile")
-      ? t("profile.title")
+      ? t("pages:profile.title")
       : currentItem
         ? t(currentItem.labelKey ?? currentItem.label, currentItem.label)
         : t("web.shell.brand.title", "Web")

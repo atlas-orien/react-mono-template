@@ -34,10 +34,16 @@ export {
 } from "./components/feedback"
 export {
   AuthProfilePage,
+  AuthProfileView,
   ProfileAvatarSection,
   ProfileEmailSection,
   ProfileNameSection,
   ProfilePasswordSection,
+  addAuthProfileUserUpdatedListener,
+  authProfileUserUpdatedEvent,
+  dispatchAuthProfileUserUpdated,
+  useAuthProfileLabels,
+  useAuthProfilePage,
 } from "./pages/profile"
 export type {
   AppNoticeProps,
@@ -50,6 +56,7 @@ export type {
   AuthProfileLabels,
   AuthProfileModel,
   AuthProfilePageProps,
+  AuthProfileViewProps,
 } from "./pages/profile"
 export { LanguageSwitch, ThemeToggle } from "./components/preferences"
 export type {

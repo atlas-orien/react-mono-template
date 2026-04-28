@@ -2,8 +2,12 @@ import { useEffect, useMemo } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { RouterProvider, createBrowserRouter, Navigate } from "react-router"
 import { useQuery } from "@tanstack/react-query"
-import { GlobalRequestError, PageLoading } from "@workspace/app-kit"
-import { loginSuccess } from "@/store/authSlice"
+import {
+  GlobalRequestError,
+  PageLoading,
+  addAuthProfileUserUpdatedListener,
+} from "@workspace/app-kit"
+import { loginSuccess, updateUser } from "@/store/authSlice"
 import type { RootState } from "@/store"
 import { publicRoutes } from "@/routes/publicRoutes"
 import { protectedRoutes } from "@/routes/protectedRoutes"
@@ -41,6 +45,12 @@ export default function App() {
     localStorage.removeItem("token")
     localStorage.removeItem("refreshToken")
   }, [restoreQuery.error, restoreQuery.isError])
+
+  useEffect(() => {
+    return addAuthProfileUserUpdatedListener((user) => {
+      dispatch(updateUser(user))
+    })
+  }, [dispatch])
 
   const isRestored = !token || restoreQuery.status !== "pending"
 
