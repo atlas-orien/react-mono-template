@@ -98,10 +98,15 @@ const messages = {
         action: "Remove photo",
       },
     },
+    password: {
+      configured: "Configured",
+    },
     actions: {
       save: "Save profile",
       saving: "Saving...",
       changePassword: "Change password",
+      hidePassword: "Hide",
+      updatePassword: "Update password",
       changingPassword: "Changing...",
     },
     status: {

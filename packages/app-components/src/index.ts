@@ -70,7 +70,6 @@ export {
   createCroppedImageFile,
   createImage,
 } from "./components/file-upload"
-export { ReadonlyInfoCard } from "./components/info"
 export { MetricCards } from "./components/metric-cards"
 export type { CopyableTextProps } from "./components/copyable-text"
 export type {
@@ -116,7 +115,6 @@ export type {
   AvatarUploadTriggerState,
   ImageCropperModalProps,
 } from "./components/file-upload"
-export type { ReadonlyInfoCardProps } from "./components/info"
 export type {
   DatePickerProps,
   DateTimePickerProps,

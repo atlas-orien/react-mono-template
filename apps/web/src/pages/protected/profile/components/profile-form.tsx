@@ -1,6 +1,4 @@
-import { Mail, ShieldCheck } from "lucide-react"
 import { useTranslation } from "react-i18next"
-import { ReadonlyInfoCard } from "@workspace/app-components"
 import { Button } from "@workspace/ui-components/stable/button"
 import {
   Field,
@@ -39,20 +37,17 @@ export function ProfileForm({ profile }: ProfileFormProps) {
         <h2 className="text-sm font-semibold">
           {t("profile.sections.account")}
         </h2>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <ReadonlyInfoCard
-            icon={<ShieldCheck />}
-            label={t("profile.fields.id")}
-            value={profile.displayId}
-            copyable={Boolean(profile.displayId)}
-          />
-          <ReadonlyInfoCard
-            icon={<Mail />}
-            label={t("profile.fields.email")}
-            value={profile.email}
-            copyable={Boolean(profile.email)}
-          />
-        </div>
+        <dl className="grid gap-x-6 gap-y-3 text-sm sm:grid-cols-[max-content_minmax(0,1fr)]">
+          <dt className="font-medium text-(--app-muted-text)">
+            {t("profile.fields.id")}
+          </dt>
+          <dd className="min-w-0 truncate font-medium">{profile.displayId}</dd>
+
+          <dt className="font-medium text-(--app-muted-text)">
+            {t("profile.fields.email")}
+          </dt>
+          <dd className="min-w-0 truncate font-medium">{profile.email}</dd>
+        </dl>
       </section>
 
       <Separator />

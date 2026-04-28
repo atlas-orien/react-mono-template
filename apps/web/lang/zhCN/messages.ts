@@ -94,10 +94,15 @@ const messages = {
         action: "移除头像",
       },
     },
+    password: {
+      configured: "已配置",
+    },
     actions: {
       save: "保存资料",
       saving: "保存中...",
       changePassword: "修改密码",
+      hidePassword: "隐藏",
+      updatePassword: "更新密码",
       changingPassword: "修改中...",
     },
     status: {
