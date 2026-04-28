@@ -1,6 +1,6 @@
 import type { AdminUserStatus as ApiAdminUserStatus } from "@/api"
 
-export type AdminUserStatusLabel = "启用" | "停用"
+export type AdminUserStatusFilter = ApiAdminUserStatus
 
 export interface AdminUserRow {
   user_id: string
@@ -13,5 +13,5 @@ export interface AdminUserRow {
 
 export interface AdminUserTableQuery {
   keyword: string
-  status: "" | AdminUserStatusLabel
+  status: "" | AdminUserStatusFilter
 }

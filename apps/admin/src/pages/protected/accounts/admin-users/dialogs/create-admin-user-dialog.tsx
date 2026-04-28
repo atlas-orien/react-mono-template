@@ -1,18 +1,15 @@
 import { useMemo, useState } from "react"
+import { useTranslation } from "react-i18next"
 import type { DataTableInsertActionConfig } from "@workspace/app-components"
 import { Input, Select } from "@workspace/ui-components"
 import { createAdminUserApi, registerApi } from "@/api"
 
 type CreateAdminUserMode = "existing-account" | "new-account"
 
-const createModeOptions = [
-  { label: "已有账号转后台账号", value: "existing-account" },
-  { label: "新建账号并创建后台账号", value: "new-account" },
-] as const
-
 export function useCreateAdminUserInsertAction(
   invalidateAdminUsers: () => Promise<unknown>
 ): DataTableInsertActionConfig {
+  const { t } = useTranslation()
   const [createMode, setCreateMode] =
     useState<CreateAdminUserMode>("existing-account")
   const [existingIdentifier, setExistingIdentifier] = useState("")
@@ -22,16 +19,32 @@ export function useCreateAdminUserInsertAction(
   const [newEmail, setNewEmail] = useState("")
   const [draftRemark, setDraftRemark] = useState("")
 
+  const createModeOptions = useMemo(
+    () =>
+      [
+        {
+          label: t("admin.accounts.adminUsers.create.mode.existing"),
+          value: "existing-account",
+        },
+        {
+          label: t("admin.accounts.adminUsers.create.mode.new"),
+          value: "new-account",
+        },
+      ] as const,
+    [t]
+  )
+
   return useMemo(
     () => ({
-      label: "新增后台账号",
-      title: "创建后台账号",
-      description:
-        "支持两种方式：直接将已有 auth 账号加入后台，或先注册新账号，再立即创建后台账号。",
+      label: t("admin.accounts.adminUsers.create.label"),
+      title: t("admin.accounts.adminUsers.create.title"),
+      description: t("admin.accounts.adminUsers.create.description"),
       renderContent: () => (
         <div className="grid gap-4 py-2">
           <div className="grid gap-2">
-            <span className="text-sm font-medium">创建方式</span>
+            <span className="text-sm font-medium">
+              {t("admin.accounts.adminUsers.create.mode.label")}
+            </span>
             <Select
               value={createMode}
               onValueChange={(value) =>
@@ -47,47 +60,69 @@ export function useCreateAdminUserInsertAction(
           {createMode === "existing-account" ? (
             <>
               <div className="grid gap-2">
-                <span className="text-sm font-medium">账号</span>
+                <span className="text-sm font-medium">
+                  {t("admin.accounts.adminUsers.create.fields.account.label")}
+                </span>
                 <Input
                   value={existingIdentifier}
                   onValueChange={setExistingIdentifier}
-                  placeholder="输入用户名、邮箱或展示 ID"
+                  placeholder={t(
+                    "admin.accounts.adminUsers.create.fields.account.placeholder"
+                  )}
                 />
               </div>
             </>
           ) : (
             <>
               <div className="grid gap-2">
-                <span className="text-sm font-medium">用户名</span>
+                <span className="text-sm font-medium">
+                  {t("admin.accounts.adminUsers.create.fields.username.label")}
+                </span>
                 <Input
                   value={newUsername}
                   onValueChange={setNewUsername}
-                  placeholder="输入新用户名"
+                  placeholder={t(
+                    "admin.accounts.adminUsers.create.fields.username.placeholder"
+                  )}
                 />
               </div>
               <div className="grid gap-2">
-                <span className="text-sm font-medium">密码</span>
+                <span className="text-sm font-medium">
+                  {t("admin.accounts.adminUsers.create.fields.password.label")}
+                </span>
                 <Input
                   value={newPassword}
                   onValueChange={setNewPassword}
-                  placeholder="输入初始密码"
+                  placeholder={t(
+                    "admin.accounts.adminUsers.create.fields.password.placeholder"
+                  )}
                   type="password"
                 />
               </div>
               <div className="grid gap-2">
-                <span className="text-sm font-medium">显示名称</span>
+                <span className="text-sm font-medium">
+                  {t(
+                    "admin.accounts.adminUsers.create.fields.displayName.label"
+                  )}
+                </span>
                 <Input
                   value={newDisplayName}
                   onValueChange={setNewDisplayName}
-                  placeholder="输入显示名称"
+                  placeholder={t(
+                    "admin.accounts.adminUsers.create.fields.displayName.placeholder"
+                  )}
                 />
               </div>
               <div className="grid gap-2">
-                <span className="text-sm font-medium">邮箱（可选）</span>
+                <span className="text-sm font-medium">
+                  {t("admin.accounts.adminUsers.create.fields.email.label")}
+                </span>
                 <Input
                   value={newEmail}
                   onValueChange={setNewEmail}
-                  placeholder="输入邮箱"
+                  placeholder={t(
+                    "admin.accounts.adminUsers.create.fields.email.placeholder"
+                  )}
                   type="email"
                 />
               </div>
@@ -95,11 +130,15 @@ export function useCreateAdminUserInsertAction(
           )}
 
           <div className="grid gap-2">
-            <span className="text-sm font-medium">备注</span>
+            <span className="text-sm font-medium">
+              {t("admin.accounts.adminUsers.create.fields.remark.label")}
+            </span>
             <Input
               value={draftRemark}
               onValueChange={setDraftRemark}
-              placeholder="输入备注（可选）"
+              placeholder={t(
+                "admin.accounts.adminUsers.create.fields.remark.placeholder"
+              )}
             />
           </div>
         </div>
@@ -111,7 +150,9 @@ export function useCreateAdminUserInsertAction(
           const identifier = existingIdentifier.trim()
 
           if (!identifier) {
-            throw new Error("identifier is required")
+            throw new Error(
+              t("admin.accounts.adminUsers.create.errors.identifierRequired")
+            )
           }
 
           await createAdminUserApi({
@@ -125,13 +166,19 @@ export function useCreateAdminUserInsertAction(
           const email = newEmail.trim()
 
           if (!username) {
-            throw new Error("username is required")
+            throw new Error(
+              t("admin.accounts.adminUsers.create.errors.usernameRequired")
+            )
           }
           if (!password) {
-            throw new Error("password is required")
+            throw new Error(
+              t("admin.accounts.adminUsers.create.errors.passwordRequired")
+            )
           }
           if (!displayName) {
-            throw new Error("display_name is required")
+            throw new Error(
+              t("admin.accounts.adminUsers.create.errors.displayNameRequired")
+            )
           }
 
           await registerApi({
@@ -159,6 +206,7 @@ export function useCreateAdminUserInsertAction(
     }),
     [
       createMode,
+      createModeOptions,
       draftRemark,
       existingIdentifier,
       invalidateAdminUsers,
@@ -166,6 +214,7 @@ export function useCreateAdminUserInsertAction(
       newEmail,
       newPassword,
       newUsername,
+      t,
     ]
   )
 }

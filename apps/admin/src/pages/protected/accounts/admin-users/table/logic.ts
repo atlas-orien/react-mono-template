@@ -1,6 +1,6 @@
 import type {
   AdminUserRow,
-  AdminUserStatusLabel,
+  AdminUserStatusFilter,
   AdminUserTableQuery,
 } from "../types"
 import { mapStatusLabelToApiStatus } from "./status"
@@ -27,7 +27,7 @@ export function filterAdminUsers(
 
     const matchesStatus =
       query.status.length === 0 ||
-      mapStatusLabelToApiStatus(query.status as AdminUserStatusLabel) === row.status
+      mapStatusLabelToApiStatus(query.status as AdminUserStatusFilter) === row.status
 
     return matchesKeyword && matchesStatus
   })

@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import type { QueryClient } from "@tanstack/react-query"
+import type { TFunction } from "i18next"
 import { toast } from "@workspace/ui-components"
 import { Badge } from "@workspace/ui-components/stable/badge"
 import { Button } from "@workspace/ui-components/stable/button"
@@ -35,6 +37,7 @@ export function EditAdminUserRolesDialog({
   open: boolean
   row: AdminUserRow | null
 }) {
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
   const userId = row?.user_id ?? ""
 
@@ -61,9 +64,13 @@ export function EditAdminUserRolesDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>编辑角色{row ? ` ${row.display_id}` : ""}</DialogTitle>
+          <DialogTitle>
+            {t("admin.accounts.adminUsers.rolesDialog.title", {
+              id: row ? ` ${row.display_id}` : "",
+            })}
+          </DialogTitle>
           <DialogDescription>
-            这里仅修改 user_roles 关系，不会修改后台账号资料。
+            {t("admin.accounts.adminUsers.rolesDialog.description")}
           </DialogDescription>
         </DialogHeader>
 
@@ -80,7 +87,7 @@ export function EditAdminUserRolesDialog({
           {rolesQuery.isFetching ? (
             <div className="max-h-80 overflow-auto rounded-(--ui-radius-md) border border-(--app-border)">
               <div className="px-3 py-4 text-sm text-muted-foreground">
-                角色加载中。
+                {t("admin.accounts.adminUsers.rolesDialog.loading")}
               </div>
             </div>
           ) : visibleRoleOptions.length > 0 ? (
@@ -91,12 +98,13 @@ export function EditAdminUserRolesDialog({
               onSaved={onSaved}
               queryClient={queryClient}
               roleOptions={visibleRoleOptions}
+              t={t}
               userId={userId}
             />
           ) : (
             <div className="max-h-80 overflow-auto rounded-(--ui-radius-md) border border-(--app-border)">
               <div className="px-3 py-4 text-sm text-muted-foreground">
-                暂无可配置角色。
+                {t("admin.accounts.adminUsers.rolesDialog.empty")}
               </div>
             </div>
           )}
@@ -105,7 +113,7 @@ export function EditAdminUserRolesDialog({
         {rolesQuery.isFetching || visibleRoleOptions.length === 0 ? (
           <DialogFooter>
             <Button variant="outline" onClick={() => onOpenChange(false)}>
-              取消
+              {t("admin.accounts.adminUsers.rolesDialog.cancel")}
             </Button>
           </DialogFooter>
         ) : null}
@@ -120,6 +128,7 @@ function EditAdminUserRolesForm({
   onSaved,
   queryClient,
   roleOptions,
+  t,
   userId,
 }: {
   hiddenSelectedRoleIds: number[]
@@ -127,6 +136,7 @@ function EditAdminUserRolesForm({
   onSaved: () => void
   queryClient: QueryClient
   roleOptions: UserRoleOptionResponse[]
+  t: TFunction
   userId: string
 }) {
   const serverSelectedRoleIds = useMemo(
@@ -148,7 +158,7 @@ function EditAdminUserRolesForm({
         queryKey: adminUsersQueryKey,
       })
       onSaved()
-      toast.success("用户角色已更新")
+      toast.success(t("admin.accounts.adminUsers.rolesDialog.success"))
       onClose()
     },
   })
@@ -192,7 +202,11 @@ function EditAdminUserRolesForm({
                   <span className="truncate text-sm font-medium">
                     {role.name}
                   </span>
-                  {checked ? <Badge variant="outline">已选择</Badge> : null}
+                  {checked ? (
+                    <Badge variant="outline">
+                      {t("admin.accounts.adminUsers.rolesDialog.selected")}
+                    </Badge>
+                  ) : null}
                 </span>
                 <span className="font-mono text-xs text-muted-foreground">
                   {role.code}
@@ -209,21 +223,21 @@ function EditAdminUserRolesForm({
           onClick={onClose}
           disabled={updateRolesMutation.isPending}
         >
-          取消
+          {t("admin.accounts.adminUsers.rolesDialog.cancel")}
         </Button>
         <Button
           variant="outline"
           onClick={handleReset}
           disabled={updateRolesMutation.isPending}
         >
-          重置
+          {t("admin.accounts.adminUsers.rolesDialog.reset")}
         </Button>
         <Button
           variant="primary"
           onClick={handleSave}
           disabled={updateRolesMutation.isPending}
         >
-          保存角色
+          {t("admin.accounts.adminUsers.rolesDialog.save")}
         </Button>
       </DialogFooter>
     </>

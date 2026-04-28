@@ -23,6 +23,7 @@
     "@reduxjs/toolkit": "catalog:",
     "@tanstack/react-query": "catalog:",
     "i18next": "catalog:",
+    "lucide-react": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-easy-crop": "catalog:",

@@ -357,6 +357,9 @@ importers:
       i18next:
         specifier: 'catalog:'
         version: 25.10.9(typescript@5.9.3)
+      lucide-react:
+        specifier: 'catalog:'
+        version: 1.8.0(react@19.2.4)
       react:
         specifier: 'catalog:'
         version: 19.2.4

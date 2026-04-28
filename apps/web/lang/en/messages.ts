@@ -1,4 +1,26 @@
 const messages = {
+  web: {
+    shell: {
+      brand: {
+        eyebrow: "Web App",
+        title: "Web",
+        description: "Member workspace",
+      },
+      navigation: {
+        workspace: "Workspace",
+        guide: "Guide",
+        about: "About",
+      },
+      topbar: {
+        meta: "Personal workspace",
+      },
+      account: {
+        defaultName: "Member",
+        defaultId: "member@example.com",
+        logout: "Log out",
+      },
+    },
+  },
   login: {
     brand: "AI STANDARDIZED FRAMEWORK",
     hero: {

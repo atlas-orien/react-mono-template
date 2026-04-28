@@ -2,10 +2,11 @@ import type {
   DataTableFetchResult,
   DataTableSortState,
 } from "@workspace/app-components"
-import { adminUserColumns } from "./columns"
+import { useTranslation } from "react-i18next"
+import { buildAdminUserColumns } from "./columns"
 import {
-  adminUserBuiltInQueryFields,
-  adminUserQueryFields,
+  buildAdminUserBuiltInQueryFields,
+  buildAdminUserQueryFields,
 } from "./query-fields"
 import { adminUserInitialQuery, adminUserPageSizeOptions } from "../constants"
 import { useAdminUserRowActions } from "./row-actions"
@@ -22,17 +23,18 @@ export function useAdminUsersTable(
   invalidateAdminUsers: () => Promise<unknown>,
   onEditRoles: (row: AdminUserRow) => void
 ) {
+  const { t } = useTranslation()
   const rowActions = useAdminUserRowActions(invalidateAdminUsers, onEditRoles)
 
   return {
-    columns: adminUserColumns,
+    columns: buildAdminUserColumns(t),
     fetchData,
     getRowId: (row: AdminUserRow) => row.user_id,
     initialPageSize: 10,
     initialQuery: adminUserInitialQuery,
     query: {
-      builtInFields: adminUserBuiltInQueryFields,
-      fields: adminUserQueryFields,
+      builtInFields: buildAdminUserBuiltInQueryFields(t),
+      fields: buildAdminUserQueryFields(t),
     },
     pageSizeOptions: adminUserPageSizeOptions,
     rowActions,

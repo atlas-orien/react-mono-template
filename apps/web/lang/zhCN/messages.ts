@@ -1,4 +1,26 @@
 const messages = {
+  web: {
+    shell: {
+      brand: {
+        eyebrow: "Web App",
+        title: "Web",
+        description: "用户工作台",
+      },
+      navigation: {
+        workspace: "工作区",
+        guide: "Guide",
+        about: "关于",
+      },
+      topbar: {
+        meta: "个人工作区",
+      },
+      account: {
+        defaultName: "用户",
+        defaultId: "member@example.com",
+        logout: "退出登录",
+      },
+    },
+  },
   login: {
     brand: "AI 标准化开发框架",
     hero: {

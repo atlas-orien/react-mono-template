@@ -161,6 +161,144 @@ const messages = {
         watching: "观察中",
       },
     },
+    accounts: {
+      adminUsers: {
+        data: {
+          fallbackDisplayName: "未设置显示名称",
+        },
+        metrics: {
+          all: {
+            label: "后台账号总数",
+            tail: "当前已注册为后台可登录账号的后台用户数量。",
+          },
+          enabled: {
+            label: "启用账号",
+            tail: "具备正常后台访问能力的账号。",
+          },
+          disabled: {
+            label: "停用账号",
+            tail: "已被禁用，需要人工恢复或复核。",
+          },
+          multiRole: {
+            label: "多角色账号",
+            tail: "同时挂载多个角色的重点账号。",
+          },
+        },
+        table: {
+          columns: {
+            id: "ID",
+            displayName: "显示名称",
+            remark: "备注",
+            status: "状态",
+            roles: "角色",
+            roleCount: "角色数",
+          },
+          empty: {
+            remark: "无备注",
+            roles: "未分配角色",
+          },
+          status: {
+            enabled: "启用",
+            disabled: "停用",
+          },
+          query: {
+            keyword: {
+              label: "关键字",
+              placeholder: "搜索显示名称、ID、备注或角色",
+            },
+            status: {
+              label: "状态",
+              placeholder: "状态",
+            },
+          },
+          actions: {
+            edit: {
+              label: "编辑",
+              title: "编辑后台账号 {{id}}",
+              description: "当前可编辑备注，保存后会同步到服务端。",
+              success: "后台账号已更新",
+            },
+            delete: {
+              label: "删除",
+              title: "删除后台账号 {{id}}",
+              description:
+                "确认删除后台账号 {{name}}（{{id}}）？删除后该账号将无法进入后台。",
+              confirm: "删除",
+              success: "后台账号已删除",
+            },
+            toggle: {
+              enable: "启用",
+              disable: "停用",
+              enabledSuccess: "后台账号已启用",
+              disabledSuccess: "后台账号已停用",
+            },
+            editRoles: "编辑角色",
+          },
+        },
+        create: {
+          label: "新增后台账号",
+          title: "创建后台账号",
+          description:
+            "支持两种方式：直接将已有 auth 账号加入后台，或先注册新账号，再立即创建后台账号。",
+          mode: {
+            label: "创建方式",
+            existing: "已有账号转后台账号",
+            new: "新建账号并创建后台账号",
+          },
+          fields: {
+            account: {
+              label: "账号",
+              placeholder: "输入用户名、邮箱或展示 ID",
+            },
+            username: {
+              label: "用户名",
+              placeholder: "输入新用户名",
+            },
+            password: {
+              label: "密码",
+              placeholder: "输入初始密码",
+            },
+            displayName: {
+              label: "显示名称",
+              placeholder: "输入显示名称",
+            },
+            email: {
+              label: "邮箱（可选）",
+              placeholder: "输入邮箱",
+            },
+            remark: {
+              label: "备注",
+              placeholder: "输入备注（可选）",
+            },
+          },
+          errors: {
+            identifierRequired: "请输入账号。",
+            usernameRequired: "请输入用户名。",
+            passwordRequired: "请输入密码。",
+            displayNameRequired: "请输入显示名称。",
+          },
+        },
+        edit: {
+          fields: {
+            id: "ID",
+            displayName: "显示名称",
+            remark: "备注",
+          },
+          remarkPlaceholder: "输入备注",
+        },
+        rolesDialog: {
+          title: "编辑角色{{id}}",
+          description: "这里仅修改 user_roles 关系，不会修改后台账号资料。",
+          loading: "角色加载中。",
+          empty: "暂无可配置角色。",
+          selected: "已选择",
+          cancel: "取消",
+          reset: "重置",
+          save: "保存角色",
+          success: "用户角色已更新",
+        },
+      },
+    },
   },
   login: {
     form: {

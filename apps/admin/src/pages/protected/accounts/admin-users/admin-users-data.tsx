@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from "react"
+import { useTranslation } from "react-i18next"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import type {
   DataTableFetchResult,
@@ -16,6 +17,7 @@ import { adminUsersQueryKey } from "./constants"
 import type { AdminUserRow, AdminUserTableQuery } from "./types"
 
 export function useAdminUsersData() {
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
 
   const loadAdminUserRows = useCallback(async (): Promise<AdminUserRow[]> => {
@@ -27,13 +29,15 @@ export function useAdminUsersData() {
       return {
         user_id: adminUser.userId,
         display_id: adminUser.displayId?.trim() || adminUser.userId,
-        display_name: adminUser.displayName?.trim() || "未设置显示名称",
+        display_name:
+          adminUser.displayName?.trim() ||
+          t("admin.accounts.adminUsers.data.fallbackDisplayName"),
         remark: adminUser.remark ?? null,
         status: adminUser.status,
         roles: roles.map((role) => role.name),
       }
     })
-  }, [])
+  }, [t])
 
   const adminUsersQuery = useQuery({
     queryKey: adminUsersQueryKey,
@@ -41,8 +45,8 @@ export function useAdminUsersData() {
   })
 
   const metricCards = useMemo(
-    () => buildAdminUserMetricCards(adminUsersQuery.data ?? []),
-    [adminUsersQuery.data]
+    () => buildAdminUserMetricCards(adminUsersQuery.data ?? [], t),
+    [adminUsersQuery.data, t]
   )
 
   const fetchData = useCallback(

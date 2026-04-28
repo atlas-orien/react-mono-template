@@ -1,4 +1,5 @@
 import { createElement, useMemo, useRef } from "react"
+import { useTranslation } from "react-i18next"
 import type { DataTableRowActionsConfig } from "@workspace/app-components"
 import { toast } from "@workspace/ui-components"
 import { deleteAdminUserApi, updateAdminUserApi } from "@/api"
@@ -12,6 +13,7 @@ export function useAdminUserRowActions(
   invalidateAdminUsers: () => Promise<unknown>,
   onEditRoles: (row: AdminUserRow) => void
 ): DataTableRowActionsConfig<AdminUserRow> {
+  const { t } = useTranslation()
   const editDialogHandlesRef = useRef(
     new Map<string, EditAdminUserDialogContentHandle | null>()
   )
@@ -32,9 +34,14 @@ export function useAdminUserRowActions(
     return {
       columnWidth: 118,
       edit: {
-        label: "编辑",
-        title: (row) => `编辑后台账号 ${row.display_id}`,
-        description: "当前可编辑备注，保存后会同步到服务端。",
+        label: t("admin.accounts.adminUsers.table.actions.edit.label"),
+        title: (row) =>
+          t("admin.accounts.adminUsers.table.actions.edit.title", {
+            id: row.display_id,
+          }),
+        description: t(
+          "admin.accounts.adminUsers.table.actions.edit.description"
+        ),
         renderContent: ({ row }) =>
           createElement(EditAdminUserDialogContent, {
             row,
@@ -51,25 +58,40 @@ export function useAdminUserRowActions(
             status: row.status,
           })
           await invalidateAdminUsers()
-          toast.success("后台账号已更新")
+          toast.success(
+            t("admin.accounts.adminUsers.table.actions.edit.success")
+          )
         },
       },
       delete: {
-        label: "删除",
-        title: (row) => `删除后台账号 ${row.display_id}`,
+        label: t("admin.accounts.adminUsers.table.actions.delete.label"),
+        title: (row) =>
+          t("admin.accounts.adminUsers.table.actions.delete.title", {
+            id: row.display_id,
+          }),
         description: (row) =>
-          `确认删除后台账号 ${row.display_name}（${row.display_id}）？删除后该账号将无法进入后台。`,
-        confirmLabel: "删除",
+          t("admin.accounts.adminUsers.table.actions.delete.description", {
+            id: row.display_id,
+            name: row.display_name,
+          }),
+        confirmLabel: t(
+          "admin.accounts.adminUsers.table.actions.delete.confirm"
+        ),
         onConfirm: async (row) => {
           await deleteAdminUserApi(row.user_id)
           await invalidateAdminUsers()
-          toast.success("后台账号已删除")
+          toast.success(
+            t("admin.accounts.adminUsers.table.actions.delete.success")
+          )
         },
       },
       moreItems: [
         {
           key: "toggle-status",
-          label: (row) => (row.status === "enabled" ? "停用" : "启用"),
+          label: (row) =>
+            row.status === "enabled"
+              ? t("admin.accounts.adminUsers.table.actions.toggle.disable")
+              : t("admin.accounts.adminUsers.table.actions.toggle.enable"),
           onClick: async (row) => {
             const nextStatus = row.status === "enabled" ? "disabled" : "enabled"
 
@@ -79,16 +101,22 @@ export function useAdminUserRowActions(
             })
             await invalidateAdminUsers()
             toast.success(
-              nextStatus === "enabled" ? "后台账号已启用" : "后台账号已停用"
+              nextStatus === "enabled"
+                ? t(
+                    "admin.accounts.adminUsers.table.actions.toggle.enabledSuccess"
+                  )
+                : t(
+                    "admin.accounts.adminUsers.table.actions.toggle.disabledSuccess"
+                  )
             )
           },
         },
         {
           key: "assign-role",
-          label: "编辑角色",
+          label: t("admin.accounts.adminUsers.table.actions.editRoles"),
           onClick: onEditRoles,
         },
       ],
     }
-  }, [invalidateAdminUsers, onEditRoles])
+  }, [invalidateAdminUsers, onEditRoles, t])
 }

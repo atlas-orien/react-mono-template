@@ -166,6 +166,145 @@ const messages = {
         watching: "Watching",
       },
     },
+    accounts: {
+      adminUsers: {
+        data: {
+          fallbackDisplayName: "Display name not set",
+        },
+        metrics: {
+          all: {
+            label: "Admin Users",
+            tail: "Admin accounts that can sign in to the console.",
+          },
+          enabled: {
+            label: "Enabled",
+            tail: "Accounts with active admin access.",
+          },
+          disabled: {
+            label: "Disabled",
+            tail: "Accounts disabled pending review or restoration.",
+          },
+          multiRole: {
+            label: "Multi-role",
+            tail: "Accounts assigned to more than one role.",
+          },
+        },
+        table: {
+          columns: {
+            id: "ID",
+            displayName: "Display Name",
+            remark: "Remark",
+            status: "Status",
+            roles: "Roles",
+            roleCount: "Role Count",
+          },
+          empty: {
+            remark: "No remark",
+            roles: "No roles assigned",
+          },
+          status: {
+            enabled: "Enabled",
+            disabled: "Disabled",
+          },
+          query: {
+            keyword: {
+              label: "Keyword",
+              placeholder: "Search display name, ID, remark, or role",
+            },
+            status: {
+              label: "Status",
+              placeholder: "Status",
+            },
+          },
+          actions: {
+            edit: {
+              label: "Edit",
+              title: "Edit admin user {{id}}",
+              description: "Only the remark can be edited here.",
+              success: "Admin user updated",
+            },
+            delete: {
+              label: "Delete",
+              title: "Delete admin user {{id}}",
+              description:
+                "Delete admin user {{name}} ({{id}})? This account will no longer be able to access the admin console.",
+              confirm: "Delete",
+              success: "Admin user deleted",
+            },
+            toggle: {
+              enable: "Enable",
+              disable: "Disable",
+              enabledSuccess: "Admin user enabled",
+              disabledSuccess: "Admin user disabled",
+            },
+            editRoles: "Edit roles",
+          },
+        },
+        create: {
+          label: "New Admin User",
+          title: "Create Admin User",
+          description:
+            "Add an existing auth account to admin access, or register a new account and create admin access immediately.",
+          mode: {
+            label: "Creation Mode",
+            existing: "Use existing account",
+            new: "Create new account",
+          },
+          fields: {
+            account: {
+              label: "Account",
+              placeholder: "Enter username, email, or display ID",
+            },
+            username: {
+              label: "Username",
+              placeholder: "Enter new username",
+            },
+            password: {
+              label: "Password",
+              placeholder: "Enter initial password",
+            },
+            displayName: {
+              label: "Display Name",
+              placeholder: "Enter display name",
+            },
+            email: {
+              label: "Email (optional)",
+              placeholder: "Enter email",
+            },
+            remark: {
+              label: "Remark",
+              placeholder: "Enter remark (optional)",
+            },
+          },
+          errors: {
+            identifierRequired: "Enter an account.",
+            usernameRequired: "Enter a username.",
+            passwordRequired: "Enter a password.",
+            displayNameRequired: "Enter a display name.",
+          },
+        },
+        edit: {
+          fields: {
+            id: "ID",
+            displayName: "Display Name",
+            remark: "Remark",
+          },
+          remarkPlaceholder: "Enter remark",
+        },
+        rolesDialog: {
+          title: "Edit roles{{id}}",
+          description:
+            "Only the user_roles relationship is changed here. Admin account details are not modified.",
+          loading: "Loading roles.",
+          empty: "No configurable roles.",
+          selected: "Selected",
+          cancel: "Cancel",
+          reset: "Reset",
+          save: "Save Roles",
+          success: "User roles updated",
+        },
+      },
+    },
   },
   login: {
     form: {
