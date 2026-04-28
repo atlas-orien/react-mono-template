@@ -7,6 +7,7 @@ const messages = {
         description: "Member workspace",
       },
       navigation: {
+        mobileLabel: "Primary navigation",
         workspace: "Workspace",
         guide: "Guide",
         about: "About",

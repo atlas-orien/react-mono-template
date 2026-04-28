@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react"
+import { useTranslation } from "react-i18next"
 import type { DataTableInsertActionConfig } from "@workspace/app-components"
 import { Input, toast } from "@workspace/ui-components"
 import { createRoleApi } from "@/api"
@@ -6,31 +7,39 @@ import { createRoleApi } from "@/api"
 export function useCreateRoleInsertAction(
   invalidateRoles: () => Promise<unknown>
 ): DataTableInsertActionConfig {
+  const { t } = useTranslation()
   const [name, setName] = useState("")
   const [code, setCode] = useState("")
 
   return useMemo(
     () => ({
-      label: "新增角色",
-      title: "创建角色",
-      description:
-        "编码只是角色的唯一编号。创建后请到角色授权页面配置权限。",
+      label: t("admin.access.roles.create.label"),
+      title: t("admin.access.roles.create.title"),
+      description: t("admin.access.roles.create.description"),
       renderContent: () => (
         <div className="grid gap-4 py-2">
           <div className="grid gap-2">
-            <span className="text-sm font-medium">角色名</span>
+            <span className="text-sm font-medium">
+              {t("admin.access.roles.create.fields.name.label")}
+            </span>
             <Input
               value={name}
               onValueChange={setName}
-              placeholder="输入角色名"
+              placeholder={t(
+                "admin.access.roles.create.fields.name.placeholder"
+              )}
             />
           </div>
           <div className="grid gap-2">
-            <span className="text-sm font-medium">编码</span>
+            <span className="text-sm font-medium">
+              {t("admin.access.roles.create.fields.code.label")}
+            </span>
             <Input
               value={code}
               onValueChange={setCode}
-              placeholder="输入唯一角色编码，例如 ops_manager"
+              placeholder={t(
+                "admin.access.roles.create.fields.code.placeholder"
+              )}
             />
           </div>
         </div>
@@ -40,10 +49,10 @@ export function useCreateRoleInsertAction(
         const trimmedCode = code.trim()
 
         if (!trimmedName) {
-          throw new Error("role name is required")
+          throw new Error(t("admin.access.roles.create.errors.nameRequired"))
         }
         if (!trimmedCode) {
-          throw new Error("role code is required")
+          throw new Error(t("admin.access.roles.create.errors.codeRequired"))
         }
 
         await createRoleApi({
@@ -54,9 +63,9 @@ export function useCreateRoleInsertAction(
         setName("")
         setCode("")
         await invalidateRoles()
-        toast.success("角色已创建")
+        toast.success(t("admin.access.roles.create.success"))
       },
     }),
-    [code, invalidateRoles, name]
+    [code, invalidateRoles, name, t]
   )
 }

@@ -2,12 +2,13 @@ import type {
   DataTableFetchResult,
   DataTableSortState,
 } from "@workspace/app-components"
+import { useTranslation } from "react-i18next"
 import {
   roleInitialQuery,
   rolePageSizeOptions,
 } from "../constants"
-import { roleColumns } from "./columns"
-import { roleBuiltInQueryFields } from "./query-fields"
+import { buildRoleColumns } from "./columns"
+import { buildRoleBuiltInQueryFields } from "./query-fields"
 import { useRoleRowActions } from "./row-actions"
 import type { RoleRow, RoleTableQuery } from "../types"
 
@@ -21,16 +22,17 @@ export function useRolesTable(
   }) => Promise<DataTableFetchResult<RoleRow>>,
   invalidateRoles: () => Promise<unknown>
 ) {
+  const { t } = useTranslation()
   const rowActions = useRoleRowActions(invalidateRoles)
 
   return {
-    columns: roleColumns,
+    columns: buildRoleColumns(t),
     fetchData,
     getRowId: (row: RoleRow) => row.id,
     initialPageSize: 10,
     initialQuery: roleInitialQuery,
     query: {
-      builtInFields: roleBuiltInQueryFields,
+      builtInFields: buildRoleBuiltInQueryFields(t),
       fields: [],
       tools: false,
     },

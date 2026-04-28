@@ -1,18 +1,17 @@
+import { useTranslation } from "react-i18next"
 import { AppNotice } from "@workspace/app-components"
 
 export function RoleCreationNote() {
+  const { t } = useTranslation()
+
   return (
     <AppNotice
-      title="角色创建说明"
+      title={t("admin.access.roles.note.title")}
       variant="warning"
       description={
         <span className="grid gap-1">
-          <span>
-            这里用于创建角色，例如“运营人员”或“客服主管”。编码只是这个角色的唯一编号，方便系统保存和区分角色。
-          </span>
-          <span>
-            创建后，角色默认没有权限；需要到“角色授权”页面勾选权限后，这个角色才会生效。
-          </span>
+          <span>{t("admin.access.roles.note.line1")}</span>
+          <span>{t("admin.access.roles.note.line2")}</span>
         </span>
       }
     />

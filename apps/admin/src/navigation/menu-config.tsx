@@ -38,21 +38,21 @@ export const navigationSections: NavigationSectionConfig[] = [
       {
         id: "dashboard",
         permissionCode: "dashboard",
-        label: "控制台",
+        label: "Dashboard",
         labelKey: "admin.navigation.dashboard",
         path: "/",
         icon: <LayoutDashboard />,
       },
       {
         id: "account-management",
-        label: "账号管理",
+        label: "Accounts",
         labelKey: "admin.navigation.accountManagement",
         icon: <UsersRound />,
         subItems: [
           {
             id: "admin-users",
             permissionCode: "accounts:admin_users",
-            label: "后台账号",
+            label: "Admin Users",
             labelKey: "admin.navigation.adminUsers",
             href: "/accounts/admin-users",
             matcher: (pathname) => pathname.startsWith("/accounts/admin-users"),
@@ -60,7 +60,7 @@ export const navigationSections: NavigationSectionConfig[] = [
           {
             id: "app-users",
             permissionCode: "accounts:app_users",
-            label: "App 用户",
+            label: "App Users",
             labelKey: "admin.navigation.appUsers",
             href: "/accounts/app-users",
             matcher: (pathname) => pathname.startsWith("/accounts/app-users"),
@@ -69,14 +69,14 @@ export const navigationSections: NavigationSectionConfig[] = [
       },
       {
         id: "access-control",
-        label: "权限中心",
+        label: "Access Control",
         labelKey: "admin.navigation.accessControl",
         icon: <ShieldCheck />,
         subItems: [
           {
             id: "roles",
             permissionCode: "access_control:roles",
-            label: "权限角色",
+            label: "Roles",
             labelKey: "admin.navigation.roles",
             href: "/access/roles",
             matcher: (pathname) => pathname.startsWith("/access/roles"),
@@ -84,7 +84,7 @@ export const navigationSections: NavigationSectionConfig[] = [
           {
             id: "role-permissions",
             permissionCode: "access_control:role_permissions",
-            label: "角色授权",
+            label: "Role Permissions",
             labelKey: "admin.navigation.rolePermissions",
             href: "/access/role-permissions",
             matcher: (pathname) =>
@@ -93,7 +93,7 @@ export const navigationSections: NavigationSectionConfig[] = [
           {
             id: "app-roles",
             permissionCode: "access_control:app_roles",
-            label: "App 角色",
+            label: "App Roles",
             labelKey: "admin.navigation.appRoles",
             href: "/access/app-roles",
             matcher: (pathname) => pathname.startsWith("/access/app-roles"),
@@ -101,7 +101,7 @@ export const navigationSections: NavigationSectionConfig[] = [
           {
             id: "app-role-permissions",
             permissionCode: "access_control:app_role_permissions",
-            label: "App 角色授权",
+            label: "App Role Permissions",
             labelKey: "admin.navigation.appRolePermissions",
             href: "/access/app-role-permissions",
             matcher: (pathname) =>

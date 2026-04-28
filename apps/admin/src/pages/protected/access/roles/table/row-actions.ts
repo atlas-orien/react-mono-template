@@ -1,4 +1,5 @@
 import { useMemo } from "react"
+import { useTranslation } from "react-i18next"
 import type { DataTableRowActionsConfig } from "@workspace/app-components"
 import { toast } from "@workspace/ui-components"
 import { deleteRoleApi } from "@/api"
@@ -7,23 +8,31 @@ import type { RoleRow } from "../types"
 export function useRoleRowActions(
   invalidateRoles: () => Promise<unknown>
 ): DataTableRowActionsConfig<RoleRow> {
+  const { t } = useTranslation()
+
   return useMemo(
     () => ({
       columnWidth: 56,
       edit: false,
       delete: {
-        label: "删除",
-        title: (row) => `删除角色 ${row.name}`,
+        label: t("admin.access.roles.table.actions.delete.label"),
+        title: (row) =>
+          t("admin.access.roles.table.actions.delete.title", {
+            name: row.name,
+          }),
         description: (row) =>
-          `确认删除角色 ${row.name}（${row.code}）？删除前请确认该角色没有仍在使用的用户或权限关联。`,
-        confirmLabel: "删除",
+          t("admin.access.roles.table.actions.delete.description", {
+            code: row.code,
+            name: row.name,
+          }),
+        confirmLabel: t("admin.access.roles.table.actions.delete.confirm"),
         onConfirm: async (row) => {
           await deleteRoleApi(row.id)
           await invalidateRoles()
-          toast.success("角色已删除")
+          toast.success(t("admin.access.roles.table.actions.delete.success"))
         },
       },
     }),
-    [invalidateRoles]
+    [invalidateRoles, t]
   )
 }

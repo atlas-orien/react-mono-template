@@ -11,6 +11,11 @@ export type {
   NotificationDropdownItem,
   NotificationDropdownProps,
 } from "./notification-dropdown"
+export { MobileBottomNav } from "./mobile-bottom-nav"
+export type {
+  MobileBottomNavItem,
+  MobileBottomNavProps,
+} from "./mobile-bottom-nav"
 export { SidebarShell } from "./sidebar-shell"
 export type {
   SidebarShellNavEntry,

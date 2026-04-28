@@ -7,6 +7,7 @@ const messages = {
         description: "用户工作台",
       },
       navigation: {
+        mobileLabel: "主导航",
         workspace: "工作区",
         guide: "Guide",
         about: "关于",

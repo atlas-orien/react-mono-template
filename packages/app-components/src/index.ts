@@ -1,6 +1,7 @@
 export {
   AvatarDropdown,
   AvatarDropdownItem,
+  MobileBottomNav,
   NotificationDropdown,
   SidebarShell,
   TopBar,
@@ -10,6 +11,8 @@ export type {
   AvatarDropdownAction,
   AvatarDropdownItemProps,
   AvatarDropdownProps,
+  MobileBottomNavItem,
+  MobileBottomNavProps,
   NotificationDropdownAction,
   NotificationDropdownItem,
   NotificationDropdownProps,

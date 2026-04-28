@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router"
 import {
   CopyableText,
   LanguageSwitch,
+  type MobileBottomNavItem,
   SidebarShell,
   ThemeToggle,
   TopBar,
@@ -46,6 +47,26 @@ export function WebAppShell({ children }: WebAppShellProps) {
       })),
     [location.pathname, navigate, t]
   )
+  const mobileNavigationItems = useMemo<MobileBottomNavItem[]>(
+    () =>
+      webNavigationSections.flatMap((section) =>
+        section.items.map((item) => {
+          const active = item.matcher
+            ? item.matcher(location.pathname)
+            : location.pathname === item.path
+
+          return {
+            key: item.id,
+            label: t(item.labelKey ?? item.label, item.label),
+            href: item.path,
+            active,
+            icon: item.icon,
+            onSelect: () => navigate(item.path),
+          }
+        })
+      ),
+    [location.pathname, navigate, t]
+  )
 
   const currentItem = webNavigationSections
     .flatMap((section) => section.items)
@@ -72,6 +93,10 @@ export function WebAppShell({ children }: WebAppShellProps) {
       brandTitle={t("web.shell.brand.title", "Web")}
       brandDescription={t("web.shell.brand.description", "Member workspace")}
       sections={sections}
+      mobileNavigation={{
+        label: t("web.shell.navigation.mobileLabel", "Primary navigation"),
+        items: mobileNavigationItems,
+      }}
       header={
         <TopBar
           title={

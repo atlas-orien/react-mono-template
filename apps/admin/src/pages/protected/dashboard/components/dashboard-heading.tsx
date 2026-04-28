@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import {
   Card,
   CardDescription,
@@ -6,12 +7,14 @@ import {
 } from "@workspace/ui-components/stable/card"
 
 export function DashboardHeading() {
+  const { t } = useTranslation()
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>控制台</CardTitle>
+        <CardTitle>{t("admin.dashboard.heading.title")}</CardTitle>
         <CardDescription>
-          该页面仅作为演示页面。请开发者根据实际业务重新设计。
+          {t("admin.dashboard.heading.description")}
         </CardDescription>
       </CardHeader>
     </Card>

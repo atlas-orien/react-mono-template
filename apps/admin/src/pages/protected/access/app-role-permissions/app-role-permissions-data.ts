@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useTranslation } from "react-i18next"
 import { toast } from "@workspace/ui-components"
 import {
   listAppRolePermissionsApi,
@@ -18,6 +19,7 @@ export function useAppRolePermissionsData({
   roleId: string
   setSelectedPermissionIdsForRole: (roleId: string, ids: string[]) => void
 }) {
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
 
   const rolesQuery = useQuery({
@@ -54,7 +56,7 @@ export function useAppRolePermissionsData({
         variables.nextRoleId,
         collectCheckedPermissionIds(tree)
       )
-      toast.success("App 角色授权已保存")
+      toast.success(t("admin.access.appRolePermissions.editor.success"))
     },
   })
 

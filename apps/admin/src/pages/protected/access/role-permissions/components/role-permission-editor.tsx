@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import { SearchInput, TreeView, type TreeNode } from "@workspace/ui-components"
 import { Button } from "@workspace/ui-components/stable/button"
 import type { RoleResponse } from "@/api"
@@ -33,6 +34,8 @@ export function RolePermissionEditor({
   selectedPermissionIds: string[]
   summary: Record<PermissionSummaryType, number>
 }) {
+  const { t } = useTranslation()
+
   return (
     <section className="space-y-4">
       <div>
@@ -40,20 +43,21 @@ export function RolePermissionEditor({
           <div className="min-w-0">
             <h2 className="text-lg font-semibold">{activeRole.name}</h2>
             <p className="mt-1 text-sm text-(--app-muted-text)">
-              编码：{activeRole.code}
-              。服务端返回完整权限树，并标记当前角色已授权节点。
+              {t("admin.access.rolePermissions.editor.codePrefix")}
+              {activeRole.code}
+              {t("admin.access.rolePermissions.editor.descriptionSuffix")}
             </p>
           </div>
           <div className="flex flex-wrap justify-start gap-2">
             <Button variant="outline" onClick={onReset} disabled={isTreeLoading}>
-              重置勾选
+              {t("admin.access.rolePermissions.editor.reset")}
             </Button>
             <Button
               variant="primary"
               onClick={onSave}
               disabled={isTreeLoading || isSaving}
             >
-              保存角色授权
+              {t("admin.access.rolePermissions.editor.save")}
             </Button>
           </div>
         </div>
@@ -64,7 +68,9 @@ export function RolePermissionEditor({
           <SearchInput
             value={searchValue}
             onValueChange={onSearchChange}
-            placeholder="搜索权限名称"
+            placeholder={t(
+              "admin.access.rolePermissions.editor.searchPlaceholder"
+            )}
           />
         </div>
 
@@ -78,7 +84,11 @@ export function RolePermissionEditor({
             defaultExpandedIds={defaultExpandedIds}
             searchValue={searchValue}
             maxHeight={520}
-            emptyLabel={isTreeLoading ? "权限树加载中。" : "没有匹配到权限项。"}
+            emptyLabel={
+              isTreeLoading
+                ? t("admin.access.rolePermissions.editor.loading")
+                : t("admin.access.rolePermissions.editor.empty")
+            }
           />
         </div>
       </div>

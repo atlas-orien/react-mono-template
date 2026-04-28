@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import {
   Card,
   CardDescription,
@@ -13,6 +14,7 @@ import {
 import { useRolePermissionsPage } from "./use-role-permissions-page"
 
 export default function RolePermissionsPage() {
+  const { t } = useTranslation()
   const page = useRolePermissionsPage()
 
   return (
@@ -48,9 +50,11 @@ export default function RolePermissionsPage() {
       ) : (
         <Card>
           <CardHeader>
-            <CardTitle>暂无可授权角色</CardTitle>
+            <CardTitle>
+              {t("admin.access.rolePermissions.empty.title")}
+            </CardTitle>
             <CardDescription>
-              创建权限角色后，可以在这里配置该角色的权限覆盖集。
+              {t("admin.access.rolePermissions.empty.description")}
             </CardDescription>
           </CardHeader>
         </Card>

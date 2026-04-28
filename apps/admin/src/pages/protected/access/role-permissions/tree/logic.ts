@@ -2,11 +2,6 @@ import type { TreeNode } from "@workspace/ui-components"
 import type { RolePermissionTreeNode } from "@/api"
 import type { PermissionSummaryType } from "../types"
 
-export const permissionKindLabelMap: Record<PermissionSummaryType, string> = {
-  group: "分组",
-  action: "操作",
-}
-
 export function toTreeNode(node: RolePermissionTreeNode): TreeNode {
   return {
     id: String(node.id),
