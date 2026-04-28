@@ -1,1 +1,2 @@
 ./BUILD_RULES.md
+./PROTOCOL.md

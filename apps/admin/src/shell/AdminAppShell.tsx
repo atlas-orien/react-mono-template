@@ -1,7 +1,8 @@
 import { useEffect, useMemo, type ReactNode } from "react"
 import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router"
+import { useLocation, useNavigate } from "react-router"
+import { UserRound } from "lucide-react"
 import {
   CopyableText,
   LanguageSwitch,
@@ -16,7 +17,6 @@ import { logout } from "@/store/authSlice"
 import { resetAccess } from "@/store/accessSlice"
 import type { RootState } from "@/store"
 import { useAdminNavigation } from "@/navigation"
-import { accountActions } from "./account-actions"
 import { getAdminNotifications } from "./admin-notifications"
 import { useAdminNotificationSocket } from "./use-admin-notification-socket"
 import { useWorkspaceTabs } from "./use-workspace-tabs"
@@ -27,6 +27,7 @@ export interface AdminAppShellProps {
 
 export function AdminAppShell({ children }: AdminAppShellProps) {
   const dispatch = useDispatch()
+  const location = useLocation()
   const navigate = useNavigate()
   const { t } = useTranslation()
   const user = useSelector((state: RootState) => state.auth.user)
@@ -78,13 +79,32 @@ export function AdminAppShell({ children }: AdminAppShellProps) {
     navigate("/login", { replace: true })
   }
 
+  const isStandalonePage = location.pathname.startsWith("/profile")
+
   useEffect(() => {
-    if (isLoading || currentItem || !defaultPath || !hasVisibleMenus) {
+    if (
+      isLoading ||
+      currentItem ||
+      isStandalonePage ||
+      !defaultPath ||
+      !hasVisibleMenus
+    ) {
       return
     }
 
     navigate(defaultPath, { replace: true })
-  }, [currentItem, defaultPath, hasVisibleMenus, isLoading, navigate])
+  }, [
+    currentItem,
+    defaultPath,
+    hasVisibleMenus,
+    isLoading,
+    isStandalonePage,
+    navigate,
+  ])
+
+  const topBarTitle = isStandalonePage
+    ? t("pages:profile.title")
+    : currentItem?.label ?? t("admin.shell.brand.title", "Admin")
 
   return (
     <SidebarShell
@@ -99,7 +119,7 @@ export function AdminAppShell({ children }: AdminAppShellProps) {
       header={
         <>
           <TopBar
-            title={currentItem?.label ?? t("admin.shell.brand.title", "Admin")}
+            title={topBarTitle}
             trailing={[
               <NotificationDropdown
                 key="notifications"
@@ -150,11 +170,13 @@ export function AdminAppShell({ children }: AdminAppShellProps) {
           label: t("admin.shell.account.logout", "Log out"),
           onSelect: handleLogout,
         },
-        actions: accountActions.map((action) => ({
-          ...action,
-          label: t(action.labelKey, action.label),
-          onSelect: () => navigate(action.path),
-        })),
+        actions: [
+          {
+            icon: <UserRound />,
+            label: t("admin.shell.account.actions.profile", "Profile"),
+            onSelect: () => navigate("/profile"),
+          },
+        ],
       }}
     >
       {children}

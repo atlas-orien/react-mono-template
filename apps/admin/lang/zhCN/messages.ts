@@ -59,9 +59,7 @@ const messages = {
       account: {
         logout: "退出登录",
         actions: {
-          account: "账号",
-          billing: "计费",
-          notifications: "通知",
+          profile: "个人资料",
         },
       },
     },

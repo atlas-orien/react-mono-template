@@ -9,6 +9,7 @@ import {
   AppRolesPage,
   AppUsersPage,
   DashboardPage,
+  ProfilePage,
   RolePermissionsPage,
   RolesPage,
 } from "@/routes/lazy/protectedPages"
@@ -49,6 +50,10 @@ export const protectedRoutes: RouteObject = {
     {
       path: "accounts/app-users",
       element: withSuspense(<AppUsersPage />),
+    },
+    {
+      path: "profile",
+      element: withSuspense(<ProfilePage />),
     },
     {
       path: "access/app-roles",

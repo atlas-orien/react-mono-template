@@ -63,9 +63,7 @@ const messages = {
       account: {
         logout: "Log out",
         actions: {
-          account: "Account",
-          billing: "Billing",
-          notifications: "Notifications",
+          profile: "Profile",
         },
       },
     },
