@@ -20,13 +20,15 @@ export function RolePermissionTabs({
   return (
     <Tabs value={activeRoleId} onValueChange={onRoleChange}>
       <div className="flex min-w-0 flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-        <TabsList>
-          {roles.map((role) => (
-            <TabsTrigger key={role.id} value={String(role.id)}>
-              {role.name}
-            </TabsTrigger>
-          ))}
-        </TabsList>
+        <div className="max-w-full min-w-0 overflow-x-auto pb-1">
+          <TabsList>
+            {roles.map((role) => (
+              <TabsTrigger key={role.id} value={String(role.id)}>
+                {role.name}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </div>
       </div>
       {children}
     </Tabs>
