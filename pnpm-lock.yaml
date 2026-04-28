@@ -342,9 +342,6 @@ importers:
       '@workspace/locales':
         specifier: workspace:*
         version: link:../../packages/locales
-      '@workspace/mock':
-        specifier: workspace:*
-        version: link:../../packages/mock
       '@workspace/services':
         specifier: workspace:*
         version: link:../../packages/services
@@ -430,9 +427,6 @@ importers:
       jsdom:
         specifier: 'catalog:'
         version: 29.0.1(@noble/hashes@1.8.0)
-      msw:
-        specifier: 'catalog:'
-        version: 2.12.14(@types/node@25.5.0)(typescript@5.9.3)
       tailwindcss:
         specifier: 'catalog:'
         version: 4.2.2

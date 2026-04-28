@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { BookOpenText, CircleHelp } from "lucide-react"
+import { UserRound } from "lucide-react"
 
 export interface WebNavigationItemConfig {
   id: string
@@ -24,20 +24,13 @@ export const webNavigationSections: WebNavigationSectionConfig[] = [
     labelKey: "web.shell.navigation.workspace",
     items: [
       {
-        id: "guide",
-        label: "Guide",
-        labelKey: "web.shell.navigation.guide",
-        path: "/guide",
-        icon: <BookOpenText />,
-        matcher: (pathname) => pathname === "/" || pathname.startsWith("/guide"),
-      },
-      {
-        id: "about",
-        label: "About",
-        labelKey: "web.shell.navigation.about",
-        path: "/about",
-        icon: <CircleHelp />,
-        matcher: (pathname) => pathname.startsWith("/about"),
+        id: "profile",
+        label: "Profile",
+        labelKey: "web.shell.navigation.profile",
+        path: "/profile",
+        icon: <UserRound />,
+        matcher: (pathname) =>
+          pathname === "/" || pathname.startsWith("/profile"),
       },
     ],
   },

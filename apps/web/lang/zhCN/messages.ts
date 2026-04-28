@@ -9,8 +9,7 @@ const messages = {
       navigation: {
         mobileLabel: "主导航",
         workspace: "工作区",
-        guide: "Guide",
-        about: "关于",
+        profile: "个人资料",
       },
       topbar: {
         meta: "个人工作区",
@@ -29,8 +28,7 @@ const messages = {
       titleLine2: "让 AI 按框架写代码。",
       desc1:
         "这是一个 AI 标准化开发框架，覆盖页面、状态、路由、接口与主题约束。",
-      desc2:
-        "你只需要描述需求，AI 会基于项目规范完成实现并保持结构一致。",
+      desc2: "你只需要描述需求，AI 会基于项目规范完成实现并保持结构一致。",
     },
     welcome: "欢迎回来",
     title: "登录你的账号",
@@ -50,38 +48,56 @@ const messages = {
     footer: {
       toRegisterPrefix: "还没有账号？",
       toRegisterAction: "去注册",
-      toGuidePrefix: "想先了解怎么用 AI 开发？",
-      toGuideAction: "查看 Guide 说明",
     },
     error: {
       invalidCredentials: "登录失败，请检查标识和密码。",
     },
   },
-  guide: {
-    title: "Guide：AI 开发说明与组件风格预览",
-    subtitle: "这个页面无需登录即可访问，先看按钮样式，再按规范与 AI 协作开发。",
-    buttons: {
-      title: "Button 样式与配色",
-      subtitle: "可以在 theme 文件夹修改配色方案。",
-      primary: "Primary",
-      secondary: "Secondary",
-      success: "Success",
-      warning: "Warning",
-      info: "Info",
-      outline: "Outline",
-      ghost: "Ghost",
-      danger: "Danger",
+  profile: {
+    title: "公开资料",
+    sections: {
+      account: "账号信息",
     },
-    guide: {
-      title: "如何用 AI 配合这个框架开发",
-      intro: "推荐把需求写成固定流程，先约束 AI 再让 AI 写代码。",
-      step1: "1. 先让 AI 阅读 ai_protocal 目录下全部协议文件。",
-      step2: "2. 先让 AI 输出 Todo 清单，再开始改代码。",
-      step3: "3. 每完成一项就勾选并划掉，便于中断后继续。",
-      template:
-        "推荐提问模板：先阅读 ai_protocal 目录，先列 Todo list 并逐条划掉，然后实现：<你的需求>。",
-      tip:
-        "这样做可以减少沟通成本、降低上下文丢失风险，并让代码结构保持一致。",
+    fields: {
+      id: "ID",
+      email: "邮箱",
+      name: "名称",
+      publicEmail: "公开邮箱",
+      bio: "简介",
+      url: "URL",
+    },
+    placeholders: {
+      name: "请输入显示名称",
+      email: "选择一个已验证邮箱展示",
+      bio: "简单介绍一下你自己",
+      url: "https://example.com",
+    },
+    help: {
+      name: "你的名称会显示在应用中与你相关的贡献、提及和资料位置。",
+      email: "邮箱展示由账号验证和隐私设置决定。",
+      bio: "简介编辑还没有接入接口，这里先作为资料扩展预留。",
+    },
+    avatar: {
+      title: "头像",
+      edit: "编辑",
+      upload: "上传照片...",
+      uploading: "上传中...",
+      remove: "移除头像",
+    },
+    actions: {
+      save: "保存资料",
+      saving: "保存中...",
+    },
+    status: {
+      saved: "资料已保存。",
+      failed: "资料更新失败。",
+      avatarSaved: "头像已更新。",
+      avatarRemoved: "头像已移除。",
+    },
+    fallback: {
+      id: "未知 ID",
+      email: "未设置邮箱",
+      name: "用户",
     },
   },
   register: {

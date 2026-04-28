@@ -9,8 +9,7 @@ const messages = {
       navigation: {
         mobileLabel: "Primary navigation",
         workspace: "Workspace",
-        guide: "Guide",
-        about: "About",
+        profile: "Profile",
       },
       topbar: {
         meta: "Personal workspace",
@@ -51,42 +50,58 @@ const messages = {
     footer: {
       toRegisterPrefix: "Don't have an account?",
       toRegisterAction: "Register",
-      toGuidePrefix: "Want to learn the AI workflow first?",
-      toGuideAction: "Open Guide",
     },
     error: {
       invalidCredentials:
         "Login failed, please check your identifier and password.",
     },
   },
-  guide: {
-    title: "Guide: AI Workflow and Component Style Preview",
-    subtitle:
-      "This page is accessible without login. Review button styles first, then follow the AI workflow guide.",
-    buttons: {
-      title: "Button Variants and Color Styles",
-      subtitle: "You can adjust the color scheme in the theme folder.",
-      primary: "Primary",
-      secondary: "Secondary",
-      success: "Success",
-      warning: "Warning",
-      info: "Info",
-      outline: "Outline",
-      ghost: "Ghost",
-      danger: "Danger",
+  profile: {
+    title: "Public profile",
+    sections: {
+      account: "Account details",
     },
-    guide: {
-      title: "How to Build with AI in This Framework",
-      intro:
-        "Use a fixed request flow so AI follows project rules before coding.",
-      step1: "1. Ask AI to read all files under ai_protocal first.",
-      step2: "2. Ask AI to output a Todo checklist before making code changes.",
-      step3:
-        "3. Mark and strike each completed item to keep progress recoverable.",
-      template:
-        "Recommended prompt: Read the ai_protocal directory first. Create a Todo list first and strike through completed items. Then implement: <your requirement>.",
-      tip:
-        "This reduces communication overhead, improves recovery after interruptions, and keeps implementation structure consistent.",
+    fields: {
+      id: "ID",
+      email: "Email",
+      name: "Name",
+      publicEmail: "Public email",
+      bio: "Bio",
+      url: "URL",
+    },
+    placeholders: {
+      name: "Enter your display name",
+      email: "Select a verified email to display",
+      bio: "Tell us a little bit about yourself",
+      url: "https://example.com",
+    },
+    help: {
+      name: "Your name may appear around this app where you contribute or are mentioned.",
+      email:
+        "Email visibility is managed by your account verification settings.",
+      bio: "Bio editing is not connected yet. This field is reserved for profile expansion.",
+    },
+    avatar: {
+      title: "Profile picture",
+      edit: "Edit",
+      upload: "Upload a photo...",
+      uploading: "Uploading...",
+      remove: "Remove photo",
+    },
+    actions: {
+      save: "Save profile",
+      saving: "Saving...",
+    },
+    status: {
+      saved: "Profile saved.",
+      failed: "Profile update failed.",
+      avatarSaved: "Profile picture updated.",
+      avatarRemoved: "Profile picture removed.",
+    },
+    fallback: {
+      id: "Unknown ID",
+      email: "Email not set",
+      name: "Member",
     },
   },
   register: {

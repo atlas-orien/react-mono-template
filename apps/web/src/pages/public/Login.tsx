@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux"
 import { Link, useNavigate, useLocation } from "react-router"
 import { useTranslation } from "react-i18next"
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
@@ -10,7 +10,6 @@ import { createLoginSchema } from "@/forms/authSchemas"
 import { loginSuccess } from "@/store/authSlice"
 import { Button } from "@workspace/ui-components/stable/button"
 import { Input } from "@workspace/ui-components/stable/input"
-import { Select } from "@workspace/ui-components/stable/select"
 
 const authShellClassName =
   "relative mx-auto grid w-full max-w-5xl overflow-hidden rounded-[var(--ui-radius-xl)] border border-(--app-border) bg-(--app-surface) shadow-[var(--ui-shadow-soft)] sm:grid-cols-2"
@@ -26,7 +25,6 @@ const authLinkClassName =
 
 export default function LoginPage() {
   const { t } = useTranslation()
-  const [selectDemoValue, setSelectDemoValue] = useState("option-1")
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
@@ -44,7 +42,7 @@ export default function LoginPage() {
     },
   })
 
-  const from = location.state?.from?.pathname ?? "/"
+  const from = location.state?.from?.pathname ?? "/profile"
 
   const handleLogin = handleSubmit(async (values) => {
     try {
@@ -98,15 +96,6 @@ export default function LoginPage() {
             <p className="text-sm text-(--app-muted-text)">
               {t("login.subtitle")}
             </p>
-            <Select
-              value={selectDemoValue}
-              onValueChange={setSelectDemoValue}
-              list={[
-                { value: "option-1", label: "选项一" },
-                { value: "option-2", label: "选项二" },
-                { value: "option-3", label: "选项三" },
-              ]}
-            />
           </div>
 
           <form onSubmit={handleLogin}>
@@ -168,12 +157,6 @@ export default function LoginPage() {
             </Link>
           </p>
 
-          <p className={authFooterClassName}>
-            {t("login.footer.toGuidePrefix")}{" "}
-            <Link to="/guide" className={authLinkClassName}>
-              {t("login.footer.toGuideAction")}
-            </Link>
-          </p>
         </div>
       </section>
     </div>

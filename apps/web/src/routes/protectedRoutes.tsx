@@ -2,7 +2,7 @@ import { Suspense, type ReactNode } from "react"
 import type { RouteObject } from "react-router"
 import { PageLoading, RouteErrorBoundary } from "@workspace/app-components"
 import AppLayout from "@/layouts/AppLayout"
-import { AboutPage, GuidePage, LogoutPage } from "@/routes/lazy/protectedPages"
+import { ProfilePage } from "@/routes/lazy/protectedPages"
 
 function withSuspense(node: ReactNode) {
   return <Suspense fallback={<PageLoading />}>{node}</Suspense>
@@ -15,19 +15,11 @@ export const protectedRoutes: RouteObject = {
   children: [
     {
       index: true, // Default path `/`
-      element: withSuspense(<GuidePage />),
+      element: withSuspense(<ProfilePage />),
     },
     {
-      path: "guide",
-      element: withSuspense(<GuidePage />),
-    },
-    {
-      path: "about",
-      element: withSuspense(<AboutPage />),
-    },
-    {
-      path: "logout",
-      element: withSuspense(<LogoutPage />),
+      path: "profile",
+      element: withSuspense(<ProfilePage />),
     },
   ],
 }

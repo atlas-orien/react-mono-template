@@ -3,7 +3,7 @@ import type { RouteObject } from "react-router"
 import { Navigate } from "react-router"
 import { PageLoading, RouteErrorBoundary } from "@workspace/app-components"
 import AuthLayout from "@/layouts/AuthLayout"
-import { GuidePage, LoginPage, RegisterPage } from "@/routes/lazy/publicPages"
+import { LoginPage, RegisterPage } from "@/routes/lazy/publicPages"
 
 function withSuspense(node: ReactNode) {
   return <Suspense fallback={<PageLoading />}>{node}</Suspense>
@@ -25,10 +25,6 @@ export const publicRoutes: RouteObject = {
     {
       path: "register",
       element: withSuspense(<RegisterPage />),
-    },
-    {
-      path: "guide",
-      element: withSuspense(<GuidePage />),
     },
   ],
 }

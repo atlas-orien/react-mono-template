@@ -51,7 +51,7 @@ export default function App() {
       isLogin ? protectedRoutes : publicRoutes,
       {
         path: "*",
-        element: <Navigate to={isLogin ? "/" : "/login"} replace />,
+        element: <Navigate to={isLogin ? "/profile" : "/login"} replace />,
       },
     ])
   }, [isLogin, isRestored])
