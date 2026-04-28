@@ -60,7 +60,7 @@ const messages = {
     },
   },
   profile: {
-    title: "Public profile",
+    title: "Profile",
     sections: {
       account: "Account details",
       email: "Email",
