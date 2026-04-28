@@ -49,6 +49,7 @@ export function AvatarUploadField({
   upload = (file, sign) =>
     uploadWithSignedUrlApi(file, sign, {
       contentType: file.type || "image/png",
+      contentDisposition: false,
     }),
   onUploaded,
   onError,

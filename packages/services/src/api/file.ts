@@ -97,6 +97,8 @@ export const uploadWithSignedUrlApi = async (
   sign: UploadSignResponse,
   options?: {
     contentType?: string
+    contentDisposition?: string | false
+    credentials?: RequestCredentials
   }
 ): Promise<Response> => {
   const headers = new Headers({
@@ -110,7 +112,12 @@ export const uploadWithSignedUrlApi = async (
   } else if (options?.contentType) {
     headers.set("Content-Type", options.contentType)
   }
-  if (sign.headers["Content-Disposition"]) {
+  if (options?.contentDisposition) {
+    headers.set("Content-Disposition", options.contentDisposition)
+  } else if (
+    options?.contentDisposition !== false &&
+    sign.headers["Content-Disposition"]
+  ) {
     headers.set("Content-Disposition", sign.headers["Content-Disposition"])
   }
 
@@ -118,6 +125,8 @@ export const uploadWithSignedUrlApi = async (
     method: "PUT",
     headers,
     body: file,
+    credentials: options?.credentials ?? "omit",
+    mode: "cors",
   })
 
   if (!res.ok) {

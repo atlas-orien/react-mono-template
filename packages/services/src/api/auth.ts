@@ -1,4 +1,5 @@
 import { request } from "./base"
+import { getAccessSignApi } from "./file"
 
 export interface LoginRequest {
   identifier: string
@@ -77,14 +78,38 @@ export const meApi = async (): Promise<UserInfo> => {
     url: "/auth/user/me",
     group: "auth",
   })
+  const avatar = await resolveAvatarUrl(response.avatar ?? "")
 
   return {
     id: response.id,
     display_id: response.display_user_id ?? "",
     email: response.email ?? "",
     name: response.display_name || response.username,
-    avatar: response.avatar ?? "",
+    avatar,
   }
+}
+
+async function resolveAvatarUrl(avatar: string): Promise<string> {
+  if (!avatar || isResolvedAvatarUrl(avatar)) {
+    return avatar
+  }
+
+  try {
+    const sign = await getAccessSignApi({ key: avatar })
+    return sign.download_url
+  } catch {
+    return avatar
+  }
+}
+
+function isResolvedAvatarUrl(value: string): boolean {
+  return (
+    value.startsWith("http://") ||
+    value.startsWith("https://") ||
+    value.startsWith("blob:") ||
+    value.startsWith("data:") ||
+    value.startsWith("/")
+  )
 }
 
 export const getAuthUserProfileApi = async (

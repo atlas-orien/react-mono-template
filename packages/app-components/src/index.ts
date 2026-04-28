@@ -64,6 +64,7 @@ export { TimePicker } from "./components/date-time-picker"
 export { CopyableText } from "./components/copyable-text"
 export { DataTable } from "./components/data-table"
 export {
+  AvatarPhotoEditor,
   AvatarUploadField,
   ImageCropperModal,
   createCroppedImageFile,
@@ -107,6 +108,8 @@ export type {
   MetricCardsVariant,
 } from "./components/metric-cards"
 export type {
+  AvatarPhotoEditorLabels,
+  AvatarPhotoEditorProps,
   AvatarUploadFieldProps,
   AvatarUploadResult,
   AvatarUploadTriggerState,

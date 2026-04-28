@@ -45,6 +45,7 @@
     "./theme-toggle": "./src/components/preferences/index.ts",
     "./tooltip": "./src/components/tooltip/index.ts",
     "./file-upload": "./src/components/file-upload/index.ts",
+    "./avatar-photo-editor": "./src/components/file-upload/index.ts",
     "./mobile-bottom-nav": "./src/components/app-shell/index.ts",
     "./sidebar-shell": "./src/components/app-shell/index.ts",
     "./copyable-text": "./src/components/copyable-text/index.ts",

@@ -50,7 +50,10 @@ export function ImageCropperModal({
   }
 
   return createPortal(
-    <div className="fixed inset-0 z-[2100] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+    <div
+      data-app-image-cropper-modal="true"
+      className="fixed inset-0 z-[2100] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+    >
       <div className="w-full max-w-xl rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5 text-[var(--surface-foreground)] shadow-[0_24px_80px_rgba(0,0,0,0.55)]">
         <h3 className="text-lg font-semibold text-foreground">{title}</h3>
         <p className="mt-2 text-sm text-muted-foreground">{description}</p>
