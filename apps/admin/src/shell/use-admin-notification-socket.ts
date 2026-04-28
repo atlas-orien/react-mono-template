@@ -24,9 +24,6 @@ export function useAdminNotificationSocket({
       onConnected(message) {
         console.info("[admin-ws] connected", message)
       },
-      onPong(message) {
-        console.info("[admin-ws] pong", message)
-      },
       onNotification(message) {
         console.info("[admin-ws] notification", message)
       },

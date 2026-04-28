@@ -8,7 +8,6 @@ import {
   AppRolePermissionsPage,
   AppRolesPage,
   AppUsersPage,
-  DataTablePage,
   DashboardPage,
   RolePermissionsPage,
   RolesPage,
@@ -58,10 +57,6 @@ export const protectedRoutes: RouteObject = {
     {
       path: "access/app-role-permissions",
       element: withSuspense(<AppRolePermissionsPage />),
-    },
-    {
-      path: "datatable",
-      element: withSuspense(<DataTablePage />),
     },
   ],
 }

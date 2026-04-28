@@ -10,8 +10,6 @@ const messages = {
       rolePermissions: "角色授权",
       appRoles: "App 角色",
       appRolePermissions: "App 角色授权",
-      examples: "开发示例",
-      datatableDemo: "DataTable 示例",
     },
     shell: {
       brand: {
@@ -162,35 +160,6 @@ const messages = {
         normal: "正常",
         watching: "观察中",
       },
-    },
-  },
-  datatable: {
-    insert: {
-      label: "新增",
-      title: "新增客户",
-      description: "填写客户基础信息后保存。",
-    },
-    searchPlaceholder: "搜索客户",
-    fields: {
-      keyword: "关键字",
-      keywordField: "搜索字段",
-      keywordFieldAll: "全部",
-      keywordFieldId: "ID",
-      keywordFieldName: "名称",
-      keywordFieldOwner: "负责人",
-      createdAt: "创建时间",
-      status: "状态",
-      region: "区域",
-    },
-    options: {
-      status: {
-        active: "启用",
-        paused: "暂停",
-      },
-    },
-    actions: {
-      deleteTitle: "删除 {{name}}？",
-      deleteDescription: "此操作会将客户 {{id}} 从当前列表中移除。",
     },
   },
   login: {

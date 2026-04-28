@@ -17,4 +17,3 @@ export const RolePermissionsPage = lazy(
   () => import("@/pages/protected/access/role-permissions")
 )
 export const RolesPage = lazy(() => import("@/pages/protected/access/roles"))
-export const DataTablePage = lazy(() => import("@/pages/protected/data-table"))

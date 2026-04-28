@@ -10,8 +10,6 @@ const messages = {
       rolePermissions: "Role Permissions",
       appRoles: "App Roles",
       appRolePermissions: "App Role Permissions",
-      examples: "Examples",
-      datatableDemo: "DataTable Demo",
     },
     shell: {
       brand: {
@@ -167,36 +165,6 @@ const messages = {
         normal: "Normal",
         watching: "Watching",
       },
-    },
-  },
-  datatable: {
-    insert: {
-      label: "Insert",
-      title: "Create customer",
-      description: "Fill in the customer basics before saving.",
-    },
-    searchPlaceholder: "Search customers",
-    fields: {
-      keyword: "Keyword",
-      keywordField: "Search In",
-      keywordFieldAll: "All",
-      keywordFieldId: "ID",
-      keywordFieldName: "Name",
-      keywordFieldOwner: "Owner",
-      createdAt: "Created At",
-      status: "Status",
-      region: "Region",
-    },
-    options: {
-      status: {
-        active: "Active",
-        paused: "Paused",
-      },
-    },
-    actions: {
-      deleteTitle: "Delete {{name}}?",
-      deleteDescription:
-        "This action will remove customer {{id}} from the current list.",
     },
   },
   login: {

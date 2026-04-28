@@ -1,7 +1,6 @@
 import type { ReactNode } from "react"
 import {
   LayoutDashboard,
-  Settings,
   ShieldCheck,
   UsersRound,
 } from "lucide-react"
@@ -107,22 +106,6 @@ export const navigationSections: NavigationSectionConfig[] = [
             href: "/access/app-role-permissions",
             matcher: (pathname) =>
               pathname.startsWith("/access/app-role-permissions"),
-          },
-        ],
-      },
-      {
-        id: "system",
-        label: "开发示例",
-        labelKey: "admin.navigation.examples",
-        icon: <Settings />,
-        subItems: [
-          {
-            id: "datatable-demo",
-            permissionCode: "access_control",
-            label: "DataTable 示例",
-            labelKey: "admin.navigation.datatableDemo",
-            href: "/datatable",
-            matcher: (pathname) => pathname.startsWith("/datatable"),
           },
         ],
       },

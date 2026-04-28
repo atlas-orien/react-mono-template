@@ -84,6 +84,133 @@ AI 在 `admin` 中写页面时，默认顺序必须是：
 - 不要在页面里重写一套 query header、bulk action、row action、分页排序骨架。
 - 如 `DataTable` 缺能力，应先判断是否属于稳定后台模式；若是，优先补到 `app-components`，不要先在 `admin` 私搭旁路。
 
+#### DataTable 的定位
+
+`admin` 中的 `DataTable` 不是演示组件，也不是越做越重的万能表格。
+
+它是后台列表页的统一控制协议，用来让 AI 和业务页面按同一种结构组织：
+
+- 列定义
+- 查询字段
+- 分页
+- 排序
+- 行操作
+- 批量操作开关
+- 新增入口
+- loading / empty / error
+- 表格高度和滚动结构
+
+页面只负责提供业务数据、业务字段、业务动作和少量页面状态，不应复制 `DataTable` 内部 header、分页、selection、row action 或 dialog 骨架。
+
+#### DataTable 的两种合法数据模式
+
+`admin` 目前只允许两种 DataTable 数据模式。AI 必须先判断模式，再写代码。
+
+**模式 A：一次请求全量数据，由前端管理**
+
+适用场景：
+
+- 数据量明确较小或中等
+- 页面需要 `MetricCards` / `DataTable` 共用同一份 rows
+- 服务端接口只提供列表全量，或当前后台页面更适合本地查询
+
+规则：
+
+- 页面 data hook 先通过 React Query 拉取全量 rows。
+- `DataTable.fetchData` 必须从 query cache 读取 rows。
+- 查询、排序、分页在前端完成。
+- `query` 变化不应重新请求服务端。
+- 新增、编辑、删除成功后，统一 invalidate/refetch 对应 query key。
+
+当前参考页面：
+
+- `accounts/admin-users`
+- `access/roles`
+- `access/app-roles`
+
+标准形态：
+
+```tsx
+const fetchData = async ({ page, pageSize, query, sort, signal }) => {
+  void signal
+  const rows = await queryClient.ensureQueryData({ queryKey, queryFn })
+  const filtered = filterRows(rows, query)
+  const sorted = sortRows(filtered, sort)
+  return paginateRows(sorted, page, pageSize)
+}
+```
+
+**模式 B：分页请求完全交给服务端控制**
+
+适用场景：
+
+- 数据量可能很大
+- 服务端已经提供分页、筛选、排序参数
+- 页面不能或不应该一次性拉取全部 rows
+- summary / metrics 可以由独立接口提供
+
+规则：
+
+- `DataTable.fetchData` 直接把 `page`、`pageSize`、`query`、`sort` 映射成接口参数。
+- 服务端返回当前页 `items` 和全量 `total`。
+- 前端不再对当前页做二次全量过滤或全量分页。
+- query 字段必须和服务端查询协议一一映射，不能写只有本地才生效的筛选。
+- 新增、编辑、删除成功后，刷新列表所依赖的接口或用 `key` 触发 DataTable 重新拉取；metrics 走自己的 query key。
+
+当前参考页面：
+
+- `accounts/app-users`
+
+标准形态：
+
+```tsx
+const fetchData = async ({ page, pageSize, query, sort, signal }) => {
+  void signal
+  const params = buildListParams(page, pageSize, query, sort)
+  const response = await listRowsApi(params)
+
+  return {
+    items: response.items.map(mapRow),
+    total: response.total,
+  }
+}
+```
+
+#### DataTable 文件拆分规则
+
+列表页必须优先保持以下结构：
+
+- `index.tsx`
+  - 只装配页面主结构、`MetricCards`、`DataTable`、页面级 dialog 状态
+  - 不直接 import `./table/columns`、`./table/query-fields`、`./table/logic`
+- `<page>-data.tsx`
+  - 负责 React Query、接口请求、数据映射、`fetchData`
+  - 本地模式可以直接 import `./table/logic` 和 `./table/sort`
+  - 不依赖 `./table` 入口，避免 data 层反向依赖表格装配层
+- `table/index.ts`
+  - 收口传给 `DataTable` 的配置
+  - 可以组合 columns、query fields、row actions、默认 page size、开关
+- `table/columns.tsx`
+  - 只定义列
+- `table/query-fields.ts`
+  - 只定义 `query.builtInFields` 和 `query.fields`
+- `table/logic.ts`
+  - 只放本地 filter / sort / paginate 等纯逻辑
+  - 服务端模式若没有本地处理，不要为了凑结构硬写复杂 logic
+- `table/row-actions.ts`
+  - 只定义行操作
+- `table/status.ts` / `table/sort.ts`
+  - 状态映射、排序字段映射等稳定纯逻辑
+
+#### DataTable 禁止事项
+
+- 禁止把本地全量模式和服务端分页模式混在一个 `fetchData` 里。
+- 禁止在服务端分页模式下先请求一页，再做本地全量分页假象。
+- 禁止在本地全量模式下让 `DataTable` 和 `MetricCards` 各请求一份相同列表数据。
+- 禁止把 filter / sort / paginate 堆在页面 `index.tsx`。
+- 禁止为了单页特殊布局重写 DataTable header、tail、row action 或分页。
+- 禁止把演示页代码作为生产页面模板；真实页面必须以 `admin-users`、`app-users`、`roles`、`app-roles` 等精心设计过的页面为参考。
+
 ### 导航与壳层
 
 - 后台导航优先使用已有 sidebar / top bar / app shell 体系。
