@@ -50,7 +50,14 @@ AI 在 app 中开发功能时，必须按以下顺序：
 - AI 在 app 中写页面时，除了读取 app 本地协议，还应判断是否存在对应页面类型协议。
 - AI 在 app 中写页面时，必须先遵守 `apps/page-protocols/page-directory-structure.PROTOCOL.md` 和 `apps/page-protocols/page-index-usage.PROTOCOL.md`，再套用具体页面类型协议。
 
-## 7. 完成定义
+## 7. 共享 rules
+
+- app 层通用规则测试统一放在 `apps/rules/*`。
+- 单个 app 不应再维护自己的 `tests/rules/*` 副本。
+- 每个 app 的 `package.json` 都应提供 `rules` 脚本，并指向 `apps/rules`。
+- 新增 app 时，默认接入同一套 app rules；只有确实属于本地私有协议时，才新增本地规则。
+
+## 8. 完成定义
 
 只有在以下条件同时满足时，app 改动才算完成：
 

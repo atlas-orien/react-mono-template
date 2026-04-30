@@ -1,12 +1,9 @@
 import path from "node:path"
 import { describe, expect, it } from "vitest"
 import ts from "typescript"
-import { readSourceFile } from "./ast-helpers"
+import { appName, readSourceFile, resolveAppPath } from "./ast-helpers"
 
-const navigationConfigFile = path.resolve(
-  import.meta.dirname,
-  "../../src/navigation/menu-config.tsx"
-)
+const navigationConfigFile = resolveAppPath("src/navigation/menu-config.tsx")
 
 interface NavigationIdFinding {
   kind: "section" | "item" | "subItem"
@@ -22,7 +19,7 @@ function findNavigationSectionsInitializer(sourceFile: ts.SourceFile) {
     for (const declaration of statement.declarationList.declarations) {
       if (
         ts.isIdentifier(declaration.name) &&
-        declaration.name.text === "navigationSections" &&
+        /navigationSections$/i.test(declaration.name.text) &&
         declaration.initializer &&
         ts.isArrayLiteralExpression(declaration.initializer)
       ) {
@@ -125,11 +122,12 @@ function findMissingIdFindings(sourceFile: ts.SourceFile) {
   return findings
 }
 
-describe("admin navigation config structure", () => {
+describe(`${appName} navigation config structure`, () => {
   it("requires stable string ids for every section, item, and sub-item", () => {
     const { sourceFile } = readSourceFile(navigationConfigFile)
+    const configPath = path.relative(process.cwd(), navigationConfigFile)
     const findings = findMissingIdFindings(sourceFile).map(
-      (finding) => `${finding.kind}@src/navigation/menu-config.tsx:${finding.line}`
+      (finding) => `${finding.kind}@${configPath}:${finding.line}`
     )
 
     expect(findings).toEqual([])

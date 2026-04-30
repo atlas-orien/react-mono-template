@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run --passWithNoTests",
-    "rules": "vitest run --passWithNoTests tests/rules",
+    "rules": "APP_ROOT=$PWD vitest run --root .. rules",
     "test:watch": "vitest --passWithNoTests"
   },
   "dependencies": {
