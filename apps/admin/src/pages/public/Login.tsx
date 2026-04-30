@@ -6,7 +6,7 @@ import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { getCurrentUserPermissionsApi, meApi, loginApi } from "@/api"
-import { createLoginSchema } from "@/forms/authSchemas"
+import { createAuthLoginSchema } from "@workspace/app-kit/login"
 import { loginSuccess } from "@/store/authSlice"
 import { setAccess } from "@/store/accessSlice"
 import { Alert } from "@workspace/ui-components/stable/alert"
@@ -27,7 +27,7 @@ export default function LoginPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
-  const loginSchema = useMemo(() => createLoginSchema(t), [t])
+  const loginSchema = useMemo(() => createAuthLoginSchema(t), [t])
   type LoginFormValues = z.infer<typeof loginSchema>
   const {
     control,
