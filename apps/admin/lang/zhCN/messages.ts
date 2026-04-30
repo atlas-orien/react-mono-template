@@ -12,6 +12,10 @@ const messages = {
       appRoles: "App 角色",
       appRolePermissions: "App 角色授权",
     },
+    authLayout: {
+        eyebrow: "Workspace Admin",
+        title: "管理台入口",
+    },
     shell: {
       brand: {
         eyebrow: "Workspace",
@@ -57,6 +61,9 @@ const messages = {
         clear: "仅保留当前页",
       },
       account: {
+        fallbackName: "后台账号",
+        fallbackInitial: "管",
+        fallbackId: "workspace-admin@example.com",
         logout: "退出登录",
         actions: {
           profile: "个人资料",

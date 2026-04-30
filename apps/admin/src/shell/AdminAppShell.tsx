@@ -104,16 +104,16 @@ export function AdminAppShell({ children }: AdminAppShellProps) {
 
   const topBarTitle = isStandalonePage
     ? t("pages:profile.title")
-    : currentItem?.label ?? t("admin.shell.brand.title", "Admin")
+    : currentItem?.label ?? t("admin.shell.brand.title")
 
   return (
     <SidebarShell
-      brandEyebrow={t("admin.shell.brand.eyebrow", "Workspace")}
-      brandTitle={t("admin.shell.brand.title", "Admin")}
-      brandDescription={t("admin.shell.brand.description", "Enterprise")}
+      brandEyebrow={t("admin.shell.brand.eyebrow")}
+      brandTitle={t("admin.shell.brand.title")}
+      brandDescription={t("admin.shell.brand.description")}
       sections={sections}
       mobileNavigation={{
-        label: t("admin.shell.navigation.mobileLabel", "Primary navigation"),
+        label: t("admin.shell.navigation.mobileLabel"),
         items: mobileNavigationItems,
       }}
       header={
@@ -123,19 +123,10 @@ export function AdminAppShell({ children }: AdminAppShellProps) {
             trailing={[
               <NotificationDropdown
                 key="notifications"
-                label={t("admin.shell.notifications.label", "Notifications")}
-                panelTitle={t(
-                  "admin.shell.notifications.title",
-                  "Notifications"
-                )}
-                markAllLabel={t(
-                  "admin.shell.notifications.actions.markAllRead",
-                  "Mark all as read"
-                )}
-                emptyLabel={t(
-                  "admin.shell.notifications.empty",
-                  "You're all caught up."
-                )}
+                label={t("admin.shell.notifications.label")}
+                panelTitle={t("admin.shell.notifications.title")}
+                markAllLabel={t("admin.shell.notifications.actions.markAllRead")}
+                emptyLabel={t("admin.shell.notifications.empty")}
                 items={notifications}
               />,
               <LanguageSwitch key="lang" />,
@@ -144,7 +135,7 @@ export function AdminAppShell({ children }: AdminAppShellProps) {
           />
           <div className="hidden md:block">
             <WorkspaceTabs
-              clearLabel={t("admin.shell.workspaceTabs.clear", "Clear history")}
+              clearLabel={t("admin.shell.workspaceTabs.clear")}
               items={workspaceTabs.items}
               onClear={workspaceTabs.clear}
             />
@@ -152,28 +143,36 @@ export function AdminAppShell({ children }: AdminAppShellProps) {
         </>
       }
       footerAccount={{
-        avatarAlt: user?.name ?? "Admin",
+        avatarAlt: user?.name ?? t("admin.shell.account.fallbackName"),
         avatarSrc: user?.avatar,
-        avatarFallback: (user?.name ?? "A").charAt(0).toUpperCase(),
-        displayName: user?.name ?? "Admin",
+        avatarFallback: (
+          user?.name ?? t("admin.shell.account.fallbackInitial")
+        )
+          .charAt(0)
+          .toUpperCase(),
+        displayName: user?.name ?? t("admin.shell.account.fallbackName"),
         displayId: (
           <CopyableText
             value={
-              user?.display_id || user?.email || "workspace-admin@example.com"
+              user?.display_id ||
+              user?.email ||
+              t("admin.shell.account.fallbackId")
             }
             textClassName="block truncate"
           >
-            {user?.display_id || user?.email || "workspace-admin@example.com"}
+            {user?.display_id ||
+              user?.email ||
+              t("admin.shell.account.fallbackId")}
           </CopyableText>
         ),
         logout: {
-          label: t("admin.shell.account.logout", "Log out"),
+          label: t("admin.shell.account.logout"),
           onSelect: handleLogout,
         },
         actions: [
           {
             icon: <UserRound />,
-            label: t("admin.shell.account.actions.profile", "Profile"),
+            label: t("admin.shell.account.actions.profile"),
             onSelect: () => navigate("/profile"),
           },
         ],

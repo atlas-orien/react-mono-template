@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, readdirSync } from "node:fs"
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs"
 import path from "node:path"
 import ts from "typescript"
 
@@ -8,6 +8,7 @@ export const packageRoot = process.env.APP_ROOT
 export const appName = path.basename(packageRoot)
 
 const pageRootNames = ["auth", "protected", "public", "site"] as const
+const sourceExtensions = [".ts", ".tsx"] as const
 
 export interface RuleFinding {
   file: string
@@ -28,6 +29,10 @@ export function resolveAppPath(...segments: string[]) {
 
 export function fileExists(file: string) {
   return existsSync(file)
+}
+
+export function isDirectory(file: string) {
+  return fileExists(file) && statSync(file).isDirectory()
 }
 
 export function readSourceFile(file: string) {
@@ -60,6 +65,24 @@ export function findImportFindings(
   })
 }
 
+export function findNodeFindings(
+  files: string[],
+  matcher: (node: ts.Node, sourceFile: ts.SourceFile) => boolean
+): RuleFinding[] {
+  return files.flatMap((file) => {
+    const { sourceFile } = readSourceFile(file)
+    const findings: RuleFinding[] = []
+
+    visit(sourceFile, (node) => {
+      if (matcher(node, sourceFile)) {
+        findings.push(toFinding(file, sourceFile, node))
+      }
+    })
+
+    return findings
+  })
+}
+
 export function getImportSpecifier(node: ts.ImportDeclaration) {
   return node.moduleSpecifier.getText().replace(/["']/g, "")
 }
@@ -70,6 +93,42 @@ export function toLocations(findings: RuleFinding[]): string[] {
 
 export function toAppRelativePath(file: string) {
   return path.relative(packageRoot, file)
+}
+
+export function getExistingPageRoots() {
+  return pageRootNames
+    .map((name) => resolveAppPath("src", "pages", name))
+    .filter(fileExists)
+}
+
+export function findSourceFiles(root: string): string[] {
+  if (!fileExists(root)) {
+    return []
+  }
+
+  if (!isDirectory(root)) {
+    return sourceExtensions.some((extension) => root.endsWith(extension))
+      ? [root]
+      : []
+  }
+
+  const entries = readdirSync(root, { withFileTypes: true })
+
+  return entries.flatMap((entry) => {
+    const file = path.join(root, entry.name)
+
+    if (entry.isDirectory()) {
+      return findSourceFiles(file)
+    }
+
+    return sourceExtensions.some((extension) => file.endsWith(extension))
+      ? [file]
+      : []
+  })
+}
+
+export function findAppSourceFiles() {
+  return findSourceFiles(resolveAppPath("src"))
 }
 
 export function findPageDirectories(): PageDirectory[] {
@@ -103,12 +162,6 @@ export function hasImport(file: string, specifier: string) {
   )
 }
 
-function getExistingPageRoots() {
-  return pageRootNames
-    .map((name) => resolveAppPath("src", "pages", name))
-    .filter(fileExists)
-}
-
 function walkDirectories(root: string): string[] {
   const entries = readdirSync(root, { withFileTypes: true })
   const childDirs = entries
@@ -131,4 +184,9 @@ function toFinding(
     line: line + 1,
     text: node.getText(sourceFile),
   }
+}
+
+function visit(node: ts.Node, callback: (node: ts.Node) => void) {
+  callback(node)
+  ts.forEachChild(node, (child) => visit(child, callback))
 }

@@ -112,9 +112,9 @@ function toSidebarSubItems(
 
 function translateNavigationLabel(
   t: TFunction,
-  item: { label: string; labelKey?: string }
+  item: { labelKey: string }
 ) {
-  return item.labelKey ? t(item.labelKey, item.label) : item.label
+  return t(item.labelKey)
 }
 
 export function useAdminNavigation() {

@@ -12,6 +12,10 @@ const messages = {
       appRoles: "App Roles",
       appRolePermissions: "App Role Permissions",
     },
+    authLayout: {
+        eyebrow: "Workspace Admin",
+        title: "Admin Entry",
+    },
     shell: {
       brand: {
         eyebrow: "Workspace",
@@ -61,6 +65,9 @@ const messages = {
         clear: "Close other pages",
       },
       account: {
+        fallbackName: "Admin",
+        fallbackInitial: "A",
+        fallbackId: "workspace-admin@example.com",
         logout: "Log out",
         actions: {
           profile: "Profile",

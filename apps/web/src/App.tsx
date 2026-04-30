@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from "react"
+import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 import { RouterProvider, createBrowserRouter, Navigate } from "react-router"
 import { useQuery } from "@tanstack/react-query"
@@ -17,6 +18,7 @@ import { clearRequestErrorMessage } from "./store/requestErrorSlice"
 import { resetAccess, setAccess } from "./store/accessSlice"
 
 export default function App() {
+  const { t } = useTranslation()
   const requestErrorMessage = useSelector(
     (state: { requestError: { message: string | null } }) =>
       state.requestError.message
@@ -85,7 +87,7 @@ export default function App() {
     <>
       <GlobalRequestError
         message={requestErrorMessage}
-        closeLabel="关闭错误提示"
+        closeLabel={t("actions.close", { ns: "common" })}
         onClose={() => dispatch(clearRequestErrorMessage())}
       />
       <RouterProvider router={router} />

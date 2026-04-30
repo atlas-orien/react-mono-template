@@ -18,9 +18,6 @@ const permissionCodeByName: Record<string, string> = {
   Profile: "profile",
   "Update Profile": "profile:update",
   "View Profile": "profile:view",
-  "个人中心": "profile",
-  "更新个人资料": "profile:update",
-  "查看个人资料": "profile:view",
 }
 
 export function getPermissionLabel(
@@ -31,7 +28,9 @@ export function getPermissionLabel(
   if (!code) return permission.name
 
   const key = `admin.permissions.${code.replaceAll(":", ".")}.label`
-  return t(key, { defaultValue: permission.name })
+  const label = t(key)
+
+  return label === key ? permission.name : label
 }
 
 export function getPermissionSearchText(

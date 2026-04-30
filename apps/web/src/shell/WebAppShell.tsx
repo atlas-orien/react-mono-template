@@ -32,7 +32,7 @@ export function WebAppShell({ children }: WebAppShellProps) {
     () =>
       webNavigationSections.map((section) => ({
         key: section.id,
-        label: t(section.labelKey ?? section.label, section.label),
+        label: t(section.labelKey),
         items: section.items.map((item) => {
           const active = item.matcher
             ? item.matcher(location.pathname)
@@ -40,7 +40,7 @@ export function WebAppShell({ children }: WebAppShellProps) {
 
           return {
             key: item.id,
-            label: t(item.labelKey ?? item.label, item.label),
+            label: t(item.labelKey),
             href: item.path,
             active,
             icon: item.icon,
@@ -60,7 +60,7 @@ export function WebAppShell({ children }: WebAppShellProps) {
 
           return {
             key: item.id,
-            label: t(item.labelKey ?? item.label, item.label),
+            label: t(item.labelKey),
             href: item.path,
             active,
             icon: item.icon,
@@ -82,8 +82,8 @@ export function WebAppShell({ children }: WebAppShellProps) {
     location.pathname.startsWith("/profile")
       ? t("pages:profile.title")
       : currentItem
-        ? t(currentItem.labelKey ?? currentItem.label, currentItem.label)
-        : t("web.shell.brand.title", "Web")
+        ? t(currentItem.labelKey)
+        : t("web.shell.brand.title")
 
   const handleLogout = () => {
     localStorage.removeItem("token")
@@ -94,38 +94,37 @@ export function WebAppShell({ children }: WebAppShellProps) {
   }
 
   const isGuest = !user
-  const displayName = user?.name || t("web.shell.account.guestName", "Guest")
+  const displayName = user?.name || t("web.shell.account.guestName")
   const displayId = user
     ? user.display_id || user.email || t("web.shell.account.defaultId")
-    : t("web.shell.account.guestId", "Not signed in")
+    : t("web.shell.account.guestId")
 
   const trailing = [
     <LanguageSwitch key="lang" />,
     <ThemeToggle key="theme" />,
     user ? null : (
       <Button key="login" variant="outline" size="sm" onClick={() => navigate("/login")}>
-        {t("web.shell.account.login", "Sign in")}
+        {t("web.shell.account.login")}
       </Button>
     ),
     user ? null : (
       <Button key="register" size="sm" onClick={() => navigate("/register")}>
-        {t("web.shell.account.register", "Register")}
+        {t("web.shell.account.register")}
       </Button>
     ),
   ].filter(Boolean) as ReactNode[]
 
   return (
     <SidebarShell
-      brandEyebrow={t("web.shell.brand.eyebrow", "Web App")}
-      brandTitle={t("web.shell.brand.title", "Web")}
-      brandDescription={t("web.shell.brand.description", "Member workspace")}
+      brandEyebrow={t("web.shell.brand.eyebrow")}
+      brandTitle={t("web.shell.brand.title")}
+      brandDescription={t("web.shell.brand.description")}
       sections={sections}
       mobileNavigation={
         mobileNavigationItems.length
           ? {
               label: t(
-                "web.shell.navigation.mobileLabel",
-                "Primary navigation"
+                "web.shell.navigation.mobileLabel"
               ),
               items: mobileNavigationItems,
             }
@@ -134,7 +133,7 @@ export function WebAppShell({ children }: WebAppShellProps) {
       header={
         <TopBar
           title={topBarTitle}
-          meta={t("web.shell.topbar.meta", "Personal workspace")}
+          meta={t("web.shell.topbar.meta")}
           trailing={trailing}
         />
       }
@@ -143,7 +142,7 @@ export function WebAppShell({ children }: WebAppShellProps) {
           avatarAlt: displayName,
           avatarSrc: user?.avatar,
           avatarFallback: isGuest
-            ? t("web.shell.account.guestFallback", "G")
+            ? t("web.shell.account.guestFallback")
             : displayName.charAt(0).toUpperCase(),
           displayName,
           displayId: user ? (
@@ -155,7 +154,7 @@ export function WebAppShell({ children }: WebAppShellProps) {
           ),
           logout: user
             ? {
-                label: t("web.shell.account.logout", "Log out"),
+                label: t("web.shell.account.logout"),
                 onSelect: handleLogout,
               }
             : undefined,
@@ -163,19 +162,19 @@ export function WebAppShell({ children }: WebAppShellProps) {
             ? [
                 {
                   icon: <UserRound />,
-                  label: t("web.shell.account.actions.profile", "Profile"),
+                  label: t("web.shell.account.actions.profile"),
                   onSelect: () => navigate("/profile"),
                 },
               ]
             : [
                 {
                   icon: <LogIn />,
-                  label: t("web.shell.account.login", "Sign in"),
+                  label: t("web.shell.account.login"),
                   onSelect: () => navigate("/login"),
                 },
                 {
                   icon: <UserPlus />,
-                  label: t("web.shell.account.register", "Register"),
+                  label: t("web.shell.account.register"),
                   onSelect: () => navigate("/register"),
                 },
               ],

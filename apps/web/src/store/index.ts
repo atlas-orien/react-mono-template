@@ -11,6 +11,5 @@ export const store = configureStore({
   },
 })
 
-// 类型推导
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
