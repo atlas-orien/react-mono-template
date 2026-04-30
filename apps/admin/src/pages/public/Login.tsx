@@ -78,14 +78,14 @@ export default function LoginPage() {
           <Badge variant="outline">Admin Blueprint</Badge>
           <CardTitle>基于 `apps/web` 模板的新管理台入口</CardTitle>
           <CardDescription>
-            保留现有鉴权恢复、React Query、Redux 和 mock 接法，UI 改用 workspace
-            自有组件。
+            保留现有鉴权恢复、React Query、Redux 和本地服务端联调接法，UI
+            改用 workspace 自有组件。
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-3 text-sm text-(--app-muted-text)">
             <p>默认复用当前 `auth/file` 服务代理。</p>
-            <p>建议先用 `pnpm -C apps/admin mock` 验证壳层交互。</p>
+            <p>建议先启动本地服务端，再用 `pnpm -C apps/admin dev` 联调。</p>
           </div>
         </CardContent>
       </Card>
@@ -97,14 +97,14 @@ export default function LoginPage() {
           </p>
           <CardTitle>登录管理台</CardTitle>
           <CardDescription>
-            使用现有 mock 账号流程进入后台壳层。
+            使用本地服务端账号流程进入后台壳层。
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-5">
             <Alert
-              title="Mock Ready"
-              description="mock 模式下可直接沿用仓库已有登录/会话恢复接口。"
+              title="Local Backend Ready"
+              description="本地服务端启动后，登录、会话恢复和权限接口会通过 dev proxy 转发。"
             />
 
             <Separator />

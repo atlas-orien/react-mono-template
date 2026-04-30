@@ -67,7 +67,7 @@ https://github.com/atlas-form/react-mono-template.git
 1. 优先使用 npx 方式获取模板
 2. 如果当前环境不能使用 npx，再改用 git clone
 3. 不要保留模板仓库的 git remote
-4. 完成后继续帮我安装依赖，并告诉我 mock 和 dev 怎么启动
+4. 完成后继续帮我安装依赖，并告诉我本地 dev 怎么启动
 ```
 
 ## 推荐使用方式
@@ -120,8 +120,8 @@ https://github.com/atlas-form/react-mono-template.git
 - `apps/web`
   主业务应用。页面、路由、布局、登录、业务交互，一般都在这里。
 
-- `apps/test`
-  组件测试和展示应用。不是业务页面，主要用于验证共享组件效果。
+- `showcases/guide`
+  组件和框架能力展示应用。不是业务页面，主要用于验证共享组件效果和给 AI 提供合法用法参考。
 
 ### `packages/*` 是“共享层”
 
@@ -151,7 +151,7 @@ https://github.com/atlas-form/react-mono-template.git
 
 - `packages/services`
   通用服务层，例如 API、query、错误模型。
-  当前请求路径应在服务代码中显式完整定义，环境变量主要用于 dev proxy 与 mock 开关。
+  当前请求路径应在服务代码中显式完整定义，环境变量主要用于 dev proxy。
 
 - `packages/locales`
   统一语言资源层。
@@ -174,7 +174,6 @@ https://github.com/atlas-form/react-mono-template.git
 - 根目录只保留共享代理，例如 `VITE_AUTH_PROXY`、`VITE_FILE_PROXY`
 - 每个 app 自己提供 `VITE_API_PROXY`
 - `pnpm dev` 会同时读取根目录共享 env 和当前 app 的 `.env.development`
-- `pnpm mock` 天然就是 mock 运行模式，不需要额外 env 开关
 - 不再使用 `VITE_*_URL` 做请求前缀拼接
 
 ## 用户不会判断位置也没关系
@@ -221,7 +220,7 @@ https://github.com/atlas-form/react-mono-template.git
 先不要改代码，先完成这个仓库的环境准备：
 1. 检查 Node 和 pnpm
 2. 安装依赖
-3. 告诉我本地 dev 和 mock 分别怎么启动
+3. 告诉我本地 dev 怎么启动
 4. 告诉我需要哪些环境变量
 5. 汇报当前环境是否可用
 ```
@@ -238,18 +237,17 @@ https://github.com/atlas-form/react-mono-template.git
 4. 完成前执行对应协议要求的检查
 ```
 
-### 4. 先用 mock 环境开发
+### 4. 使用本地服务端联调
 
 ```text
 先阅读 agent_protocol/PROTOCOL.md。
 
-这次先不要依赖真实后端。
-请优先使用 mock 环境启动和开发。
+这次使用本地服务端联调，不使用 mock。
 
-如果当前需求适合 mock，请直接告诉我：
+请先告诉我：
 1. 应该运行什么命令
-2. 当前 mock 模式能覆盖哪些接口
-3. 哪些部分仍然需要真实后端
+2. 需要哪些本地后端服务
+3. 当前 `.env.development` 还缺哪些 proxy 地址
 ```
 
 ## 说明

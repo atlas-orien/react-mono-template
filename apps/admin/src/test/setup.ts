@@ -1,6 +1,5 @@
 import "@testing-library/jest-dom/vitest"
-import { afterAll, afterEach, beforeAll } from "vitest"
-import { server } from "./msw/server"
+import { afterEach } from "vitest"
 
 const memoryStorage = (() => {
   const store = new Map<string, string>()
@@ -26,15 +25,6 @@ Object.defineProperty(globalThis, "localStorage", {
   configurable: true,
 })
 
-beforeAll(() => {
-  server.listen({ onUnhandledRequest: "error" })
-})
-
 afterEach(() => {
-  server.resetHandlers()
   globalThis.localStorage.clear()
-})
-
-afterAll(() => {
-  server.close()
 })

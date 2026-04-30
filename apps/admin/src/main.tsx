@@ -18,11 +18,6 @@ async function bootstrap() {
   const rootElement = document.getElementById("root")
   if (!rootElement) throw new Error("Root element #root not found")
 
-  if (import.meta.env.MODE === "mock") {
-    const { startMocking } = await import("@workspace/mock/browser")
-    await startMocking()
-  }
-
   registerAdminLocaleMessages()
   initTheme()
   setHttpClientErrorHandler((error) => {

@@ -6,7 +6,6 @@ packages:
 allowBuilds:
   "@swc/core": true
   esbuild: true
-  msw: true
 
 catalog:
   "@base-ui/react": "^1.3.0"
@@ -40,7 +39,6 @@ catalog:
   "input-otp": "^1.4.2"
   "jsdom": "^29.0.1"
   "lucide-react": "^1.7.0"
-  "msw": "^2.12.14"
   "next-themes": "^0.4.6"
   "prettier": "^3.8.3"
   "prettier-plugin-tailwindcss": "^0.7.2"

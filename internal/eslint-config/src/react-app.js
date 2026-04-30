@@ -12,7 +12,7 @@ const tailwindEntryPoint = fileURLToPath(
 
 export function createReactAppEslintConfig({
   tsconfigRootDir,
-  ignores = ["dist", "public/mockServiceWorker.js"],
+  ignores = ["dist"],
   allowAny = true,
 } = {}) {
   return tseslint.config(

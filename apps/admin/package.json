@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "vite --mode development",
-    "mock": "vite --mode mock",
     "build": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.node.json && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -16,7 +15,6 @@
   "dependencies": {
     "@workspace/app-kit": "workspace:*",
     "@workspace/locales": "workspace:*",
-    "@workspace/mock": "workspace:*",
     "@workspace/ui-components": "workspace:*",
     "@workspace/ui-theme": "workspace:*",
     "@workspace/services": "workspace:*",
@@ -52,16 +50,10 @@
     "eslint-plugin-react-refresh": "catalog:",
     "globals": "catalog:",
     "jsdom": "catalog:",
-    "msw": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:",
     "typescript-eslint": "catalog:",
     "vite": "catalog:",
     "vitest": "catalog:"
-  },
-  "msw": {
-    "workerDirectory": [
-      "public"
-    ]
   }
 }

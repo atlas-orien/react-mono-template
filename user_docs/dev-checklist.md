@@ -2,7 +2,7 @@
 
 这个文档是给使用者看的。
 
-它只关心一件事：如果你这次不是用 mock，而是要在本地把 `pnpm dev` 跑起来，最少要确认什么。
+它只关心一件事：在本地把 `pnpm dev` 跑起来并对接本地服务端时，最少要确认什么。
 
 这里说的都是本地开发联调，不涉及正式环境、线上部署或 product 配置。
 
@@ -29,7 +29,7 @@
 1. 本机已经安装 Node.js，版本满足 `>=20`
 2. 本机已经安装 `pnpm`
 3. 你已经在仓库根目录执行过 `pnpm install`
-4. 你现在要跑的是本地 `dev`，不是 `mock`
+4. 你现在要跑的是本地 `dev`
 5. 你手上已经有可联调的后端地址，或者 AI 可以帮你检查还缺哪些地址
 
 ## 最少需要确认的环境变量
@@ -79,7 +79,6 @@ VITE_API_PROXY=http://localhost:8000
 ```text
 先阅读 agent_protocol/PROTOCOL.md。
 
-这次不要用 mock。
 我只想把本地 dev 联调跑通，不需要你解释正式环境。
 
 请先帮我检查：
@@ -90,7 +89,7 @@ VITE_API_PROXY=http://localhost:8000
 5. 执行 pnpm dev 后，本地联调还差什么
 ```
 
-## 什么时候不该继续折腾 dev 联调
+## 什么时候不该继续折腾前端
 
 如果你的目标只是：
 
@@ -100,13 +99,11 @@ VITE_API_PROXY=http://localhost:8000
 - 改表单交互
 - 跑通基础前端流程
 
-那通常应该先回到 `mock`。
-
-因为这些场景优先用 `mock` 更稳定，也更适合不会代码的使用者。
+但本地服务端还没有启动，应该先暂停前端扩展，优先把后端服务和 `.env.development` proxy 补齐。
 
 ## 相关文档
 
 - [用户文档首页](./README.md)
-- [环境与 Mock 说明](./env-setup.md)
+- [本地环境说明](./env-setup.md)
 - [Web 应用说明](./web-app-guide.md)
 - [任务模板](./task-template.md)

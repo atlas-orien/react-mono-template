@@ -8,7 +8,6 @@
     "dev": "node scripts/dev.mjs",
     "show": "node scripts/dev.mjs",
     "showcase": "node scripts/dev.mjs",
-    "mock": "node scripts/mock.mjs",
     "preview": "pnpm -C apps/web preview",
     "dev:all": "turbo dev",
     "lint": "turbo lint",

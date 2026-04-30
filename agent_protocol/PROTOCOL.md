@@ -30,7 +30,7 @@ Use this decision order every time:
 3. `packages/app-kit`
    Shared app composition: DataTable, MetricCards, shells, navigation surfaces, route feedback, profile page, date/time pickers, file upload, copyable text.
 
-4. `packages/services`, `packages/locales`, `packages/ui-theme`, `packages/mock`
+4. `packages/services`, `packages/locales`, `packages/ui-theme`
    Shared non-page capabilities.
 
 5. `apps/*`
@@ -88,7 +88,7 @@ Always read the closest applicable files:
 - Stable component work: `agent_protocol/protocols/packages/ui-components.md`
 - App-kit work: `agent_protocol/protocols/packages/app-kit.md`
 - Primitive work: `agent_protocol/protocols/packages/ui-core.md`
-- Service/mock/theme work: the matching file under `agent_protocol/protocols/packages/`
+- Service/theme/i18n work: the matching file under `agent_protocol/protocols/packages/`
 
 ## Required Explanation In Substantial Changes
 

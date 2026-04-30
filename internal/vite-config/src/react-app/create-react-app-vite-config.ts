@@ -20,7 +20,6 @@ export function createReactAppViteConfig({
     const sharedEnv = loadEnv(mode, sharedEnvDir, "")
     const appEnv = loadEnv(mode, appDir, "")
     const env = { ...sharedEnv, ...appEnv }
-    const isMockMode = mode === "mock"
 
     return {
       envDir: appDir,
@@ -50,9 +49,7 @@ export function createReactAppViteConfig({
         },
       },
       server: {
-        proxy: isMockMode
-          ? undefined
-          : createServerProxy(env, { rewriteApiPath }),
+        proxy: createServerProxy(env, { rewriteApiPath }),
       },
     }
   })

@@ -13,10 +13,10 @@
    了解当前主业务应用 `apps/web` 的用途、运行方式、环境文件约定和适用场景。
 
 3. [env-setup.md](./env-setup.md)
-   先看本地 `dev` 和 `mock` 怎么启动，以及它们分别需要什么。
+   先看本地 `dev` 怎么启动，以及它需要哪些本地后端服务和环境变量。
 
 4. [dev-checklist.md](./dev-checklist.md)
-   如果你这次不用 mock，而是要跑本地 `pnpm dev` 联调，先看这份清单。
+   如果你要跑本地 `pnpm dev` 联调，先看这份清单。
 
 5. [task-template.md](./task-template.md)
    直接复制任务模板给 AI，用来提问题、提需求、报 Bug。
@@ -34,5 +34,5 @@
 - AI 执行规则不在这里，而在 [agent_protocol/PROTOCOL.md](../agent_protocol/PROTOCOL.md)。
 - 当前共享 UI 默认按分类子路径消费，例如 `@workspace/ui-components/stable/button`。
 - 当前通知能力默认通过 `@workspace/ui-components/stable/toast` 使用。
-- 当前本地联调主要依赖 `VITE_*_PROXY`，mock 由运行模式决定，不再使用 `VITE_*_URL` 作为请求前缀拼接配置。
+- 当前本地联调主要依赖 `VITE_*_PROXY`，不再使用 `VITE_*_URL` 作为请求前缀拼接配置。
 - `pnpm dev` 会读取根目录共享 env 和当前 app 自己的 `.env.development`。

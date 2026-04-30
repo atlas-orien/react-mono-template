@@ -23,14 +23,6 @@ pnpm install
 pnpm dev
 ```
 
-如果你想在没有真实后端的情况下启动 mock 环境：
-
-```bash
-pnpm mock
-```
-
-mock 模式下不需要单独启动真实的 `auth`、`file` 或其他后端服务。
-
 更完整的说明请看：
 
 - [env-setup.md](./env-setup.md)
@@ -55,14 +47,7 @@ VITE_FILE_PROXY=http://localhost:9000
 VITE_API_PROXY=http://localhost:8000
 ```
 
-mock 模式不需要单独 `.env.mock` 或额外开关配置。
-
-这意味着：
-
-- 不需要再配置真实 `auth` 服务地址
-- 不需要再配置真实 `file` 服务地址
-- 也不需要为 mock 再准备多组端口
-- 你只需要启动前端自己这一个开发端口
+当前框架不再提供浏览器 mock 模式。开发时默认通过 dev proxy 对接本地服务端。
 
 ## 它适合承载什么需求
 
