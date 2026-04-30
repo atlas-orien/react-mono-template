@@ -36,3 +36,4 @@
 - 当前通知能力默认通过 `@workspace/ui-components/stable/toast` 使用。
 - 当前本地联调主要依赖 `VITE_*_PROXY`，不再使用 `VITE_*_URL` 作为请求前缀拼接配置。
 - `pnpm dev` 会读取根目录共享 env 和当前 app 自己的 `.env.development`。
+- `pnpm env:init` 会从根目录 `env.shared.example` 生成根目录共享 env 和两个 app 的 API env。

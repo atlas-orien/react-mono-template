@@ -36,7 +36,8 @@
 
 本地 `dev` 联调至少要分清两类值：
 
-1. dev 代理要转发到哪里
+1. 根目录共享代理要转发到哪里
+2. 当前 app 自己的 API 代理要转发到哪里
 
 常见最小示例：
 
@@ -60,6 +61,14 @@ VITE_API_PROXY=http://localhost:8000
 - `VITE_FILE_PROXY` 指向可用的文件服务
 
 如果这些值缺失或服务没启动，`pnpm dev` 虽然可能能打开页面，但真实联调通常是跑不通的。
+
+可以先检查根目录 `env.shared.example`，再执行：
+
+```bash
+pnpm env:init
+```
+
+这个命令会生成根目录共享 env，以及 `apps/admin`、`apps/web` 各自只包含 `VITE_API_PROXY` 的 app env。
 
 ## 本地 Dev 联调最少检查项
 

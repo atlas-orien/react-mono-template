@@ -162,6 +162,8 @@ https://github.com/atlas-form/react-mono-template.git
 
 当前仓库环境文件按“共享层 + app 层”拆分：
 
+- 模板源：
+  - `env.shared.example`
 - 根目录：
   - `.env.development`
   - `.env.production`
@@ -173,6 +175,8 @@ https://github.com/atlas-form/react-mono-template.git
 
 - 根目录只保留共享代理，例如 `VITE_AUTH_PROXY`、`VITE_FILE_PROXY`
 - 每个 app 自己提供 `VITE_API_PROXY`
+- `env.shared.example` 同时写 `production` 和 `development` 两套示例值
+- `pnpm env:init` 会从 `env.shared.example` 生成根目录和两个 app 的本地 env 文件
 - `pnpm dev` 会同时读取根目录共享 env 和当前 app 的 `.env.development`
 - 不再使用 `VITE_*_URL` 做请求前缀拼接
 

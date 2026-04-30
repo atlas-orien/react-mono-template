@@ -6,6 +6,7 @@
     "build": "turbo build --filter=admin --filter=web",
     "clean": "node scripts/clean.mjs",
     "dev": "node scripts/dev.mjs",
+    "env:init": "node scripts/init-env.mjs",
     "show": "node scripts/dev.mjs",
     "showcase": "node scripts/dev.mjs",
     "preview": "pnpm -C apps/web preview",

@@ -17,8 +17,9 @@
 1. 优先用 `npx` 下载模板
 2. 让 AI 先安装依赖并检查环境
 3. 启动本地后端服务
-4. 配置根目录和 app 目录的 `.env.development`
-5. 运行 `pnpm dev`
+4. 检查 `env.shared.example` 里的开发和生产代理地址
+5. 执行 `pnpm env:init` 生成根目录和 app 目录的 env 文件
+6. 运行 `pnpm dev`
 
 如果你自己不会下载模板，也可以直接把仓库地址发给 AI，让 AI 先执行这件事。
 
@@ -46,19 +47,41 @@ pnpm -C apps/admin dev
 
 ## 环境文件
 
+模板源是根目录 `env.shared.example`。
+
 默认读取的环境文件是：
 
 - 根目录 `.env.development`
 - 当前 app 的 `.env.development`
 
-根目录通常放共享服务代理：
+生产构建对应读取：
+
+- 根目录 `.env.production`
+- 当前 app 的 `.env.production`
+
+可以用下面命令从 `env.shared.example` 初始化 6 个本地文件：
+
+```bash
+pnpm env:init
+```
+
+生成结果是：
+
+- 根目录 `.env.development`
+- 根目录 `.env.production`
+- `apps/admin/.env.development`
+- `apps/admin/.env.production`
+- `apps/web/.env.development`
+- `apps/web/.env.production`
+
+根目录 env 只放共享服务代理：
 
 ```env
 VITE_AUTH_PROXY=http://localhost:9000
 VITE_FILE_PROXY=http://localhost:9000
 ```
 
-每个 app 自己提供业务 API 代理，例如：
+每个 app env 只放自己的业务 API 代理：
 
 ```env
 VITE_API_PROXY=http://localhost:8000

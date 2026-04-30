@@ -34,6 +34,8 @@ pnpm dev
 本地 `pnpm dev` 默认读取根目录 `.env.development`。
 同时也会读取当前 app 自己的 `.env.development`。
 
+可以先检查根目录 `env.shared.example`，再执行 `pnpm env:init` 生成本地 env 文件。
+
 如果你要跑真实联调环境，通常至少需要这些 proxy 地址：
 
 ```env
