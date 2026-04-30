@@ -11,9 +11,10 @@ import { loginSuccess, updateUser } from "@/store/authSlice"
 import { authRoutes } from "@/routes/authRoutes"
 import { siteRoutes } from "@/routes/siteRoutes"
 import { ToastProvider } from "@workspace/ui-components/stable/toast"
-import { meApi } from "./api"
+import { getCurrentAppUserPermissionsApi, meApi } from "./api"
 import { toRequestError } from "@workspace/services/errors/request-error"
 import { clearRequestErrorMessage } from "./store/requestErrorSlice"
+import { resetAccess, setAccess } from "./store/accessSlice"
 
 export default function App() {
   const requestErrorMessage = useSelector(
@@ -27,12 +28,25 @@ export default function App() {
     queryKey: ["auth", "restore", token],
     enabled: Boolean(token),
     retry: false,
-    queryFn: async () => meApi(),
+    queryFn: async () => {
+      const [user, access] = await Promise.all([
+        meApi(),
+        getCurrentAppUserPermissionsApi(),
+      ])
+
+      return { user, access }
+    },
   })
 
   useEffect(() => {
     if (!token || !restoreQuery.data) return
-    dispatch(loginSuccess({ token, user: restoreQuery.data }))
+    dispatch(loginSuccess({ token, user: restoreQuery.data.user }))
+    dispatch(
+      setAccess({
+        roleCodes: restoreQuery.data.access.roleCodes,
+        permissionCodes: restoreQuery.data.access.permissionCodes,
+      })
+    )
   }, [dispatch, restoreQuery.data, token])
 
   useEffect(() => {
@@ -43,7 +57,8 @@ export default function App() {
     )
     localStorage.removeItem("token")
     localStorage.removeItem("refreshToken")
-  }, [restoreQuery.error, restoreQuery.isError])
+    dispatch(resetAccess())
+  }, [dispatch, restoreQuery.error, restoreQuery.isError])
 
   useEffect(() => {
     return addAuthProfileUserUpdatedListener((user) => {

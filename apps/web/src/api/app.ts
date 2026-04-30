@@ -28,6 +28,12 @@ export interface RegisterAppUserRequest {
   remark?: string | null
 }
 
+export interface CurrentAppUserPermissionsResponse {
+  userId: string
+  roleCodes: string[]
+  permissionCodes: string[]
+}
+
 export const registerAppUserApi = async (
   body: RegisterAppUserRequest
 ): Promise<AppUserResponse> => {
@@ -37,3 +43,11 @@ export const registerAppUserApi = async (
     body,
   })
 }
+
+export const getCurrentAppUserPermissionsApi =
+  async (): Promise<CurrentAppUserPermissionsResponse> => {
+    return request<undefined, CurrentAppUserPermissionsResponse>({
+      method: "GET",
+      url: "/api/app/me/permissions",
+    })
+  }

@@ -14,6 +14,7 @@ import {
 import { Button } from "@workspace/ui-components/stable/button"
 import type { RootState } from "@/store"
 import { logout } from "@/store/authSlice"
+import { resetAccess } from "@/store/accessSlice"
 import { webNavigationSections } from "@/navigation"
 
 export interface WebAppShellProps {
@@ -87,6 +88,7 @@ export function WebAppShell({ children }: WebAppShellProps) {
   const handleLogout = () => {
     localStorage.removeItem("token")
     localStorage.removeItem("refreshToken")
+    dispatch(resetAccess())
     dispatch(logout())
     navigate("/home", { replace: true })
   }
