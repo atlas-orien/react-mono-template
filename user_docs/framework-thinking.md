@@ -139,7 +139,7 @@
 你可以直接对 AI 说：
 
 ```text
-先阅读 ai_protocol/README.md。
+先阅读 agent_protocol/PROTOCOL.md。
 
 我不确定这个需求应该落在哪一层。
 请先根据当前框架设计判断是页面问题、共享组件问题、主题问题，还是服务问题，再开始回答或修改。

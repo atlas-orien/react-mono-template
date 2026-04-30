@@ -77,8 +77,8 @@
 
 继续遵守：
 
-- `shared-query-page.PROTOCOL.md`
-- `datatable-local-usage.PROTOCOL.md`
+- `agent_protocol/protocols/page-types/shared-query-page.md`
+- `agent_protocol/protocols/page-types/datatable-local-usage.md`
 
 典型结构：
 

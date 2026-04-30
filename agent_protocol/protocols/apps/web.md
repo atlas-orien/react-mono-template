@@ -75,4 +75,5 @@ AI 在 `web` 中开发页面时，必须按以下顺序查找能力：
 
 - `pnpm -C apps/web lint`
 - `pnpm -C apps/web test`
+- `pnpm -C apps/web rules`
 - `pnpm -C apps/web build`

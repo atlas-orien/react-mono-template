@@ -175,10 +175,10 @@
 
 AI 写页面时默认阅读顺序：
 
-1. `apps/PROTOCOL.md`
-2. 当前 app 的 `PROTOCOL.md`
+1. `agent_protocol/protocols/apps/index.md`
+2. 当前 app 的 `agent_protocol/protocols/apps/<app>.md`
 3. 本协议
-4. `page-index-usage.PROTOCOL.md`
+4. `agent_protocol/protocols/page-types/page-index-usage.md`
 5. 具体页面类型协议，例如 `shared-query-page`、`datatable-local-usage`、`metric-cards-usage`
 
 本协议解决“页面必须怎么拆目录”。

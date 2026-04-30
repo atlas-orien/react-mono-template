@@ -92,11 +92,11 @@
 
 ## 8. 局部协议
 
-若某个复合组件或共享页面已经成为框架核心件，必须在对应目录下补充局部 `PROTOCOL.md`。
+若某个复合组件或共享页面已经成为框架核心件，必须在 `agent_protocol/protocols/components/` 中补充局部协议。
 
 当前重点样例：
 
-- `src/components/data-table/PROTOCOL.md`
+- `agent_protocol/protocols/components/data-table.md`
 
 当任务涉及该组件本身，或需要在 app 中新增/修改其用法时，AI 必须继续阅读局部协议，而不能只看本包顶层协议。
 

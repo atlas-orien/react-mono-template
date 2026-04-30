@@ -31,7 +31,7 @@
 
 - 这里只保留中文版文档。
 - 根目录 [README.md](../README.md) 负责总入口说明。
-- AI 执行规则不在这里，而在 [ai_protocol/README.md](../ai_protocol/README.md)。
+- AI 执行规则不在这里，而在 [agent_protocol/PROTOCOL.md](../agent_protocol/PROTOCOL.md)。
 - 当前共享 UI 默认按分类子路径消费，例如 `@workspace/ui-components/stable/button`。
 - 当前通知能力默认通过 `@workspace/ui-components/stable/toast` 使用。
 - 当前本地联调主要依赖 `VITE_*_PROXY`，mock 由运行模式决定，不再使用 `VITE_*_URL` 作为请求前缀拼接配置。

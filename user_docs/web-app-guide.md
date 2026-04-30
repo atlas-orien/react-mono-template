@@ -86,7 +86,7 @@ mock 模式不需要单独 `.env.mock` 或额外开关配置。
 ## 你可以怎样向 AI 描述需求
 
 ```text
-先阅读 ai_protocol/README.md。
+先阅读 agent_protocol/PROTOCOL.md。
 
 我要修改 apps/web：
 1. 目标是……
@@ -101,4 +101,4 @@ mock 模式不需要单独 `.env.mock` 或额外开关配置。
 
 - [用户文档首页](./README.md)
 - [框架思想](./framework-thinking.md)
-- [AI 协议入口](../ai_protocol/README.md)
+- [Codex 协议入口](../agent_protocol/PROTOCOL.md)

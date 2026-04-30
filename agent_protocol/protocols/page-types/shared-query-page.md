@@ -46,8 +46,8 @@
 
 组件接入细则应继续阅读：
 
-- [MetricCards 使用协议](/Users/ancient/src/frontend/react-mono-template/apps/page-protocols/metric-cards-usage.PROTOCOL.md)
-- [DataTable 本地数据使用协议](/Users/ancient/src/frontend/react-mono-template/apps/page-protocols/datatable-local-usage.PROTOCOL.md)
+- [MetricCards 使用协议](./metric-cards-usage.md)
+- [DataTable 本地数据使用协议](./datatable-local-usage.md)
 
 这类页面**不是普通服务端查询型页面**。
 

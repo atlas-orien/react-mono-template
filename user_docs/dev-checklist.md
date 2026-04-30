@@ -77,7 +77,7 @@ VITE_API_PROXY=http://localhost:8000
 可以直接把下面这段发给 AI：
 
 ```text
-先阅读 ai_protocol/README.md。
+先阅读 agent_protocol/PROTOCOL.md。
 
 这次不要用 mock。
 我只想把本地 dev 联调跑通，不需要你解释正式环境。

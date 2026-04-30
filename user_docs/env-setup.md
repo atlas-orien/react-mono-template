@@ -137,7 +137,7 @@ mock 模式不需要单独环境变量。
 如果你想让 AI 优先用 mock，可以直接说：
 
 ```text
-先阅读 ai_protocol/README.md。
+先阅读 agent_protocol/PROTOCOL.md。
 
 这次先不要依赖真实后端。
 请优先使用 mock 环境启动和开发。
@@ -147,7 +147,7 @@ mock 模式不需要单独环境变量。
 如果你想让 AI 优先用本地 `dev` 联调，可以直接说：
 
 ```text
-先阅读 ai_protocol/README.md。
+先阅读 agent_protocol/PROTOCOL.md。
 
 这次我希望接本地 dev 联调环境，不要使用 mock 作为默认方案。
 请先检查还缺哪些环境变量和服务。
@@ -159,4 +159,4 @@ mock 模式不需要单独环境变量。
 - [本地 Dev 联调清单](./dev-checklist.md)
 - [Web 应用说明](./web-app-guide.md)
 - [任务模板](./task-template.md)
-- [AI 协议入口](../ai_protocol/README.md)
+- [Codex 协议入口](../agent_protocol/PROTOCOL.md)
