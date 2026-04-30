@@ -1,4 +1,50 @@
 const pages = {
+  authRegister: {
+    brand: "AI STANDARDIZED FRAMEWORK",
+    hero: {
+      titleLine1: "Create your account,",
+      titleLine2: "start AI development.",
+      desc1:
+        "Register once for the shared account system, then join each app when you sign in.",
+      desc2:
+        "Theme mode, i18n, and modular structure are ready for scalable iteration.",
+    },
+    welcome: "CREATE ACCOUNT",
+    title: "Register your account",
+    subtitle:
+      "Create the shared account. Each app will initialize its own member record when you sign in.",
+    form: {
+      password: {
+        label: "Password",
+        placeholder: "Enter password",
+      },
+      confirmPassword: {
+        label: "Confirm password",
+        placeholder: "Enter password again",
+      },
+      submit: "Register",
+      submitting: "Registering...",
+      username: {
+        label: "Username",
+        placeholder: "Enter username",
+      },
+      displayName: {
+        label: "Display name (optional)",
+        placeholder: "Enter display name",
+      },
+      email: {
+        label: "Email (optional)",
+        placeholder: "Enter email",
+      },
+    },
+    footer: {
+      toLoginPrefix: "Already have an account?",
+      toLoginAction: "Sign in",
+    },
+    error: {
+      passwordMismatch: "Passwords do not match.",
+    },
+  },
   profile: {
     title: "Profile",
     loading: "Loading profile...",

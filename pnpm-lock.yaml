@@ -501,6 +501,9 @@ importers:
 
   packages/app-kit:
     dependencies:
+      '@hookform/resolvers':
+        specifier: 'catalog:'
+        version: 5.2.2(react-hook-form@7.72.0(react@19.2.4))
       '@workspace/locales':
         specifier: workspace:*
         version: link:../locales
@@ -534,12 +537,18 @@ importers:
       react-easy-crop:
         specifier: 'catalog:'
         version: 5.5.7(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      react-hook-form:
+        specifier: 'catalog:'
+        version: 7.72.0(react@19.2.4)
       react-i18next:
         specifier: 'catalog:'
         version: 16.6.6(i18next@25.10.9(typescript@5.9.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3)
       react-router:
         specifier: 'catalog:'
         version: 7.13.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      zod:
+        specifier: 'catalog:'
+        version: 4.3.6
     devDependencies:
       '@testing-library/jest-dom':
         specifier: 'catalog:'

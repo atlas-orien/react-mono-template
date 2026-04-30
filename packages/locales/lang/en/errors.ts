@@ -9,6 +9,8 @@ const error = {
   "-10005": "password hash parse failed",
   "-10006": "invalid password",
   "-11000": "admin user not found",
+  "-12000": "app user not found",
+  "-12001": "app user disabled",
 } as const
 
 export default error

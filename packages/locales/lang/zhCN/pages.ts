@@ -1,4 +1,47 @@
 const pages = {
+  authRegister: {
+    brand: "AI 标准化开发框架",
+    hero: {
+      titleLine1: "创建账号，",
+      titleLine2: "开始 AI 开发。",
+      desc1: "这里只创建共享账号；登录具体业务时再初始化该业务身份。",
+      desc2: "同样支持主题切换、多语言和模块化结构，便于持续迭代。",
+    },
+    welcome: "创建新账号",
+    title: "注册你的账号",
+    subtitle: "创建一次共享账号即可；每个业务会在登录时初始化自己的用户记录。",
+    form: {
+      password: {
+        label: "密码",
+        placeholder: "请输入密码",
+      },
+      confirmPassword: {
+        label: "确认密码",
+        placeholder: "请再次输入密码",
+      },
+      submit: "注册",
+      submitting: "注册中...",
+      username: {
+        label: "用户名",
+        placeholder: "请输入用户名",
+      },
+      displayName: {
+        label: "显示名称（可选）",
+        placeholder: "请输入显示名称",
+      },
+      email: {
+        label: "邮箱（可选）",
+        placeholder: "请输入邮箱",
+      },
+    },
+    footer: {
+      toLoginPrefix: "已有账号？",
+      toLoginAction: "去登录",
+    },
+    error: {
+      passwordMismatch: "两次输入的密码不一致。",
+    },
+  },
   profile: {
     title: "个人资料",
     loading: "正在加载个人资料...",

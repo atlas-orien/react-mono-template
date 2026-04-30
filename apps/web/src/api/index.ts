@@ -18,6 +18,7 @@ export {
 } from "@workspace/services/api/auth"
 
 export {
+  ensureCurrentAppUserPermissions,
   getCurrentAppUserPermissionsApi,
   registerAppUserApi,
   type AppRoleResponse,

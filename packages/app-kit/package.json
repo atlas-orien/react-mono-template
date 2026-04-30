@@ -15,14 +15,17 @@
     "@workspace/ui-components": "workspace:*",
     "@workspace/ui-core": "workspace:*",
     "@workspace/ui-theme": "workspace:*",
+    "@hookform/resolvers": "catalog:",
     "date-fns": "catalog:",
     "lucide-react": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-easy-crop": "catalog:",
+    "react-hook-form": "catalog:",
     "react-router": "catalog:",
     "react-day-picker": "catalog:",
-    "react-i18next": "catalog:"
+    "react-i18next": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "catalog:",
@@ -47,6 +50,7 @@
     "./file-upload": "./src/components/file-upload/index.ts",
     "./avatar-photo-editor": "./src/components/file-upload/index.ts",
     "./profile": "./src/pages/profile/index.ts",
+    "./register": "./src/pages/register/index.ts",
     "./mobile-bottom-nav": "./src/components/app-shell/index.ts",
     "./sidebar-shell": "./src/components/app-shell/index.ts",
     "./copyable-text": "./src/components/copyable-text/index.ts",

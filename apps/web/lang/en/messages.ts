@@ -102,13 +102,13 @@ const messages = {
       titleLine1: "Create your account,",
       titleLine2: "start AI development.",
       desc1:
-        "After registering, you can let AI implement tasks with unified framework standards.",
+        "Register once for the shared account system, then join this app when you sign in.",
       desc2:
         "Theme mode, i18n, and modular structure are ready for scalable iteration.",
     },
     welcome: "CREATE ACCOUNT",
     title: "Register your account",
-    subtitle: "Fill in your information to get started.",
+    subtitle: "Create the shared account. This app will initialize its member record when you sign in.",
     form: {
       password: {
         label: "Password",

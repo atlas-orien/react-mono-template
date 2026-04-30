@@ -94,12 +94,12 @@ const messages = {
     hero: {
       titleLine1: "创建账号，",
       titleLine2: "开始 AI 开发。",
-      desc1: "注册后即可在统一规范下，让 AI 按框架要求完成开发任务。",
+      desc1: "这里只创建共享账号；登录当前业务时再初始化当前业务身份。",
       desc2: "同样支持主题切换、多语言和模块化结构，便于持续迭代。",
     },
     welcome: "创建新账号",
     title: "注册你的账号",
-    subtitle: "填写信息后即可进入框架体验。",
+    subtitle: "创建一次共享账号即可；当前业务用户会在登录时自动初始化。",
     form: {
       password: {
         label: "密码",

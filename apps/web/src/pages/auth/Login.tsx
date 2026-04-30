@@ -5,7 +5,11 @@ import { useMemo } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { getCurrentAppUserPermissionsApi, meApi, loginApi } from "@/api"
+import {
+  ensureCurrentAppUserPermissions,
+  loginApi,
+  meApi,
+} from "@/api"
 import { createLoginSchema } from "@/forms/authSchemas"
 import { loginSuccess } from "@/store/authSlice"
 import { setAccess } from "@/store/accessSlice"
@@ -54,10 +58,8 @@ export default function LoginPage() {
       localStorage.setItem("token", token)
       localStorage.setItem("refreshToken", refreshToken)
 
-      const [user, access] = await Promise.all([
-        meApi(),
-        getCurrentAppUserPermissionsApi(),
-      ])
+      const user = await meApi()
+      const access = await ensureCurrentAppUserPermissions(user)
 
       dispatch(loginSuccess({ token, user }))
       dispatch(

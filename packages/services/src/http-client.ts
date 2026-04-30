@@ -8,6 +8,7 @@ interface FetchOptions extends RequestInit {
   url: string
   method: string
   group?: UrlGroup
+  suppressGlobalError?: boolean
 }
 
 class HttpError extends Error {
@@ -36,6 +37,7 @@ const httpClient = {
     data,
     timeout = DEFAULT_TIMEOUT,
     group = "api",
+    suppressGlobalError = false,
   }: FetchOptions): Promise<{ data: T }> {
     const controller = new AbortController()
     const timer = setTimeout(() => controller.abort(), timeout)
@@ -60,7 +62,7 @@ const httpClient = {
       return { data: json }
     } catch (err) {
       clearTimeout(timer)
-      if (!isAbortError(err)) {
+      if (!isAbortError(err) && !suppressGlobalError) {
         globalHttpClientErrorHandler?.(err)
       }
       throw err

@@ -11,7 +11,7 @@ import { loginSuccess, updateUser } from "@/store/authSlice"
 import { authRoutes } from "@/routes/authRoutes"
 import { siteRoutes } from "@/routes/siteRoutes"
 import { ToastProvider } from "@workspace/ui-components/stable/toast"
-import { getCurrentAppUserPermissionsApi, meApi } from "./api"
+import { ensureCurrentAppUserPermissions, meApi } from "./api"
 import { toRequestError } from "@workspace/services/errors/request-error"
 import { clearRequestErrorMessage } from "./store/requestErrorSlice"
 import { resetAccess, setAccess } from "./store/accessSlice"
@@ -29,10 +29,8 @@ export default function App() {
     enabled: Boolean(token),
     retry: false,
     queryFn: async () => {
-      const [user, access] = await Promise.all([
-        meApi(),
-        getCurrentAppUserPermissionsApi(),
-      ])
+      const user = await meApi()
+      const access = await ensureCurrentAppUserPermissions(user)
 
       return { user, access }
     },
