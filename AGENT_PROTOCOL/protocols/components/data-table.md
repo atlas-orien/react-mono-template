@@ -1,4 +1,4 @@
-# DataTable protocol
+# DataTable 协议
 
 本协议用于约束 `@workspace/app-kit` 中 `DataTable` 的设计边界、真实 API 和 AI 默认接入方式。
 
@@ -163,7 +163,7 @@ query={{
 - 不要把主搜索类条件放到 `query.fields`
 - `select` 默认允许清空
 
-### Query state
+### Query 状态
 
 `initialQuery` 会作为 query 初始值浅拷贝进内部 state。
 

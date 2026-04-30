@@ -6,7 +6,7 @@
 
 ## 使用原则
 
-- 每次都先让 AI 阅读 `agent_protocol/PROTOCOL.md`
+- 每次都先让 AI 阅读 `AGENT_PROTOCOL/PROTOCOL.md`
 - 不确定改动落点时，让 AI 先判断
 - 不会写技术方案没有关系，先把目标和结果说清楚
 
@@ -19,7 +19,7 @@
 - 我想先确认方案是否符合当前框架
 
 ```text
-先阅读 agent_protocol/PROTOCOL.md。
+先阅读 AGENT_PROTOCOL/PROTOCOL.md。
 
 我先不让你改代码。
 请先基于这个仓库当前结构和协议，回答下面这个问题：
@@ -44,7 +44,7 @@
 - 增加页面业务内容
 
 ```text
-先阅读 agent_protocol/PROTOCOL.md。
+先阅读 AGENT_PROTOCOL/PROTOCOL.md。
 
 我要修改一个页面。
 
@@ -72,7 +72,7 @@
 - 串起页面、接口、交互流程
 
 ```text
-先阅读 agent_protocol/PROTOCOL.md。
+先阅读 AGENT_PROTOCOL/PROTOCOL.md。
 
 我要新增一个功能。
 
@@ -103,7 +103,7 @@
 - 我已经有明确视觉要求
 
 ```text
-先阅读 agent_protocol/PROTOCOL.md。
+先阅读 AGENT_PROTOCOL/PROTOCOL.md。
 再阅读 user_docs/design-input-spec.md。
 
 我要按设计要求开发。
@@ -129,7 +129,7 @@
 - 不希望在业务页面里复制实现
 
 ```text
-先阅读 agent_protocol/PROTOCOL.md。
+先阅读 AGENT_PROTOCOL/PROTOCOL.md。
 
 我要新增或修改共享能力。
 
@@ -159,7 +159,7 @@
 - 交互和预期不一致
 
 ```text
-先阅读 agent_protocol/PROTOCOL.md。
+先阅读 AGENT_PROTOCOL/PROTOCOL.md。
 
 我要修一个 Bug。
 
@@ -189,7 +189,7 @@
 - 我不希望 AI 使用 mock 作为默认方案
 
 ```text
-先阅读 agent_protocol/PROTOCOL.md。
+先阅读 AGENT_PROTOCOL/PROTOCOL.md。
 
 这次请使用本地服务端联调，不使用 mock。
 
@@ -208,7 +208,7 @@
 直接用这个最简单版本：
 
 ```text
-先阅读 agent_protocol/PROTOCOL.md。
+先阅读 AGENT_PROTOCOL/PROTOCOL.md。
 
 我不会判断这个需求应该改哪里。
 请你先根据当前框架判断正确落点，再回答我是否需要改代码，以及应该怎么改。

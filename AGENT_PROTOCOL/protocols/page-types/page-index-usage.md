@@ -1,4 +1,4 @@
-# Page Index 使用协议
+# 页面 index 使用协议
 
 本协议约束所有 app 页面目录中的 `index.tsx`。
 
@@ -77,8 +77,8 @@
 
 继续遵守：
 
-- `agent_protocol/protocols/page-types/shared-query-page.md`
-- `agent_protocol/protocols/page-types/datatable-local-usage.md`
+- `AGENT_PROTOCOL/protocols/page-types/shared-query-page.md`
+- `AGENT_PROTOCOL/protocols/page-types/datatable-local-usage.md`
 
 典型结构：
 

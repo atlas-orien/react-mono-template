@@ -126,7 +126,7 @@
 你可以直接复制下面模板：
 
 ```text
-先阅读 agent_protocol/PROTOCOL.md。
+先阅读 AGENT_PROTOCOL/PROTOCOL.md。
 
 我要按设计要求开发。
 
@@ -162,7 +162,7 @@
 那也可以，建议这样发给 AI：
 
 ```text
-先阅读 agent_protocol/PROTOCOL.md。
+先阅读 AGENT_PROTOCOL/PROTOCOL.md。
 
 我只有一张参考图，请你先根据这张图判断：
 1. 这是页面问题还是共享能力问题

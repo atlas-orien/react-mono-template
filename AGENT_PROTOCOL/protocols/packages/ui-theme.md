@@ -1,8 +1,8 @@
-# @workspace/ui-theme protocol
+# @workspace/ui-theme 协议
 
 ## 宪章
 
-`@workspace/ui-theme` 是全仓库唯一的主题语义变量来源（Single Source of Truth）。
+`@workspace/ui-theme` 是全仓库唯一的主题语义变量来源（单一事实源）。
 
 所有应用共享的颜色、表面、边框、状态、图表、半径等语义 token，必须由本包定义并对外导出。
 
@@ -22,7 +22,7 @@
 - `ui-components`：基于 `ui-core` 做产品级封装。
 - `apps/*`：统一消费 `ui-theme + ui-core (+ ui-components)`，不得绕过。
 
-## DoD（完成标准）
+## 完成标准
 
 - 新变量在 `ui-theme` light/dark 主题中都有定义。
 - `ui-core` 对应新增最小兜底 token，且命名与语义保持一致。

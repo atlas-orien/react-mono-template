@@ -1,4 +1,4 @@
-# Shared Query Page 协议
+# 共享查询页面协议
 
 本协议只约束一类页面：
 
@@ -475,7 +475,7 @@ const fetchData = async ({ page, pageSize, query, sort }) => {
 
 ## 12. 成熟模板标准
 
-一个成熟的 `Shared Query Page`，至少应满足：
+一个成熟的共享查询页面，至少应满足：
 
 - 主文件只做拼装
 - `types / constants / data / metrics / config / table logic / row actions / dialogs` 分层清晰

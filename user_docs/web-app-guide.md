@@ -71,7 +71,7 @@ VITE_API_PROXY=http://localhost:8000
 ## 你可以怎样向 AI 描述需求
 
 ```text
-先阅读 agent_protocol/PROTOCOL.md。
+先阅读 AGENT_PROTOCOL/PROTOCOL.md。
 
 我要修改 apps/web：
 1. 目标是……
@@ -86,4 +86,4 @@ VITE_API_PROXY=http://localhost:8000
 
 - [用户文档首页](./README.md)
 - [框架思想](./framework-thinking.md)
-- [Codex 协议入口](../agent_protocol/PROTOCOL.md)
+- [Codex 协议入口](../AGENT_PROTOCOL/PROTOCOL.md)

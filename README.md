@@ -4,7 +4,7 @@
 
 如果你要让 AI 帮你分析、回答问题或开发代码，请先明确告诉 AI：
 
-- 先阅读 [agent_protocol/PROTOCOL.md](./agent_protocol/PROTOCOL.md)
+- 先阅读 [AGENT_PROTOCOL/PROTOCOL.md](./AGENT_PROTOCOL/PROTOCOL.md)
 - 必须按这个仓库现有的分层和规则工作
 - 不允许脱离仓库结构随意发挥
 
@@ -75,7 +75,7 @@ https://github.com/atlas-form/react-mono-template.git
 每次给 AI 发任务前，先带上这段前置说明：
 
 ```text
-先阅读仓库根目录 agent_protocol/PROTOCOL.md，再开始回答和修改代码。
+先阅读仓库根目录 AGENT_PROTOCOL/PROTOCOL.md，再开始回答和修改代码。
 你的判断、建议、实现和目录落点，都必须遵守其中映射到的协议文件。
 如果仓库已有明确规则，按现有规则执行，不要另起一套方案。
 ```
@@ -181,7 +181,7 @@ https://github.com/atlas-form/react-mono-template.git
 如果你不知道需求应该落在 `apps` 还是 `packages`，可以直接这样告诉 AI：
 
 ```text
-先阅读 agent_protocol/PROTOCOL.md。
+先阅读 AGENT_PROTOCOL/PROTOCOL.md。
 
 我不确定这个需求应该改 apps 还是 packages。
 请你先根据当前项目分层判断正确落点，再开始回答或修改。
@@ -205,7 +205,7 @@ https://github.com/atlas-form/react-mono-template.git
 ### 1. 先让 AI 回答问题
 
 ```text
-先阅读 agent_protocol/PROTOCOL.md。
+先阅读 AGENT_PROTOCOL/PROTOCOL.md。
 
 我先不让你改代码。
 请先基于这个仓库当前结构，回答这个问题：
@@ -215,7 +215,7 @@ https://github.com/atlas-form/react-mono-template.git
 ### 2. 先让 AI 安装和准备环境
 
 ```text
-先阅读 agent_protocol/PROTOCOL.md。
+先阅读 AGENT_PROTOCOL/PROTOCOL.md。
 
 先不要改代码，先完成这个仓库的环境准备：
 1. 检查 Node 和 pnpm
@@ -228,7 +228,7 @@ https://github.com/atlas-form/react-mono-template.git
 ### 3. 让 AI 开发具体需求
 
 ```text
-先阅读 agent_protocol/PROTOCOL.md。
+先阅读 AGENT_PROTOCOL/PROTOCOL.md。
 
 我要改 apps/web 的登录页：
 1. 保持现有路由结构不变
@@ -240,7 +240,7 @@ https://github.com/atlas-form/react-mono-template.git
 ### 4. 使用本地服务端联调
 
 ```text
-先阅读 agent_protocol/PROTOCOL.md。
+先阅读 AGENT_PROTOCOL/PROTOCOL.md。
 
 这次使用本地服务端联调，不使用 mock。
 
@@ -254,5 +254,5 @@ https://github.com/atlas-form/react-mono-template.git
 
 - 根目录 `README.md` 只负责告诉你怎么使用 AI。
 - 写给使用者看的文档统一放在 `user_docs/` 目录。
-- AI 必须阅读的工程规则统一放在 `agent_protocol/PROTOCOL.md`，细分协议统一放在 `agent_protocol/protocols/`。
-- 如果后续新增局部协议，应补充到 `agent_protocol/protocols/`，并在 `agent_protocol/PROTOCOL.md` 中登记入口。
+- AI 必须阅读的工程规则统一放在 `AGENT_PROTOCOL/PROTOCOL.md`，细分协议统一放在 `AGENT_PROTOCOL/protocols/`。
+- 如果后续新增局部协议，应补充到 `AGENT_PROTOCOL/protocols/`，并在 `AGENT_PROTOCOL/PROTOCOL.md` 中登记入口。

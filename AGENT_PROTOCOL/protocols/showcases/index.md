@@ -42,8 +42,8 @@ AI 在 showcase 中开发内容时，必须按以下顺序：
 
 ## 6. 本地协议要求
 
-- 每个 showcase 都必须有自己的 `agent_protocol/protocols/showcases/<showcase>.md`。
-- 顶层 `agent_protocol/protocols/showcases/index.md` 负责统一展示层总原则。
+- 每个 showcase 都必须有自己的 `AGENT_PROTOCOL/protocols/showcases/<showcase>.md`。
+- 顶层 `AGENT_PROTOCOL/protocols/showcases/index.md` 负责统一展示层总原则。
 - AI 在 showcase 中写页面时，除了读取 showcase 本地协议，还应判断是否存在对应 package 协议需要一起遵守。
 
 ## 7. 完成定义

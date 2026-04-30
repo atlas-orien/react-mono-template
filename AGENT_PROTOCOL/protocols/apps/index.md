@@ -28,10 +28,10 @@ app 不负责沉淀共享能力：
 
 AI 在 `apps/*` 中新增或修改页面、布局、组件、表单、表格、导航、反馈状态前，必须按顺序执行：
 
-1. 读 `agent_protocol/PROTOCOL.md`。
+1. 读 `AGENT_PROTOCOL/PROTOCOL.md`。
 2. 读本文件。
-3. 读目标 app 的 `agent_protocol/protocols/apps/<app>.md`。
-4. 如果是页面，读 `agent_protocol/protocols/page-types/page-directory-structure.md` 和 `agent_protocol/protocols/page-types/page-index-usage.md`。
+3. 读目标 app 的 `AGENT_PROTOCOL/protocols/apps/<app>.md`。
+4. 如果是页面，读 `AGENT_PROTOCOL/protocols/page-types/page-directory-structure.md` 和 `AGENT_PROTOCOL/protocols/page-types/page-index-usage.md`。
 5. 如果涉及特定页面类型，读对应页面协议，例如 `shared-query-page`、`datatable-local-usage`、`metric-cards-usage`。
 6. 检查共享库存：`@workspace/app-kit`、`@workspace/ui-components`、`@workspace/services`、`@workspace/locales`、`@workspace/ui-theme`。
 7. 找到合法参考实现后再动手。
@@ -122,8 +122,8 @@ app 页面不是单文件实现。
 
 页面工作必须继续遵守：
 
-- `agent_protocol/protocols/page-types/page-directory-structure.md`
-- `agent_protocol/protocols/page-types/page-index-usage.md`
+- `AGENT_PROTOCOL/protocols/page-types/page-directory-structure.md`
+- `AGENT_PROTOCOL/protocols/page-types/page-index-usage.md`
 
 如果使用 `DataTable`、`MetricCards` 或共享查询模式，还必须继续遵守对应页面类型协议。
 

@@ -1,4 +1,4 @@
-# Page Directory Structure 协议
+# 页面目录结构协议
 
 本协议约束所有 app 页面如何组织目录。
 
@@ -175,10 +175,10 @@
 
 AI 写页面时默认阅读顺序：
 
-1. `agent_protocol/protocols/apps/index.md`
-2. 当前 app 的 `agent_protocol/protocols/apps/<app>.md`
+1. `AGENT_PROTOCOL/protocols/apps/index.md`
+2. 当前 app 的 `AGENT_PROTOCOL/protocols/apps/<app>.md`
 3. 本协议
-4. `agent_protocol/protocols/page-types/page-index-usage.md`
+4. `AGENT_PROTOCOL/protocols/page-types/page-index-usage.md`
 5. 具体页面类型协议，例如 `shared-query-page`、`datatable-local-usage`、`metric-cards-usage`
 
 本协议解决“页面必须怎么拆目录”。
