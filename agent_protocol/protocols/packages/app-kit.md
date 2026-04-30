@@ -20,6 +20,7 @@
 - top bar
 - date-time picker
 - profile 等跨 app 可复用页面
+- login/register 认证视图与表单协议
 - 其他明确服务于页面结构、列表页、后台场景、业务装配的共享能力
 
 这些能力的共同点：
@@ -35,6 +36,13 @@
 - `src/pages/*`：共享页面。页面可以直接被 app 路由引用，但不得在包内依赖某个 app 的 store、route 或私有 API 聚合层。
 - `src/pages/<page>/index.ts` 是页面公共入口。
 - 页面若需要真实业务状态，应通过显式 props、controller hook 返回值或 app 侧适配器接入；不要在共享页面中偷偷绑定某一个 app 的 Redux、路由约定或 API 聚合。
+
+### 认证页面规则
+
+- `src/pages/login` 只承载共享登录视图、字段校验和表单组件装配。
+- `src/pages/login` 不得直接调用登录 API、恢复权限、写 Redux、写 localStorage 或执行路由跳转。
+- `web` 和 `admin` 的登录后业务流程不同，必须通过 `onSubmit` 等显式接口交给 app 侧处理。
+- `src/pages/register` 可以承载共享 auth 账号注册页，但不得初始化某个具体业务 app 的用户身份。
 
 ## 3. 本包不适合承载什么
 

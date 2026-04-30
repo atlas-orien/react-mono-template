@@ -54,8 +54,7 @@ AI 在 `admin` 中写页面时，默认顺序必须是：
 - `pages/`：后台页面。
 - `routes/`：后台路由定义、懒加载和受保护页面入口。
 - `store/`：跨页面状态，如鉴权、权限、用户信息恢复。
-- `forms/`：后台表单 schema、字段转换和校验。
-- `test/`：应用级测试与 MSW。
+- `test/`：应用级测试。
 
 若某段代码不属于上述任一职责，AI 必须重新判断落点。
 
@@ -224,6 +223,8 @@ const fetchData = async ({ page, pageSize, query, sort, signal }) => {
 默认规则：
 
 - 未登录状态只挂载认证路由，例如 login。
+- login 使用 `@workspace/app-kit/login` 的共享登录视图/表单协议；`admin` 本地只保留后台登录后的业务流程。
+- `admin` 登录成功后恢复的是后台用户权限和后台菜单访问能力，不能复用或触发 `web` 的 app user 初始化流程。
 - 已登录并完成权限恢复后才挂载后台 app layout / shell 与 protected routes。
 - `admin` 可以使用 `isAuthenticated ? protectedRoutes : publicRoutes` 的整棵路由切换模式。
 - 不要为了和 `web` 保持形式一致，把后台 app shell 暴露给未登录用户。

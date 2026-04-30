@@ -7,7 +7,7 @@ export const packageRoot = process.env.APP_ROOT
   : process.cwd()
 export const appName = path.basename(packageRoot)
 
-const pageRootNames = ["protected", "site"] as const
+const pageRootNames = ["auth", "protected", "public", "site"] as const
 
 export interface RuleFinding {
   file: string

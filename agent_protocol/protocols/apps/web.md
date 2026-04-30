@@ -26,7 +26,6 @@ AI 在 `web` 中开发页面时，必须按以下顺序查找能力：
 - `api/`：应用侧 API 聚合
 - `components/`：`web` 私有组件
 - `config/`：应用启动与 env 配置
-- `forms/`：表单 schema 与转换
 - `layouts/`：布局
 - `pages/`：页面
 - `routes/`：路由
@@ -49,6 +48,9 @@ AI 在 `web` 中开发页面时，必须按以下顺序查找能力：
 默认规则：
 
 - `/login`、`/register` 等认证页面使用 `AuthLayout`。
+- `/login` 使用 `@workspace/app-kit/login` 的共享登录视图/表单协议；`web` 本地只保留登录后的业务流程。
+- `/register` 使用 `@workspace/app-kit/register`，注册只创建共享 auth 账号。
+- `web` 登录成功后需要按当前业务规则恢复 app user 权限，必要时初始化当前 app user；这个流程只能留在 `web` 的 API/状态编排里，不能塞进共享登录组件。
 - 除认证页面外，公开页面和登录后页面都应使用同一套 app layout / shell。
 - 页面是否需要登录应通过局部 route guard（例如 `RequireAuth`）控制，而不是在 `App.tsx` 中用 `isLogin ? protectedRoutes : publicRoutes` 替换整棵路由。
 - 允许未登录访问的 app 页面必须在登录前后保持同一页面结构；登录状态只做内容增强、账户入口变化或私有区块显隐。
@@ -60,6 +62,7 @@ AI 在 `web` 中开发页面时，必须按以下顺序查找能力：
 
 - 禁止直接复制共享页面、壳层或组件的内部实现
 - 禁止在页面里拼一套新的共享 UI 模式
+- 禁止在登录页里重新实现共享登录表单结构；app 只接入 `AuthLoginView` 并提供业务 `onSubmit`
 - 禁止因为赶进度绕过现有分层
 - 禁止让 `web` 内部长出第二套共享组件系统
 

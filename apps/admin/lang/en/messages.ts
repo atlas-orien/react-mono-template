@@ -557,6 +557,23 @@ const messages = {
     },
   },
   login: {
+    brand: "Workspace Admin",
+    hero: {
+      titleLine1: "Permission first,",
+      titleLine2: "admin controlled.",
+      desc1:
+        "The admin entry restores admin identity, menu permissions, and console access only.",
+      desc2:
+        "Business app user initialization does not run here, keeping the permission models separate.",
+    },
+    welcome: "ADMIN SIGN IN",
+    title: "Sign in to Admin",
+    subtitle: "Enter your account identifier and password to enter the admin shell.",
+    notice: {
+      title: "Local Backend Ready",
+      description:
+        "When the local backend is running, login, session restore, and admin permission APIs are forwarded through the dev proxy.",
+    },
     form: {
       password: {
         label: "Password",

@@ -547,6 +547,21 @@ const messages = {
     },
   },
   login: {
+    brand: "Workspace Admin",
+    hero: {
+      titleLine1: "权限先行，",
+      titleLine2: "后台可控。",
+      desc1: "后台入口只负责恢复后台身份、菜单权限和管理台访问能力。",
+      desc2: "业务 App 的用户初始化流程不在这里执行，避免混淆两套权限模型。",
+    },
+    welcome: "管理台登录",
+    title: "登录管理后台",
+    subtitle: "请输入账号标识和密码后进入后台壳层。",
+    notice: {
+      title: "本地服务端联调",
+      description:
+        "本地服务端启动后，登录、会话恢复和后台权限接口会通过 dev proxy 转发。",
+    },
     form: {
       password: {
         label: "密码",

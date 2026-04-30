@@ -135,6 +135,25 @@ app 页面不是单文件实现。
 - `apps/admin`：商用后台应用。未登录时不暴露后台 shell 和业务路由。
 - `apps/rules`：app 层共享规则测试包，不是业务 app。
 
+## 8.1 认证页面边界
+
+认证页面不是 app 随手重写表单的例外。
+
+默认规则：
+
+- 登录表单结构、字段校验、Field/Input/Button 装配优先来自 `@workspace/app-kit/login`。
+- 注册页面优先来自 `@workspace/app-kit/register`。
+- app 登录页只保留登录后的业务编排，例如调用哪个 API、写入哪个 store、加载哪套权限、跳转到哪里。
+- `web` 和 `admin` 的登录 API/权限恢复流程不同，不能合并成同一个绑定 API 的共享页面。
+- 共享层只能提供 `AuthLoginView` 这类视图/表单协议，不得在 `app-kit` 中偷偷绑定某个 app 的私有 API、Redux slice 或权限模型。
+
+app 登录页禁止重新实现：
+
+- `react-hook-form` 表单 wiring
+- `zodResolver` schema 接入
+- `Input + label + error` 的本地表单结构
+- 注册/登录共享视觉骨架
+
 ## 9. 共享 rules
 
 app 层通用规则测试统一放在 `apps/rules/*`。
