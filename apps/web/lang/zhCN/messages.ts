@@ -10,6 +10,7 @@ const messages = {
         mobileLabel: "主导航",
         workspace: "工作区",
         home: "首页",
+        complexWorkbench: "复杂工作台",
         profile: "个人资料",
       },
       topbar: {
@@ -55,6 +56,42 @@ const messages = {
     publicProfile: {
       title: "个人功能",
       description: "登录后可以管理个人资料、头像、邮箱和密码。",
+    },
+  },
+  complexWorkbench: {
+    header: {
+      badge: "复杂页面骨架",
+      title: "复杂工作台",
+      description:
+        "这个页面展示复杂业务 UI 如何拆分数据入口、领域逻辑、展示模型、页面 hook 和局部展示组件。",
+      total: "任务总数",
+      selected: "当前分组",
+    },
+    board: {
+      focus: "聚焦",
+    },
+    activity: {
+      title: "动态",
+    },
+    lanes: {
+      intake: "进入",
+      review: "检查",
+      ship: "交付",
+    },
+    priority: {
+      low: "低",
+      medium: "中",
+      high: "高",
+    },
+    tasks: {
+      pageMap: "规划页面模块",
+      viewModel: "抽取展示模型",
+      rules: "运行应用规则",
+    },
+    events: {
+      pageMap: "页面结构已检查",
+      viewModel: "展示模型边界已确认",
+      rules: "规则门禁已准备",
     },
   },
   login: {

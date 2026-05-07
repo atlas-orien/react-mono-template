@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { House } from "lucide-react"
+import { House, PanelsTopLeft } from "lucide-react"
 
 export interface WebNavigationItemConfig {
   id: string
@@ -26,6 +26,12 @@ export const webNavigationSections: WebNavigationSectionConfig[] = [
         path: "/home",
         icon: <House />,
         matcher: (pathname) => pathname === "/" || pathname === "/home",
+      },
+      {
+        id: "complex-workbench",
+        labelKey: "web.shell.navigation.complexWorkbench",
+        path: "/complex-workbench",
+        icon: <PanelsTopLeft />,
       },
     ],
   },

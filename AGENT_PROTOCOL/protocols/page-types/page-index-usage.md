@@ -19,6 +19,7 @@
 它不负责解释：
 
 - 数据怎么请求
+- stream / runtime event 怎么归并
 - 树怎么转换
 - 表格怎么过滤排序
 - 弹窗怎么提交
@@ -57,8 +58,10 @@
 
 - React Query / mutation 细节
 - API import 和请求函数调用
+- stream / SSE / WebSocket / polling 订阅
 - `filter / sort / paginate`
 - 树结构转换、flatten、checked 收集
+- event/message/runtime snapshot 的 normalize、merge、reduce
 - 表格列定义
 - 表格 row actions
 - 表单字段 JSX
@@ -93,6 +96,45 @@
   dialogs/
 ```
 
+### 复杂交互页
+
+例如 agent、chat、workbench、editor、builder、canvas、flow、console 等页面：
+
+```txt
+<page>/
+  index.tsx
+  types.ts
+  constants.ts
+  use-<page>-page.ts
+  <page>-data.ts
+  domain/
+    logic.ts
+    runtime.ts
+  view-model/
+    panel-view-model.ts
+    event-handlers.ts
+    message-view-model.ts
+  components/
+    page-header.tsx
+    primary-panel.tsx
+    activity-panel.tsx
+    detail-panel.tsx
+```
+
+说明：
+
+- `index.tsx` 只拼接 `<PageHeader />`、`<PrimaryPanel />`、`<ActivityPanel />` 等主模块。
+- `use-<page>-page.ts` 只调用数据入口、维护页面级状态、组合 view model、暴露 handlers。
+- `<page>-data.ts` 只处理 API/query/mutation 或演示数据入口。
+- `<page>-data.ts` 也是 stream/SSE/WebSocket/polling 的订阅入口。
+- `domain/logic.ts` / `domain/runtime.ts` 放纯函数、状态机和 runtime event 转换。
+- `view-model/` 放事件、数据、runtime state 到组件 props 的转换。
+- `components/` 只渲染已经准备好的 props，不重新计算业务模型。
+
+复杂交互页必须继续遵守：
+
+- `AGENT_PROTOCOL/protocols/page-types/complex-interaction-page.md`
+
 ### 非 DataTable 配置页
 
 例如授权、菜单配置、设置页：
@@ -126,6 +168,8 @@
 - 超过 120 行必须重新评估
 - 超过 160 行默认视为违反协议
 
+注意：把 160 行以上的内容从 `index.tsx` 挪到一个巨大的 `components/<panel>.tsx` 或 `use-<page>-page.ts` 不算完成拆分。拆分的目标是职责边界清楚，而不是只移动代码。
+
 例外：
 
 - 页面本身极简单，没有拆分价值
@@ -151,5 +195,8 @@
 - `index.tsx` 不包含复杂数据转换。
 - `index.tsx` 不包含大段表格、树、弹窗、表单 JSX。
 - 页面级状态和派生值集中在 hook 中。
+- 大型展示模型、事件映射和纯逻辑继续拆到 `view-model/` 与 `domain/`。
+- stream/event/message/runtime 状态转换不在 `components/` 或 `index.tsx` 中完成。
+- 页面组件文件只接收 props 并渲染局部 UI，不混合 API、reducer 和复杂派生逻辑。
 - 页面子模块职责能从文件名看出来。
 - 后续 AI 能通过 `index.tsx` 先理解页面结构，再进入对应模块修改细节。
