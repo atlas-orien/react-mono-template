@@ -13,6 +13,7 @@
 - 同一页面包含多个可交互 panel。
 - 有消息流、事件流、任务流、节点流或 activity stream。
 - 页面需要把服务端事件转换成展示模型。
+- 页面接入 stream、SSE、WebSocket、polling、runtime snapshot 或 command queue。
 - 页面同时包含列表、详情、编辑器、抽屉、工具栏、状态区。
 - `use-<page>-page.ts` 开始维护多个状态域。
 - `components/*.tsx` 开始同时包含 JSX、事件映射、业务计算和大量 copy。
@@ -32,9 +33,11 @@
   <page>-data.ts
   domain/
     logic.ts
+    runtime.ts
   view-model/
     <panel>-view-model.ts
     <event>-handlers.ts
+    <message>-view-model.ts
   components/
     page-header.tsx
     <panel>.tsx
@@ -73,6 +76,7 @@
 - API import。
 - reducer 实现。
 - 大型事件归并、树转换、消息格式化。
+- stream / runtime event 的 normalize、merge、reduce、retry、dedupe。
 - 大型常量或文案。
 
 如果 hook 超过约 220 行，默认应拆出 `view-model/` 或 `domain/`。
@@ -85,8 +89,9 @@
 - API adapter 调用。
 - mock/demo data 的入口。
 - API response 到页面原始数据的轻量转换。
+- stream / SSE / WebSocket / polling 的订阅入口。
 
-不放 JSX、panel view model、reducer、组件 props 拼装。
+不放 JSX、panel view model、reducer、runtime event 合并、组件 props 拼装。
 
 ### `domain/`
 
@@ -94,6 +99,8 @@
 
 - event/message/task 的排序、归并、分组。
 - 状态机或 reducer 的纯实现。
+- stream event、runtime snapshot、command result 的 normalize / merge / reduce。
+- message/thread/swarm/workbench 状态转换。
 - 权限、依赖、图结构、树结构计算。
 - 可单测的规则。
 
@@ -105,6 +112,7 @@
 
 - domain/data 到 panel props 的转换。
 - event 到 timeline/thread item 的转换。
+- runtime state 到 status badge、toolbar action、empty/error/loading props 的转换。
 - toolbar/action 状态派生。
 - detail drawer、side panel、empty/error 状态模型。
 
@@ -118,17 +126,39 @@
 - 渲染局部 UI。
 - 只保留与 DOM 事件直接相关的轻量 handler。
 
-不放 API、React Query、reducer、复杂 `useMemo`、业务算法、view model 映射。若组件文件超过约 220 行，应优先拆成更小的局部组件或把逻辑移到 `view-model/` / `domain/`。
+不放 API、React Query、reducer、复杂 `useMemo`、业务算法、stream/runtime/message 转换、view model 映射。若组件文件超过约 220 行，应优先拆成更小的局部组件或把逻辑移到 `view-model/` / `domain/`。
 
 ---
 
-## 4. 禁止形态
+## 4. stream / event / runtime 边界
+
+复杂页面若处理 stream、event、message、runtime state，必须按以下顺序拆：
+
+1. `<page>-data.ts`
+   只负责订阅、请求、mutation、原始事件入口。
+
+2. `domain/`
+   负责 normalize、dedupe、merge、reduce、状态机、错误恢复策略等纯逻辑。
+
+3. `view-model/`
+   负责把 domain state 转换成 thread item、activity item、panel props、toolbar action、status badge。
+
+4. `components/`
+   只渲染 view model，并把用户点击、输入、选择等 DOM 事件回调给页面 hook。
+
+禁止让 `components/<thread>.tsx`、`components/<panel>.tsx` 或 `use-<page>-page.ts` 直接承担 stream event 到 JSX 的全链路转换。
+
+---
+
+## 5. 禁止形态
 
 以下形态默认违反本协议：
 
 - `components/<page>-panel.tsx` 同时包含 mock data、事件转换、状态 reducer 和 JSX。
 - `components/<page>-thread.tsx` 同时负责消息排序、消息分组、消息渲染和输入提交。
 - `use-<page>-page.ts` 同时包含 API 调用、复杂 reducer、view model 拼装和所有事件 handler。
+- stream/SSE/WebSocket 事件在组件里被 parse、merge、dedupe、reduce 后直接渲染。
+- runtime status、command result、tool call、message chunk 的状态转换堆在 `components/` 或 page hook 里。
 - 页面局部复制 DataTable、tabs、dialog、toolbar、pagination、toast、shell 等通用模式。
 - 为了“灵活”在页面本地暴露 `className`、slot、render prop，然后复制共享层能力。
 
@@ -136,7 +166,7 @@
 
 ---
 
-## 5. 共享能力判断
+## 6. 共享能力判断
 
 复杂页面仍然不是 app 私造组件库的例外。
 
@@ -151,13 +181,14 @@
 
 ---
 
-## 6. 完成标准
+## 7. 完成标准
 
 复杂交互页面完成时必须满足：
 
 - `index.tsx` 能一眼看出页面结构。
 - `use-<page>-page.ts` 是编排层，不是逻辑仓库。
 - API/data、domain logic、view model、presentational components 各有落点。
+- stream/event/message/runtime 转换不在组件里完成。
 - 单个页面模块没有膨胀成几百行的不可治理文件。
 - 用户可见文案通过 locale key 管理，runtime source 不硬编码 CJK 文案。
 - 后续 AI 修改某个 panel、事件映射或业务逻辑时，能根据目录名找到正确文件。

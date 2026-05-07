@@ -30,6 +30,7 @@
 - 复杂 hook、memo、effect
 - 一个 `components/*.tsx` 文件开始同时承载状态编排、事件映射、数据转换和 JSX
 - `use-<page>-page.ts` 开始超过“页面编排”职责，沉淀纯算法、reducer 或大段 view model 映射
+- 页面接入 stream、SSE、WebSocket、runtime event、message chunk、command result 等持续事件源
 
 框架演示页也必须遵守本规则。演示代码会被 AI 学习，不能因为“不接 API”就把页面写成单文件样例。
 
@@ -112,6 +113,7 @@
   <page>-data.ts
   domain/
     logic.ts
+    runtime.ts
   view-model/
     <feature>-view-model.ts
     <feature>-events.ts
@@ -151,6 +153,7 @@
 - 静态演示数据
 - API 查询 hook
 - API -> 页面数据转换
+- stream / SSE / WebSocket / polling 的订阅入口
 
 不放：
 
@@ -158,6 +161,7 @@
 - 图表 JSX
 - 表格列 JSX
 - reducer、事件分发器或 view model 装配
+- stream event、message chunk、runtime snapshot 的合并和展示状态转换
 
 ### `metrics/`
 
@@ -200,6 +204,7 @@
 - reducer、状态机、事件分发器
 - 大量 `useMemo` / `useEffect` 派生逻辑
 - 业务算法、树转换、消息归并、权限计算
+- stream/event/message/runtime 状态转换
 - 可复用的 DataTable、panel、dialog、tabs、toolbar、pagination 等通用模式
 
 `components/` 文件应该偏 presentational：接收已经整理好的 props，渲染页面局部 UI。
@@ -213,6 +218,7 @@
 - 纯函数
 - reducer 之外可测试的状态转换
 - tree / graph / event / message / permission 等业务数据计算
+- stream event、runtime snapshot、command result 的 normalize / merge / reduce
 - 排序、过滤、分组、统计
 
 不放：
@@ -231,6 +237,7 @@
 - API/domain 数据到组件 props 的转换
 - 事件到展示状态的映射
 - panel、thread、toolbar、detail drawer 的 view model
+- message/thread/activity/runtime status 到组件 props 的转换
 - 只服务当前页面的展示枚举、状态标签和可见性规则
 
 不放：
