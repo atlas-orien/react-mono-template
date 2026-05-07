@@ -10,6 +10,7 @@ const messages = {
         mobileLabel: "Primary navigation",
         workspace: "Workspace",
         home: "Home",
+        complexWorkbench: "Workbench",
         profile: "Profile",
       },
       topbar: {
@@ -59,6 +60,42 @@ const messages = {
       title: "Personal features",
       description:
         "Sign in to manage your profile, avatar, email, and password.",
+    },
+  },
+  complexWorkbench: {
+    header: {
+      badge: "Complex page skeleton",
+      title: "Complex workbench",
+      description:
+        "This page demonstrates how complex business UI should split data, domain logic, view models, hooks, and local presentational components.",
+      total: "Total tasks",
+      selected: "Focused lane",
+    },
+    board: {
+      focus: "Focus",
+    },
+    activity: {
+      title: "Activity",
+    },
+    lanes: {
+      intake: "Intake",
+      review: "Review",
+      ship: "Ship",
+    },
+    priority: {
+      low: "Low",
+      medium: "Medium",
+      high: "High",
+    },
+    tasks: {
+      pageMap: "Map the page modules",
+      viewModel: "Extract the view model",
+      rules: "Run app rules",
+    },
+    events: {
+      pageMap: "Page structure reviewed",
+      viewModel: "View model boundary checked",
+      rules: "Rule gate prepared",
     },
   },
   login: {
