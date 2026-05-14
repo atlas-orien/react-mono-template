@@ -871,7 +871,6 @@ export default function DataTableGuidePage() {
                               }
                             : false
                         }
-                        selection={features.selection ? {} : false}
                         bulkUpdate={
                           features.bulkUpdate
                             ? {
@@ -1258,10 +1257,6 @@ function buildSnippet({
 
   if (features.insert) {
     lines.push(`  insert={{ label: "新增客户", onConfirm: handleInsert }}`)
-  }
-
-  if (features.selection) {
-    lines.push(`  selection={{}}`)
   }
 
   if (features.bulkUpdate) {

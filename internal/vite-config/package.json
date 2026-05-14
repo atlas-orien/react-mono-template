@@ -4,11 +4,18 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "exports": {
-    "./react-app": "./src/react-app/index.ts",
-    "./showcase": "./src/showcase/index.ts"
+    "./react-app": {
+      "types": "./src/react-app/index.ts",
+      "default": "./dist/react-app/index.js"
+    },
+    "./showcase": {
+      "types": "./src/showcase/index.ts",
+      "default": "./dist/showcase/index.js"
+    }
   },
   "dependencies": {
     "@tailwindcss/vite": "catalog:",

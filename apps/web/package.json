@@ -4,12 +4,14 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "predev": "pnpm --filter @workspace/vite-config build",
+    "prebuild": "pnpm --filter @workspace/vite-config build",
     "dev": "vite --mode development",
     "build": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.node.json && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run --passWithNoTests",
-    "rules": "APP_ROOT=$PWD vitest run --root .. rules",
+    "rules": "node ../../scripts/run-app-rules.mjs",
     "test:watch": "vitest --passWithNoTests"
   },
   "dependencies": {
