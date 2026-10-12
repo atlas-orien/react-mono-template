@@ -1,10 +1,12 @@
 import { request } from "./base"
 
 export interface AccessSignQuery {
+  bucket_id?: string
   key: string
 }
 
 export interface DeleteSignQuery {
+  bucket_id?: string
   key: string
 }
 
@@ -20,11 +22,12 @@ export interface SignedUploadHeaders {
   authorization: string
   "x-amz-date": string
   "x-amz-content-sha256": string
-  "Content-Type"?: string
-  "Content-Disposition"?: string
+  "Content-Type": string | null
+  "Content-Disposition": string | null
 }
 
 export interface UploadSignResponse {
+  bucket_id: string
   method: "PUT"
   upload_url: string
   key: string
@@ -33,7 +36,9 @@ export interface UploadSignResponse {
 }
 
 export interface ServerUploadResponse {
+  bucket_id: string
   key: string
+  /** Object location only; resolve private reads through getAccessSignApi. */
   url: string
   sha256: string
   size: number
@@ -41,12 +46,14 @@ export interface ServerUploadResponse {
 }
 
 export interface DownloadSignResponse {
+  bucket_id: string
   method: "GET"
   download_url: string
   key: string
 }
 
 export interface DeleteSignResponse {
+  bucket_id: string
   method: "DELETE"
   delete_url: string
   key: string
@@ -206,6 +213,7 @@ async function uploadToFileServiceApi(
     url: `${url}?${query.toString()}`,
     body: file,
     group: "file",
+    timeout: 5 * 60 * 1000,
   })
 }
 

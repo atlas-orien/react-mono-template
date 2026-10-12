@@ -11,7 +11,7 @@ export interface MeResponse {
   display_user_id?: string | null
   username: string
   display_name?: string | null
-  avatar?: string | null
+  avatar?: { object_key: string } | null
   email?: string | null
   email_verified: boolean
   disabled: boolean

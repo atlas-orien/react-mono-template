@@ -86,6 +86,15 @@ VITE_API_PROXY=http://localhost:8000
 
 ## 相关文档
 
+### Auth 与文件服务的头像协议
+
+Auth 的 `/auth/user/me` 返回 `avatar: { object_key: "..." }` 或 `null`。
+共享认证服务将 object key 和 `bucket_id=avatar` 传给 `/file/sign/access`，
+使用返回的 `download_url` 展示头像；公开或私有读取策略由 File Service 配置决定。
+头像上传使用 `PUT /file/sign/upload/avatar?ext=png`，请求体是原始文件，携带 JWT。
+上传成功后只把返回的 `key` 保存到 Auth，不把上传响应的 `url` 当作私有访问地址。
+服务端代理上传的前端超时为五分钟；部署反向代理也需要允许 File Service 的 50 MiB 请求体。
+
 - [用户文档首页](./README.md)
 - [框架思想](./framework-thinking.md)
 - [Codex 协议入口](../AGENT_PROTOCOL/PROTOCOL.md)

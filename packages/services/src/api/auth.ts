@@ -32,10 +32,14 @@ export interface MeResponse {
   display_user_id?: string | null
   username: string
   display_name?: string | null
-  avatar?: string | null
+  avatar?: AvatarReference | null
   email?: string | null
   email_verified: boolean
   disabled: boolean
+}
+
+export interface AvatarReference {
+  object_key: string
 }
 
 export interface UpdatePasswordPayload {
@@ -78,7 +82,7 @@ export const meApi = async (): Promise<UserInfo> => {
     url: "/auth/user/me",
     group: "auth",
   })
-  const avatar = await resolveAvatarUrl(response.avatar ?? "")
+  const avatar = await resolveAvatarUrl(response.avatar)
 
   return {
     id: response.id,
@@ -89,27 +93,18 @@ export const meApi = async (): Promise<UserInfo> => {
   }
 }
 
-async function resolveAvatarUrl(avatar: string): Promise<string> {
-  if (!avatar || isResolvedAvatarUrl(avatar)) {
-    return avatar
+async function resolveAvatarUrl(avatar?: AvatarReference | null): Promise<string> {
+  const objectKey = avatar?.object_key?.trim()
+  if (!objectKey) {
+    return ""
   }
 
   try {
-    const sign = await getAccessSignApi({ key: avatar })
+    const sign = await getAccessSignApi({ bucket_id: "avatar", key: objectKey })
     return sign.download_url
   } catch {
-    return avatar
+    return ""
   }
-}
-
-function isResolvedAvatarUrl(value: string): boolean {
-  return (
-    value.startsWith("http://") ||
-    value.startsWith("https://") ||
-    value.startsWith("blob:") ||
-    value.startsWith("data:") ||
-    value.startsWith("/")
-  )
 }
 
 export const getAuthUserProfileApi = async (
